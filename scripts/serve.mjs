@@ -18,4 +18,8 @@ createServer(async (req, res) => {
   } catch {
     res.writeHead(404); res.end("Tidak ditemukan");
   }
+}).on("error", e => {
+  if (e.code !== "EADDRINUSE") throw e;
+  console.log(`Port ${port} sudah dipakai, kemungkinan server ini sudah berjalan. Buka saja http://localhost:${port}, atau jalankan dengan port lain: PORT=8082 node scripts/serve.mjs`);
+  process.exit(1);
 }).listen(port, () => console.log(`Buka http://localhost:${port}`));
