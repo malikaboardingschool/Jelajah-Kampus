@@ -1,0 +1,5 @@
+dist/
+data-private/
+.DS_Store
+node_modules/
+.claude/

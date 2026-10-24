@@ -1,0 +1,94 @@
+﻿kampus_id,instansi,ikatan_dinas,jalur,catatan
+aal,TNI Angkatan Laut,ya,Seleksi diselenggarakan sendiri oleh instansi (rekrutmen Taruna Akademi TNI),Lulus menjadi perwira TNI AL.
+aau,TNI Angkatan Udara,ya,Seleksi diselenggarakan sendiri oleh instansi (rekrutmen Taruna Akademi TNI),Lulus menjadi perwira TNI AU.
+aka-bogor,Kementerian Perindustrian,tidak,Seleksi diselenggarakan sendiri oleh instansi,Tersedia beasiswa dari Kemenperin untuk sebagian mahasiswa.
+akmil,TNI Angkatan Darat,ya,Seleksi diselenggarakan sendiri oleh instansi (rekrutmen Taruna Akademi TNI),"Lulus menjadi perwira TNI AD. Wajib lulus tes kesehatan, jasmani, dan psikologi."
+akpol,Kepolisian Negara RI,ya,Seleksi diselenggarakan sendiri oleh instansi (rekrutmen Taruna Akpol),Lulus menjadi perwira Polri.
+api-bwi,Kementerian Perhubungan,sebagian,Pendaftaran lewat portal SSCASN (dikdin.bkn.go.id) (pola pembibitan) atau jalur reguler,
+app-jkt,Kementerian Perindustrian,tidak,Seleksi diselenggarakan sendiri oleh instansi,Tersedia beasiswa dari Kemenperin untuk sebagian mahasiswa.
+atk-yk,Kementerian Perindustrian,tidak,Seleksi diselenggarakan sendiri oleh instansi,Tersedia beasiswa dari Kemenperin untuk sebagian mahasiswa.
+aup,Kementerian Kelautan dan Perikanan,tidak,Seleksi diselenggarakan sendiri oleh instansi,Ada kuota afirmasi untuk anak pelaku usaha perikanan.
+ipdn,Kementerian Dalam Negeri,ya,Pendaftaran lewat portal SSCASN (dikdin.bkn.go.id),Lulusan ditempatkan sebagai ASN di pemerintah daerah. Ada syarat tinggi badan dan kesehatan.
+pem-akamigas,Kementerian ESDM,tidak,Seleksi diselenggarakan sendiri oleh instansi,Kampus negeri di bawah Kementerian ESDM; lulusan tidak otomatis menjadi ASN.
+pip-mks,Kementerian Perhubungan,sebagian,Pendaftaran lewat portal SSCASN (dikdin.bkn.go.id) (pola pembibitan) atau jalur reguler,
+pip-smg,Kementerian Perhubungan,sebagian,Pendaftaran lewat portal SSCASN (dikdin.bkn.go.id) (pola pembibitan) atau jalur reguler,Lulusan pelayaran banyak bekerja di kapal niaga dalam dan luar negeri.
+pknstan,Kementerian Keuangan,ya,Pendaftaran lewat portal SSCASN (dikdin.bkn.go.id),Lulusan ditempatkan sebagai CPNS di lingkungan Kemenkeu.
+pktj,Kementerian Perhubungan,sebagian,Pendaftaran lewat portal SSCASN (dikdin.bkn.go.id) (pola pembibitan) atau jalur reguler,
+polbangtan-bgr,Kementerian Pertanian,tidak,Seleksi diselenggarakan sendiri oleh instansi,
+polbangtan-gowa,Kementerian Pertanian,tidak,Seleksi diselenggarakan sendiri oleh instansi,
+polbangtan-mdn,Kementerian Pertanian,tidak,Seleksi diselenggarakan sendiri oleh instansi,
+polbangtan-mlg,Kementerian Pertanian,tidak,Seleksi diselenggarakan sendiri oleh instansi,
+polbangtan-mnk,Kementerian Pertanian,tidak,Seleksi diselenggarakan sendiri oleh instansi,
+polbangtan-yoma,Kementerian Pertanian,tidak,Seleksi diselenggarakan sendiri oleh instansi,
+polikp-bitung,Kementerian Kelautan dan Perikanan,tidak,Seleksi diselenggarakan sendiri oleh instansi,
+polikp-dumai,Kementerian Kelautan dan Perikanan,tidak,Seleksi diselenggarakan sendiri oleh instansi,
+polikp-kupang,Kementerian Kelautan dan Perikanan,tidak,Seleksi diselenggarakan sendiri oleh instansi,
+polikp-sorong,Kementerian Kelautan dan Perikanan,tidak,Seleksi diselenggarakan sendiri oleh instansi,
+poltek-pu,Kementerian Pekerjaan Umum,tidak,Seleksi diselenggarakan sendiri oleh instansi,
+poltekbang-mdn,Kementerian Perhubungan,sebagian,Pendaftaran lewat portal SSCASN (dikdin.bkn.go.id) (pola pembibitan) atau jalur reguler,
+poltekbang-mks,Kementerian Perhubungan,sebagian,Pendaftaran lewat portal SSCASN (dikdin.bkn.go.id) (pola pembibitan) atau jalur reguler,
+poltekbang-plg,Kementerian Perhubungan,sebagian,Pendaftaran lewat portal SSCASN (dikdin.bkn.go.id) (pola pembibitan) atau jalur reguler,
+poltekbang-sby,Kementerian Perhubungan,sebagian,Pendaftaran lewat portal SSCASN (dikdin.bkn.go.id) (pola pembibitan) atau jalur reguler,
+poltekesos,Kementerian Sosial,tidak,Seleksi diselenggarakan sendiri oleh instansi,
+poltekim,Kementerian Imigrasi dan Pemasyarakatan,ya,Pendaftaran lewat portal SSCASN (dikdin.bkn.go.id),Pendidikan semi-militer. Ada syarat tinggi badan dan kesehatan.
+poltekip,Kementerian Imigrasi dan Pemasyarakatan,ya,Pendaftaran lewat portal SSCASN (dikdin.bkn.go.id),Pendidikan semi-militer. Ada syarat tinggi badan dan kesehatan.
+poltekkes-aceh,Kementerian Kesehatan,tidak,Seleksi bersama Poltekkes (SIPENMARU),Kampus vokasi kesehatan; lulusan tidak otomatis menjadi ASN.
+poltekkes-banten,Kementerian Kesehatan,tidak,Seleksi bersama Poltekkes (SIPENMARU),Kampus vokasi kesehatan; lulusan tidak otomatis menjadi ASN.
+poltekkes-bdg,Kementerian Kesehatan,tidak,Seleksi bersama Poltekkes (SIPENMARU),Kampus vokasi kesehatan; lulusan tidak otomatis menjadi ASN.
+poltekkes-bjm,Kementerian Kesehatan,tidak,Seleksi bersama Poltekkes (SIPENMARU),Kampus vokasi kesehatan; lulusan tidak otomatis menjadi ASN.
+poltekkes-bkl,Kementerian Kesehatan,tidak,Seleksi bersama Poltekkes (SIPENMARU),Kampus vokasi kesehatan; lulusan tidak otomatis menjadi ASN.
+poltekkes-dps,Kementerian Kesehatan,tidak,Seleksi bersama Poltekkes (SIPENMARU),Kampus vokasi kesehatan; lulusan tidak otomatis menjadi ASN.
+poltekkes-gto,Kementerian Kesehatan,tidak,Seleksi bersama Poltekkes (SIPENMARU),Kampus vokasi kesehatan; lulusan tidak otomatis menjadi ASN.
+poltekkes-jambi,Kementerian Kesehatan,tidak,Seleksi bersama Poltekkes (SIPENMARU),Kampus vokasi kesehatan; lulusan tidak otomatis menjadi ASN.
+poltekkes-jkt2,Kementerian Kesehatan,tidak,Seleksi bersama Poltekkes (SIPENMARU),Kampus vokasi kesehatan; lulusan tidak otomatis menjadi ASN.
+poltekkes-jpr,Kementerian Kesehatan,tidak,Seleksi bersama Poltekkes (SIPENMARU),Kampus vokasi kesehatan; lulusan tidak otomatis menjadi ASN.
+poltekkes-kaltim,Kementerian Kesehatan,tidak,Seleksi bersama Poltekkes (SIPENMARU),Kampus vokasi kesehatan; lulusan tidak otomatis menjadi ASN.
+poltekkes-kdi,Kementerian Kesehatan,tidak,Seleksi bersama Poltekkes (SIPENMARU),Kampus vokasi kesehatan; lulusan tidak otomatis menjadi ASN.
+poltekkes-kupang,Kementerian Kesehatan,tidak,Seleksi bersama Poltekkes (SIPENMARU),Kampus vokasi kesehatan; lulusan tidak otomatis menjadi ASN.
+poltekkes-maluku,Kementerian Kesehatan,tidak,Seleksi bersama Poltekkes (SIPENMARU),Kampus vokasi kesehatan; lulusan tidak otomatis menjadi ASN.
+poltekkes-mamuju,Kementerian Kesehatan,tidak,Seleksi bersama Poltekkes (SIPENMARU),Kampus vokasi kesehatan; lulusan tidak otomatis menjadi ASN.
+poltekkes-mdo,Kementerian Kesehatan,tidak,Seleksi bersama Poltekkes (SIPENMARU),Kampus vokasi kesehatan; lulusan tidak otomatis menjadi ASN.
+poltekkes-medan,Kementerian Kesehatan,tidak,Seleksi bersama Poltekkes (SIPENMARU),Kampus vokasi kesehatan; lulusan tidak otomatis menjadi ASN.
+poltekkes-mks,Kementerian Kesehatan,tidak,Seleksi bersama Poltekkes (SIPENMARU),Kampus vokasi kesehatan; lulusan tidak otomatis menjadi ASN.
+poltekkes-mlg,Kementerian Kesehatan,tidak,Seleksi bersama Poltekkes (SIPENMARU),Kampus vokasi kesehatan; lulusan tidak otomatis menjadi ASN.
+poltekkes-mtr,Kementerian Kesehatan,tidak,Seleksi bersama Poltekkes (SIPENMARU),Kampus vokasi kesehatan; lulusan tidak otomatis menjadi ASN.
+poltekkes-padang,Kementerian Kesehatan,tidak,Seleksi bersama Poltekkes (SIPENMARU),Kampus vokasi kesehatan; lulusan tidak otomatis menjadi ASN.
+poltekkes-palu,Kementerian Kesehatan,tidak,Seleksi bersama Poltekkes (SIPENMARU),Kampus vokasi kesehatan; lulusan tidak otomatis menjadi ASN.
+poltekkes-pkp,Kementerian Kesehatan,tidak,Seleksi bersama Poltekkes (SIPENMARU),Kampus vokasi kesehatan; lulusan tidak otomatis menjadi ASN.
+poltekkes-plg,Kementerian Kesehatan,tidak,Seleksi bersama Poltekkes (SIPENMARU),Kampus vokasi kesehatan; lulusan tidak otomatis menjadi ASN.
+poltekkes-plk,Kementerian Kesehatan,tidak,Seleksi bersama Poltekkes (SIPENMARU),Kampus vokasi kesehatan; lulusan tidak otomatis menjadi ASN.
+poltekkes-ptk,Kementerian Kesehatan,tidak,Seleksi bersama Poltekkes (SIPENMARU),Kampus vokasi kesehatan; lulusan tidak otomatis menjadi ASN.
+poltekkes-riau,Kementerian Kesehatan,tidak,Seleksi bersama Poltekkes (SIPENMARU),Kampus vokasi kesehatan; lulusan tidak otomatis menjadi ASN.
+poltekkes-sby,Kementerian Kesehatan,tidak,Seleksi bersama Poltekkes (SIPENMARU),Kampus vokasi kesehatan; lulusan tidak otomatis menjadi ASN.
+poltekkes-smg,Kementerian Kesehatan,tidak,Seleksi bersama Poltekkes (SIPENMARU),Kampus vokasi kesehatan; lulusan tidak otomatis menjadi ASN.
+poltekkes-sorong,Kementerian Kesehatan,tidak,Seleksi bersama Poltekkes (SIPENMARU),Kampus vokasi kesehatan; lulusan tidak otomatis menjadi ASN.
+poltekkes-ternate,Kementerian Kesehatan,tidak,Seleksi bersama Poltekkes (SIPENMARU),Kampus vokasi kesehatan; lulusan tidak otomatis menjadi ASN.
+poltekkes-tjk,Kementerian Kesehatan,tidak,Seleksi bersama Poltekkes (SIPENMARU),Kampus vokasi kesehatan; lulusan tidak otomatis menjadi ASN.
+poltekkes-tpi,Kementerian Kesehatan,tidak,Seleksi bersama Poltekkes (SIPENMARU),Kampus vokasi kesehatan; lulusan tidak otomatis menjadi ASN.
+poltekkes-yk,Kementerian Kesehatan,tidak,Seleksi bersama Poltekkes (SIPENMARU),Kampus vokasi kesehatan; lulusan tidak otomatis menjadi ASN.
+polteknaker,Kementerian Ketenagakerjaan,tidak,Seleksi diselenggarakan sendiri oleh instansi,
+poltekpar-bali,Kementerian Pariwisata,tidak,Seleksi diselenggarakan sendiri oleh instansi,
+poltekpar-lombok,Kementerian Pariwisata,tidak,Seleksi diselenggarakan sendiri oleh instansi,
+poltekpar-mdn,Kementerian Pariwisata,tidak,Seleksi diselenggarakan sendiri oleh instansi,
+poltekpar-mks,Kementerian Pariwisata,tidak,Seleksi diselenggarakan sendiri oleh instansi,
+poltekpar-nhi,Kementerian Pariwisata,tidak,Seleksi diselenggarakan sendiri oleh instansi,
+poltekpar-plg,Kementerian Pariwisata,tidak,Seleksi diselenggarakan sendiri oleh instansi,
+poltekpel-banten,Kementerian Perhubungan,sebagian,Pendaftaran lewat portal SSCASN (dikdin.bkn.go.id) (pola pembibitan) atau jalur reguler,
+poltekpel-barombong,Kementerian Perhubungan,sebagian,Pendaftaran lewat portal SSCASN (dikdin.bkn.go.id) (pola pembibitan) atau jalur reguler,
+poltekpel-malahayati,Kementerian Perhubungan,sebagian,Pendaftaran lewat portal SSCASN (dikdin.bkn.go.id) (pola pembibitan) atau jalur reguler,
+poltekpel-sby,Kementerian Perhubungan,sebagian,Pendaftaran lewat portal SSCASN (dikdin.bkn.go.id) (pola pembibitan) atau jalur reguler,
+poltekpel-sumbar,Kementerian Perhubungan,sebagian,Pendaftaran lewat portal SSCASN (dikdin.bkn.go.id) (pola pembibitan) atau jalur reguler,
+poltekssn,Badan Siber dan Sandi Negara,ya,Pendaftaran lewat portal SSCASN (dikdin.bkn.go.id),Lulusan ditempatkan sebagai CPNS di BSSN.
+poltektrans-sdp,Kementerian Perhubungan,sebagian,Pendaftaran lewat portal SSCASN (dikdin.bkn.go.id) (pola pembibitan) atau jalur reguler,
+poltrada-bali,Kementerian Perhubungan,sebagian,Pendaftaran lewat portal SSCASN (dikdin.bkn.go.id) (pola pembibitan) atau jalur reguler,
+ppi-curug,Kementerian Perhubungan,sebagian,Pendaftaran lewat portal SSCASN (dikdin.bkn.go.id) (pola pembibitan) atau jalur reguler,
+ppi-madiun,Kementerian Perhubungan,sebagian,Pendaftaran lewat portal SSCASN (dikdin.bkn.go.id) (pola pembibitan) atau jalur reguler,
+ptdi-sttd,Kementerian Perhubungan,sebagian,Pendaftaran lewat portal SSCASN (dikdin.bkn.go.id) (pola pembibitan) atau jalur reguler,Pola pembibitan biasanya untuk utusan pemerintah daerah.
+ptni,Badan Riset dan Inovasi Nasional,tidak,Seleksi diselenggarakan sendiri oleh instansi,
+stin,Badan Intelijen Negara,ya,Pendaftaran lewat portal SSCASN (dikdin.bkn.go.id),Seleksi berlapis termasuk psikotes dan kesehatan. Ada syarat tinggi badan.
+stip,Kementerian Perhubungan,sebagian,Pendaftaran lewat portal SSCASN (dikdin.bkn.go.id) (pola pembibitan) atau jalur reguler,Pola pembibitan berarti ikatan dinas; jalur reguler membayar biaya sendiri dan tidak otomatis menjadi ASN.
+stis,Badan Pusat Statistik,ya,Pendaftaran lewat portal SSCASN (dikdin.bkn.go.id),Lulusan ditempatkan sebagai CPNS di BPS seluruh Indonesia.
+stmi,Kementerian Perindustrian,tidak,Seleksi diselenggarakan sendiri oleh instansi,Tersedia beasiswa dari Kemenperin untuk sebagian mahasiswa.
+stmkg,"Badan Meteorologi, Klimatologi, dan Geofisika",ya,Pendaftaran lewat portal SSCASN (dikdin.bkn.go.id),Lulusan ditempatkan di stasiun BMKG seluruh Indonesia.
+stpn,Kementerian ATR/BPN,sebagian,Seleksi diselenggarakan sendiri oleh instansi; ada jalur ikatan dinas tertentu,
+sttt,Kementerian Perindustrian,tidak,Seleksi diselenggarakan sendiri oleh instansi,Tersedia beasiswa dari Kemenperin untuk sebagian mahasiswa.

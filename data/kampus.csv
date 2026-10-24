@@ -1,0 +1,349 @@
+id,nama,singkatan,jenis,provinsi,kota,website
+ui,Universitas Indonesia,UI,PTN,Jawa Barat,Depok,ui.ac.id
+ugm,Universitas Gadjah Mada,UGM,PTN,DI Yogyakarta,Sleman,ugm.ac.id
+itb,Institut Teknologi Bandung,ITB,PTN,Jawa Barat,Bandung,itb.ac.id
+ipb,IPB University,IPB,PTN,Jawa Barat,Bogor,ipb.ac.id
+its,Institut Teknologi Sepuluh Nopember,ITS,PTN,Jawa Timur,Surabaya,its.ac.id
+unpad,Universitas Padjadjaran,Unpad,PTN,Jawa Barat,Sumedang,unpad.ac.id
+unair,Universitas Airlangga,Unair,PTN,Jawa Timur,Surabaya,unair.ac.id
+undip,Universitas Diponegoro,Undip,PTN,Jawa Tengah,Semarang,undip.ac.id
+ub,Universitas Brawijaya,UB,PTN,Jawa Timur,Malang,ub.ac.id
+uns,Universitas Sebelas Maret,UNS,PTN,Jawa Tengah,Surakarta,uns.ac.id
+unhas,Universitas Hasanuddin,Unhas,PTN,Sulawesi Selatan,Makassar,unhas.ac.id
+usu,Universitas Sumatera Utara,USU,PTN,Sumatera Utara,Medan,usu.ac.id
+unand,Universitas Andalas,Unand,PTN,Sumatera Barat,Padang,unand.ac.id
+unsri,Universitas Sriwijaya,Unsri,PTN,Sumatera Selatan,Palembang,unsri.ac.id
+unej,Universitas Jember,Unej,PTN,Jawa Timur,Jember,unej.ac.id
+unud,Universitas Udayana,Unud,PTN,Bali,Badung,unud.ac.id
+usk,Universitas Syiah Kuala,USK,PTN,Aceh,Banda Aceh,usk.ac.id
+unri,Universitas Riau,Unri,PTN,Riau,Pekanbaru,unri.ac.id
+unila,Universitas Lampung,Unila,PTN,Lampung,Bandar Lampung,unila.ac.id
+unsoed,Universitas Jenderal Soedirman,Unsoed,PTN,Jawa Tengah,Purwokerto,unsoed.ac.id
+untan,Universitas Tanjungpura,Untan,PTN,Kalimantan Barat,Pontianak,untan.ac.id
+ulm,Universitas Lambung Mangkurat,ULM,PTN,Kalimantan Selatan,Banjarmasin,ulm.ac.id
+unmul,Universitas Mulawarman,Unmul,PTN,Kalimantan Timur,Samarinda,unmul.ac.id
+unsrat,Universitas Sam Ratulangi,Unsrat,PTN,Sulawesi Utara,Manado,unsrat.ac.id
+unram,Universitas Mataram,Unram,PTN,Nusa Tenggara Barat,Mataram,unram.ac.id
+undana,Universitas Nusa Cendana,Undana,PTN,Nusa Tenggara Timur,Kupang,undana.ac.id
+unja,Universitas Jambi,Unja,PTN,Jambi,Jambi,unja.ac.id
+unib,Universitas Bengkulu,Unib,PTN,Bengkulu,Bengkulu,unib.ac.id
+untad,Universitas Tadulako,Untad,PTN,Sulawesi Tengah,Palu,untad.ac.id
+uho,Universitas Halu Oleo,UHO,PTN,Sulawesi Tenggara,Kendari,uho.ac.id
+unpatti,Universitas Pattimura,Unpatti,PTN,Maluku,Ambon,unpatti.ac.id
+uncen,Universitas Cenderawasih,Uncen,PTN,Papua,Jayapura,uncen.ac.id
+upr,Universitas Palangka Raya,UPR,PTN,Kalimantan Tengah,Palangka Raya,upr.ac.id
+ubb,Universitas Bangka Belitung,UBB,PTN,Kepulauan Bangka Belitung,Bangka,ubb.ac.id
+untirta,Universitas Sultan Ageng Tirtayasa,Untirta,PTN,Banten,Serang,untirta.ac.id
+trunojoyo,Universitas Trunojoyo Madura,UTM,PTN,Jawa Timur,Bangkalan,trunojoyo.ac.id
+unsil,Universitas Siliwangi,Unsil,PTN,Jawa Barat,Tasikmalaya,unsil.ac.id
+umrah,Universitas Maritim Raja Ali Haji,UMRAH,PTN,Kepulauan Riau,Tanjungpinang,umrah.ac.id
+unsulbar,Universitas Sulawesi Barat,Unsulbar,PTN,Sulawesi Barat,Majene,unsulbar.ac.id
+ung,Universitas Negeri Gorontalo,UNG,PTN,Gorontalo,Gorontalo,ung.ac.id
+unimal,Universitas Malikussaleh,Unimal,PTN,Aceh,Lhokseumawe,unimal.ac.id
+unkhair,Universitas Khairun,Unkhair,PTN,Maluku Utara,Ternate,unkhair.ac.id
+unipa,Universitas Papua,Unipa,PTN,Papua Barat,Manokwari,unipa.ac.id
+ubt,Universitas Borneo Tarakan,UBT,PTN,Kalimantan Utara,Tarakan,ubt.ac.id
+unsika,Universitas Singaperbangsa Karawang,Unsika,PTN,Jawa Barat,Karawang,unsika.ac.id
+untidar,Universitas Tidar,Untidar,PTN,Jawa Tengah,Magelang,untidar.ac.id
+upnvj,UPN Veteran Jakarta,UPNVJ,PTN,DKI Jakarta,Jakarta Selatan,upnvj.ac.id
+upnyk,UPN Veteran Yogyakarta,UPNYK,PTN,DI Yogyakarta,Sleman,upnyk.ac.id
+upnjatim,UPN Veteran Jawa Timur,UPNVJT,PTN,Jawa Timur,Surabaya,upnjatim.ac.id
+unj,Universitas Negeri Jakarta,UNJ,PTN,DKI Jakarta,Jakarta Timur,unj.ac.id
+upi,Universitas Pendidikan Indonesia,UPI,PTN,Jawa Barat,Bandung,upi.edu
+uny,Universitas Negeri Yogyakarta,UNY,PTN,DI Yogyakarta,Sleman,uny.ac.id
+unnes,Universitas Negeri Semarang,Unnes,PTN,Jawa Tengah,Semarang,unnes.ac.id
+um,Universitas Negeri Malang,UM,PTN,Jawa Timur,Malang,um.ac.id
+unesa,Universitas Negeri Surabaya,Unesa,PTN,Jawa Timur,Surabaya,unesa.ac.id
+unm,Universitas Negeri Makassar,UNM,PTN,Sulawesi Selatan,Makassar,unm.ac.id
+unp,Universitas Negeri Padang,UNP,PTN,Sumatera Barat,Padang,unp.ac.id
+unimed,Universitas Negeri Medan,Unimed,PTN,Sumatera Utara,Medan,unimed.ac.id
+undiksha,Universitas Pendidikan Ganesha,Undiksha,PTN,Bali,Singaraja,undiksha.ac.id
+unima,Universitas Negeri Manado,Unima,PTN,Sulawesi Utara,Tondano,unima.ac.id
+itera,Institut Teknologi Sumatera,ITERA,PTN,Lampung,Lampung Selatan,itera.ac.id
+itk,Institut Teknologi Kalimantan,ITK,PTN,Kalimantan Timur,Balikpapan,itk.ac.id
+isi-yk,Institut Seni Indonesia Yogyakarta,ISI Yogyakarta,PTN,DI Yogyakarta,Bantul,isi.ac.id
+isi-ska,Institut Seni Indonesia Surakarta,ISI Surakarta,PTN,Jawa Tengah,Surakarta,isi-ska.ac.id
+isi-dps,Institut Seni Indonesia Bali,ISI Bali,PTN,Bali,Denpasar,isi-dps.ac.id
+isbi-bdg,Institut Seni Budaya Indonesia Bandung,ISBI Bandung,PTN,Jawa Barat,Bandung,isbi.ac.id
+pnj,Politeknik Negeri Jakarta,PNJ,PTN,Jawa Barat,Depok,pnj.ac.id
+polban,Politeknik Negeri Bandung,Polban,PTN,Jawa Barat,Bandung Barat,polban.ac.id
+polines,Politeknik Negeri Semarang,Polines,PTN,Jawa Tengah,Semarang,polines.ac.id
+polinema,Politeknik Negeri Malang,Polinema,PTN,Jawa Timur,Malang,polinema.ac.id
+pens,Politeknik Elektronika Negeri Surabaya,PENS,PTN,Jawa Timur,Surabaya,pens.ac.id
+ppns,Politeknik Perkapalan Negeri Surabaya,PPNS,PTN,Jawa Timur,Surabaya,ppns.ac.id
+polmed,Politeknik Negeri Medan,Polmed,PTN,Sumatera Utara,Medan,polmed.ac.id
+pnp,Politeknik Negeri Padang,PNP,PTN,Sumatera Barat,Padang,pnp.ac.id
+polsri,Politeknik Negeri Sriwijaya,Polsri,PTN,Sumatera Selatan,Palembang,polsri.ac.id
+polinela,Politeknik Negeri Lampung,Polinela,PTN,Lampung,Bandar Lampung,polinela.ac.id
+pnb,Politeknik Negeri Bali,PNB,PTN,Bali,Badung,pnb.ac.id
+poliupg,Politeknik Negeri Ujung Pandang,PNUP,PTN,Sulawesi Selatan,Makassar,poliupg.ac.id
+polije,Politeknik Negeri Jember,Polije,PTN,Jawa Timur,Jember,polije.ac.id
+polnep,Politeknik Negeri Pontianak,Polnep,PTN,Kalimantan Barat,Pontianak,polnep.ac.id
+poliban,Politeknik Negeri Banjarmasin,Poliban,PTN,Kalimantan Selatan,Banjarmasin,poliban.ac.id
+polnes,Politeknik Negeri Samarinda,Polnes,PTN,Kalimantan Timur,Samarinda,polnes.ac.id
+polimdo,Politeknik Negeri Manado,Polimdo,PTN,Sulawesi Utara,Manado,polimdo.ac.id
+polibatam,Politeknik Negeri Batam,Polibatam,PTN,Kepulauan Riau,Batam,polibatam.ac.id
+pnl,Politeknik Negeri Lhokseumawe,PNL,PTN,Aceh,Lhokseumawe,pnl.ac.id
+polbeng,Politeknik Negeri Bengkalis,Polbeng,PTN,Riau,Bengkalis,polbeng.ac.id
+pnc,Politeknik Negeri Cilacap,PNC,PTN,Jawa Tengah,Cilacap,pnc.ac.id
+polindra,Politeknik Negeri Indramayu,Polindra,PTN,Jawa Barat,Indramayu,polindra.ac.id
+polman-bdg,Politeknik Manufaktur Bandung,Polman Bandung,PTN,Jawa Barat,Bandung,polman-bandung.ac.id
+pnk,Politeknik Negeri Kupang,PNK,PTN,Nusa Tenggara Timur,Kupang,pnk.ac.id
+polimedia,Politeknik Negeri Media Kreatif,Polimedia,PTN,DKI Jakarta,Jakarta Selatan,polimedia.ac.id
+uin-jkt,UIN Syarif Hidayatullah Jakarta,UIN Jakarta,PTKIN,Banten,Tangerang Selatan,uinjkt.ac.id
+uin-suka,UIN Sunan Kalijaga Yogyakarta,UIN Suka,PTKIN,DI Yogyakarta,Yogyakarta,uin-suka.ac.id
+uin-malang,UIN Maulana Malik Ibrahim Malang,UIN Malang,PTKIN,Jawa Timur,Malang,uin-malang.ac.id
+uin-sgd,UIN Sunan Gunung Djati Bandung,UIN Bandung,PTKIN,Jawa Barat,Bandung,uinsgd.ac.id
+uinsa,UIN Sunan Ampel Surabaya,UINSA,PTKIN,Jawa Timur,Surabaya,uinsa.ac.id
+walisongo,UIN Walisongo Semarang,UIN Walisongo,PTKIN,Jawa Tengah,Semarang,walisongo.ac.id
+uin-alauddin,UIN Alauddin Makassar,UIN Alauddin,PTKIN,Sulawesi Selatan,Gowa,uin-alauddin.ac.id
+uinsu,UIN Sumatera Utara,UINSU,PTKIN,Sumatera Utara,Medan,uinsu.ac.id
+uin-arraniry,UIN Ar-Raniry Banda Aceh,UIN Ar-Raniry,PTKIN,Aceh,Banda Aceh,ar-raniry.ac.id
+uin-suska,UIN Sultan Syarif Kasim Riau,UIN Suska,PTKIN,Riau,Pekanbaru,uin-suska.ac.id
+uin-ib,UIN Imam Bonjol Padang,UIN IB,PTKIN,Sumatera Barat,Padang,uinib.ac.id
+uin-rf,UIN Raden Fatah Palembang,UIN Raden Fatah,PTKIN,Sumatera Selatan,Palembang,radenfatah.ac.id
+uin-ril,UIN Raden Intan Lampung,UIN RIL,PTKIN,Lampung,Bandar Lampung,radenintan.ac.id
+uin-antasari,UIN Antasari Banjarmasin,UIN Antasari,PTKIN,Kalimantan Selatan,Banjarmasin,uin-antasari.ac.id
+uin-mataram,UIN Mataram,UIN Mataram,PTKIN,Nusa Tenggara Barat,Mataram,uinmataram.ac.id
+uin-smh,UIN Sultan Maulana Hasanuddin Banten,UIN Banten,PTKIN,Banten,Serang,uinbanten.ac.id
+uin-saizu,UIN Prof. K.H. Saifuddin Zuhri Purwokerto,UIN Saizu,PTKIN,Jawa Tengah,Purwokerto,uinsaizu.ac.id
+uin-rmsaid,UIN Raden Mas Said Surakarta,UIN RM Said,PTKIN,Jawa Tengah,Sukoharjo,uinsaid.ac.id
+uin-khas,UIN K.H. Achmad Siddiq Jember,UIN KHAS,PTKIN,Jawa Timur,Jember,uinkhas.ac.id
+uin-satu,UIN Sayyid Ali Rahmatullah Tulungagung,UIN SATU,PTKIN,Jawa Timur,Tulungagung,uinsatu.ac.id
+uin-ssc,UIN Siber Syekh Nurjati Cirebon,UIN SSC,PTKIN,Jawa Barat,Cirebon,syekhnurjati.ac.id
+uin-datokarama,UIN Datokarama Palu,UIN Datokarama,PTKIN,Sulawesi Tengah,Palu,uindatokarama.ac.id
+uin-jambi,UIN Sulthan Thaha Saifuddin Jambi,UIN STS Jambi,PTKIN,Jambi,Jambi,uinjambi.ac.id
+uin-salatiga,UIN Salatiga,UIN Salatiga,PTKIN,Jawa Tengah,Salatiga,uinsalatiga.ac.id
+unida,Universitas Darussalam Gontor,UNIDA Gontor,PTS,Jawa Timur,Ponorogo,unida.gontor.ac.id
+uii,Universitas Islam Indonesia,UII,PTS,DI Yogyakarta,Sleman,uii.ac.id
+umy,Universitas Muhammadiyah Yogyakarta,UMY,PTS,DI Yogyakarta,Bantul,umy.ac.id
+ums,Universitas Muhammadiyah Surakarta,UMS,PTS,Jawa Tengah,Sukoharjo,ums.ac.id
+umm,Universitas Muhammadiyah Malang,UMM,PTS,Jawa Timur,Malang,umm.ac.id
+uad,Universitas Ahmad Dahlan,UAD,PTS,DI Yogyakarta,Yogyakarta,uad.ac.id
+uhamka,Universitas Muhammadiyah Prof. Dr. Hamka,Uhamka,PTS,DKI Jakarta,Jakarta Selatan,uhamka.ac.id
+unisba,Universitas Islam Bandung,Unisba,PTS,Jawa Barat,Bandung,unisba.ac.id
+unissula,Universitas Islam Sultan Agung,Unissula,PTS,Jawa Tengah,Semarang,unissula.ac.id
+uai,Universitas Al Azhar Indonesia,UAI,PTS,DKI Jakarta,Jakarta Selatan,uai.ac.id
+uika,Universitas Ibn Khaldun Bogor,UIKA,PTS,Jawa Barat,Bogor,uika-bogor.ac.id
+tazkia,Institut Agama Islam Tazkia,Tazkia,PTS,Jawa Barat,Bogor,tazkia.ac.id
+unisma,Universitas Islam Malang,Unisma,PTS,Jawa Timur,Malang,unisma.ac.id
+umj,Universitas Muhammadiyah Jakarta,UMJ,PTS,Banten,Tangerang Selatan,umj.ac.id
+unpas,Universitas Pasundan,Unpas,PTS,Jawa Barat,Bandung,unpas.ac.id
+binus,Universitas Bina Nusantara,Binus,PTS,DKI Jakarta,Jakarta Barat,binus.ac.id
+telkom,Universitas Telkom,Tel-U,PTS,Jawa Barat,Bandung,telkomuniversity.ac.id
+prasmul,Universitas Prasetiya Mulya,Prasmul,PTS,Banten,Tangerang,prasetiyamulya.ac.id
+pres,President University,PresUniv,PTS,Jawa Barat,Bekasi,president.ac.id
+trisakti,Universitas Trisakti,Usakti,PTS,DKI Jakarta,Jakarta Barat,trisakti.ac.id
+mercubuana,Universitas Mercu Buana,UMB,PTS,DKI Jakarta,Jakarta Barat,mercubuana.ac.id
+gunadarma,Universitas Gunadarma,UG,PTS,Jawa Barat,Depok,gunadarma.ac.id
+uph,Universitas Pelita Harapan,UPH,PTS,Banten,Tangerang,uph.edu
+atmajaya,Universitas Katolik Indonesia Atma Jaya,Atma Jaya,PTS,DKI Jakarta,Jakarta Selatan,atmajaya.ac.id
+petra,Universitas Kristen Petra,Petra,PTS,Jawa Timur,Surabaya,petra.ac.id
+umn,Universitas Multimedia Nusantara,UMN,PTS,Banten,Tangerang,umn.ac.id
+amikom,Universitas Amikom Yogyakarta,Amikom,PTS,DI Yogyakarta,Sleman,amikom.ac.id
+pknstan,Politeknik Keuangan Negara STAN,PKN STAN,PTKN,Banten,Tangerang Selatan,pknstan.ac.id
+stis,Politeknik Statistika STIS,STIS,PTKN,DKI Jakarta,Jakarta Timur,stis.ac.id
+ipdn,Institut Pemerintahan Dalam Negeri,IPDN,PTKN,Jawa Barat,Sumedang,ipdn.ac.id
+poltekssn,Politeknik Siber dan Sandi Negara,Poltek SSN,PTKN,Jawa Barat,Bogor,poltekssn.ac.id
+stmkg,Sekolah Tinggi Meteorologi Klimatologi dan Geofisika,STMKG,PTKN,Banten,Tangerang Selatan,stmkg.ac.id
+poltekip,Politeknik Ilmu Pemasyarakatan,Poltekip,PTKN,Jawa Barat,Depok,poltekip.ac.id
+poltekim,Politeknik Imigrasi,Poltekim,PTKN,Jawa Barat,Depok,poltekim.ac.id
+stip,Sekolah Tinggi Ilmu Pelayaran Jakarta,STIP,PTKN,DKI Jakarta,Jakarta Utara,stipjakarta.ac.id
+pip-smg,Politeknik Ilmu Pelayaran Semarang,PIP Semarang,PTKN,Jawa Tengah,Semarang,pip-semarang.ac.id
+ppi-curug,Politeknik Penerbangan Indonesia Curug,PPI Curug,PTKN,Banten,Tangerang,ppicurug.ac.id
+poltekkes-jkt2,Poltekkes Kemenkes Jakarta II,Poltekkes Jakarta II,PTKN,DKI Jakarta,Jakarta Selatan,poltekkesjkt2.ac.id
+poltekkes-yk,Poltekkes Kemenkes Yogyakarta,Poltekkes Yogyakarta,PTKN,DI Yogyakarta,Sleman,poltekkesjogja.ac.id
+poltekkes-sby,Poltekkes Kemenkes Surabaya,Poltekkes Surabaya,PTKN,Jawa Timur,Surabaya,poltekkesdepkes-sby.ac.id
+poltekkes-bdg,Poltekkes Kemenkes Bandung,Poltekkes Bandung,PTKN,Jawa Barat,Bandung,poltekkesbandung.ac.id
+aup,Politeknik Ahli Usaha Perikanan,Poltek AUP,PTKN,DKI Jakarta,Jakarta Selatan,aup.ac.id
+polbangtan-bgr,Politeknik Pembangunan Pertanian Bogor,Polbangtan Bogor,PTKN,Jawa Barat,Bogor,polbangtanbogor.ac.id
+utu,Universitas Teuku Umar,UTU,PTN,Aceh,Aceh Barat,utu.ac.id
+unsam,Universitas Samudra,Unsam,PTN,Aceh,Langsa,unsam.ac.id
+usn,Universitas Sembilanbelas November Kolaka,USN,PTN,Sulawesi Tenggara,Kolaka,usn.ac.id
+unimor,Universitas Timor,Unimor,PTN,Nusa Tenggara Timur,Timor Tengah Utara,unimor.ac.id
+musamus,Universitas Musamus,Unmus,PTN,Papua Selatan,Merauke,unmus.ac.id
+ith,Institut Teknologi B.J. Habibie,ITH,PTN,Sulawesi Selatan,Parepare,ith.ac.id
+ut,Universitas Terbuka,UT,PTN,Banten,Tangerang Selatan,ut.ac.id
+isi-pp,Institut Seni Indonesia Padang Panjang,ISI Padang Panjang,PTN,Sumatera Barat,Padang Panjang,isi-padangpanjang.ac.id
+isbi-aceh,Institut Seni Budaya Indonesia Aceh,ISBI Aceh,PTN,Aceh,Aceh Besar,isbiaceh.ac.id
+isbi-papua,Institut Seni Budaya Indonesia Tanah Papua,ISBI Tanah Papua,PTN,Papua,Jayapura,
+polnam,Politeknik Negeri Ambon,Polnam,PTN,Maluku,Ambon,polnam.ac.id
+polinef,Politeknik Negeri Fakfak,Polinef,PTN,Papua Barat,Fakfak,polinef.ac.id
+polnustar,Politeknik Negeri Nusa Utara,Polnustar,PTN,Sulawesi Utara,Kepulauan Sangihe,polnustar.ac.id
+pnm,Politeknik Negeri Madiun,PNM,PTN,Jawa Timur,Madiun,pnm.ac.id
+poliwangi,Politeknik Negeri Banyuwangi,Poliwangi,PTN,Jawa Timur,Banyuwangi,poliwangi.ac.id
+poltera,Politeknik Negeri Madura,Poltera,PTN,Jawa Timur,Sampang,poltera.ac.id
+polsub,Politeknik Negeri Subang,Polsub,PTN,Jawa Barat,Subang,polsub.ac.id
+poltekba,Politeknik Negeri Balikpapan,Poltekba,PTN,Kalimantan Timur,Balikpapan,poltekba.ac.id
+politala,Politeknik Negeri Tanah Laut,Politala,PTN,Kalimantan Selatan,Tanah Laut,politala.ac.id
+politap,Politeknik Negeri Ketapang,Politap,PTN,Kalimantan Barat,Ketapang,politap.ac.id
+poltesa,Politeknik Negeri Sambas,Poltesa,PTN,Kalimantan Barat,Sambas,poltesa.ac.id
+polimarin,Politeknik Maritim Negeri Indonesia,Polimarin,PTN,Jawa Tengah,Semarang,polimarin.ac.id
+polman-babel,Politeknik Manufaktur Negeri Bangka Belitung,Polman Babel,PTN,Kepulauan Bangka Belitung,Bangka,polman-babel.ac.id
+poltas,Politeknik Aceh Selatan,Poltas,PTN,Aceh,Aceh Selatan,poltas.ac.id
+politani-pyk,Politeknik Pertanian Negeri Payakumbuh,Politani Payakumbuh,PTN,Sumatera Barat,Lima Puluh Kota,politanipyk.ac.id
+polipangkep,Politeknik Pertanian Negeri Pangkajene Kepulauan,Politani Pangkep,PTN,Sulawesi Selatan,Pangkajene Kepulauan,polipangkep.ac.id
+politani-kupang,Politeknik Pertanian Negeri Kupang,Politani Kupang,PTN,Nusa Tenggara Timur,Kupang,politanikoe.ac.id
+politani-smd,Politeknik Pertanian Negeri Samarinda,Politani Samarinda,PTN,Kalimantan Timur,Samarinda,politanisamarinda.ac.id
+pnup-kaltara,Politeknik Negeri Nunukan,Polnun,PTN,Kalimantan Utara,Nunukan,
+uinfas,UIN Fatmawati Sukarno Bengkulu,UINFAS,PTKIN,Bengkulu,Bengkulu,uinfasbengkulu.ac.id
+uinsi,UIN Sultan Aji Muhammad Idris Samarinda,UINSI,PTKIN,Kalimantan Timur,Samarinda,uinsi.ac.id
+uin-syahada,UIN Syekh Ali Hasan Ahmad Addary Padangsidimpuan,UIN Syahada,PTKIN,Sumatera Utara,Padangsidimpuan,uinsyahada.ac.id
+uin-batusangkar,UIN Mahmud Yunus Batusangkar,UIN Batusangkar,PTKIN,Sumatera Barat,Tanah Datar,uinmybatusangkar.ac.id
+uin-bukittinggi,UIN Sjech M. Djamil Djambek Bukittinggi,UIN Bukittinggi,PTKIN,Sumatera Barat,Bukittinggi,uinbukittinggi.ac.id
+uin-gusdur,UIN K.H. Abdurrahman Wahid Pekalongan,UIN Gus Dur,PTKIN,Jawa Tengah,Pekalongan,uingusdur.ac.id
+uin-ponorogo,UIN Kiai Ageng Muhammad Besari Ponorogo,UIN Ponorogo,PTKIN,Jawa Timur,Ponorogo,uinponorogo.ac.id
+uin-madura,UIN Madura,UIN Madura,PTKIN,Jawa Timur,Pamekasan,uinmadura.ac.id
+uin-kudus,UIN Sunan Kudus,UIN Kudus,PTKIN,Jawa Tengah,Kudus,
+uin-kediri,UIN Syekh Wasil Kediri,UIN Kediri,PTKIN,Jawa Timur,Kediri,
+uin-palopo,UIN Palopo,UIN Palopo,PTKIN,Sulawesi Selatan,Palopo,uinpalopo.ac.id
+uin-ambon,UIN Abdul Muthalib Sangadji Ambon,UIN Ambon,PTKIN,Maluku,Ambon,uinambon.ac.id
+uin-palangkaraya,UIN Palangka Raya,UIN Palangka Raya,PTKIN,Kalimantan Tengah,Palangka Raya,uin-palangkaraya.ac.id
+uin-suna,UIN Sultanah Nahrasiyah Lhokseumawe,UIN Suna,PTKIN,Aceh,Lhokseumawe,uinsuna.ac.id
+uin-sasbabel,UIN Syaikh Abdurrahman Siddik Bangka Belitung,UIN SAS Babel,PTKIN,Kepulauan Bangka Belitung,Bangka,
+iain-manado,IAIN Manado,IAIN Manado,PTKIN,Sulawesi Utara,Manado,iain-manado.ac.id
+iain-ternate,IAIN Ternate,IAIN Ternate,PTKIN,Maluku Utara,Ternate,iain-ternate.ac.id
+iain-kendari,IAIN Kendari,IAIN Kendari,PTKIN,Sulawesi Tenggara,Kendari,iainkendari.ac.id
+iain-pontianak,IAIN Pontianak,IAIN Pontianak,PTKIN,Kalimantan Barat,Pontianak,iainptk.ac.id
+iain-sorong,IAIN Sorong,IAIN Sorong,PTKIN,Papua Barat Daya,Sorong,iainsorong.ac.id
+iain-papua,IAIN Fattahul Muluk Papua,IAIN FM Papua,PTKIN,Papua,Jayapura,iainfmpapua.ac.id
+iain-langsa,IAIN Langsa,IAIN Langsa,PTKIN,Aceh,Langsa,iainlangsa.ac.id
+iain-kerinci,IAIN Kerinci,IAIN Kerinci,PTKIN,Jambi,Sungai Penuh,iainkerinci.ac.id
+iain-metro,IAIN Metro,IAIN Metro,PTKIN,Lampung,Metro,metrouniv.ac.id
+iain-parepare,IAIN Parepare,IAIN Parepare,PTKIN,Sulawesi Selatan,Parepare,iainpare.ac.id
+iain-bone,IAIN Bone,IAIN Bone,PTKIN,Sulawesi Selatan,Bone,
+iain-gorontalo,IAIN Sultan Amai Gorontalo,IAIN Gorontalo,PTKIN,Gorontalo,Gorontalo,iaingorontalo.ac.id
+iain-curup,IAIN Curup,IAIN Curup,PTKIN,Bengkulu,Rejang Lebong,iaincurup.ac.id
+iain-takengon,IAIN Takengon,IAIN Takengon,PTKIN,Aceh,Aceh Tengah,iaintakengon.ac.id
+iain-majene,IAIN Majene,IAIN Majene,PTKIN,Sulawesi Barat,Majene,
+stain-madina,STAIN Mandailing Natal,STAIN Madina,PTKIN,Sumatera Utara,Mandailing Natal,
+stain-bengkalis,STAIN Bengkalis,STAIN Bengkalis,PTKIN,Riau,Bengkalis,
+stain-sar,STAIN Sultan Abdurrahman Kepulauan Riau,STAIN SAR,PTKIN,Kepulauan Riau,Bintan,
+ptdi-sttd,Politeknik Transportasi Darat Indonesia-STTD,PTDI-STTD,PTKN,Jawa Barat,Bekasi,ptdisttd.ac.id
+poltekbang-sby,Politeknik Penerbangan Surabaya,Poltekbang Surabaya,PTKN,Jawa Timur,Surabaya,poltekbangsby.ac.id
+pip-mks,Politeknik Ilmu Pelayaran Makassar,PIP Makassar,PTKN,Sulawesi Selatan,Makassar,pipmakassar.ac.id
+polikp-sorong,Politeknik Kelautan dan Perikanan Sorong,Poltek KP Sorong,PTKN,Papua Barat Daya,Sorong,polikpsorong.ac.id
+polikp-bitung,Politeknik Kelautan dan Perikanan Bitung,Poltek KP Bitung,PTKN,Sulawesi Utara,Bitung,
+polikp-dumai,Politeknik Kelautan dan Perikanan Dumai,Poltek KP Dumai,PTKN,Riau,Dumai,
+polikp-kupang,Politeknik Kelautan dan Perikanan Kupang,Poltek KP Kupang,PTKN,Nusa Tenggara Timur,Kupang,
+stin,Sekolah Tinggi Intelijen Negara,STIN,PTKN,Jawa Barat,Bogor,stin.ac.id
+pem-akamigas,Politeknik Energi dan Mineral Akamigas,PEM Akamigas,PTKN,Jawa Tengah,Blora,pem-akamigas.ac.id
+poltek-pu,Politeknik Pekerjaan Umum,Politeknik PU,PTKN,Jawa Tengah,Semarang,politeknikpu.ac.id
+poltekesos,Politeknik Kesejahteraan Sosial Bandung,Poltekesos,PTKN,Jawa Barat,Bandung,poltekesos.ac.id
+polbangtan-mlg,Politeknik Pembangunan Pertanian Malang,Polbangtan Malang,PTKN,Jawa Timur,Malang,polbangtanmalang.ac.id
+polbangtan-mdn,Politeknik Pembangunan Pertanian Medan,Polbangtan Medan,PTKN,Sumatera Utara,Deli Serdang,
+polbangtan-gowa,Politeknik Pembangunan Pertanian Gowa,Polbangtan Gowa,PTKN,Sulawesi Selatan,Gowa,
+polbangtan-yoma,Politeknik Pembangunan Pertanian Yogyakarta-Magelang,Polbangtan Yoma,PTKN,Jawa Tengah,Magelang,
+polbangtan-mnk,Politeknik Pembangunan Pertanian Manokwari,Polbangtan Manokwari,PTKN,Papua Barat,Manokwari,
+poltekkes-medan,Poltekkes Kemenkes Medan,Poltekkes Medan,PTKN,Sumatera Utara,Medan,
+poltekkes-aceh,Poltekkes Kemenkes Aceh,Poltekkes Aceh,PTKN,Aceh,Aceh Besar,
+poltekkes-padang,Poltekkes Kemenkes Padang,Poltekkes Padang,PTKN,Sumatera Barat,Padang,
+poltekkes-riau,Poltekkes Kemenkes Riau,Poltekkes Riau,PTKN,Riau,Pekanbaru,
+poltekkes-plg,Poltekkes Kemenkes Palembang,Poltekkes Palembang,PTKN,Sumatera Selatan,Palembang,
+poltekkes-tjk,Poltekkes Kemenkes Tanjungkarang,Poltekkes Tanjungkarang,PTKN,Lampung,Bandar Lampung,
+poltekkes-banten,Poltekkes Kemenkes Banten,Poltekkes Banten,PTKN,Banten,Tangerang,
+poltekkes-smg,Poltekkes Kemenkes Semarang,Poltekkes Semarang,PTKN,Jawa Tengah,Semarang,
+poltekkes-mlg,Poltekkes Kemenkes Malang,Poltekkes Malang,PTKN,Jawa Timur,Malang,
+poltekkes-dps,Poltekkes Kemenkes Denpasar,Poltekkes Denpasar,PTKN,Bali,Denpasar,
+poltekkes-mtr,Poltekkes Kemenkes Mataram,Poltekkes Mataram,PTKN,Nusa Tenggara Barat,Mataram,
+poltekkes-kupang,Poltekkes Kemenkes Kupang,Poltekkes Kupang,PTKN,Nusa Tenggara Timur,Kupang,
+poltekkes-ptk,Poltekkes Kemenkes Pontianak,Poltekkes Pontianak,PTKN,Kalimantan Barat,Pontianak,
+poltekkes-bjm,Poltekkes Kemenkes Banjarmasin,Poltekkes Banjarmasin,PTKN,Kalimantan Selatan,Banjarmasin,
+poltekkes-kaltim,Poltekkes Kemenkes Kalimantan Timur,Poltekkes Kaltim,PTKN,Kalimantan Timur,Samarinda,
+poltekkes-mks,Poltekkes Kemenkes Makassar,Poltekkes Makassar,PTKN,Sulawesi Selatan,Makassar,
+poltekkes-mdo,Poltekkes Kemenkes Manado,Poltekkes Manado,PTKN,Sulawesi Utara,Manado,
+poltekkes-gto,Poltekkes Kemenkes Gorontalo,Poltekkes Gorontalo,PTKN,Gorontalo,Gorontalo,
+poltekkes-palu,Poltekkes Kemenkes Palu,Poltekkes Palu,PTKN,Sulawesi Tengah,Palu,
+poltekkes-kdi,Poltekkes Kemenkes Kendari,Poltekkes Kendari,PTKN,Sulawesi Tenggara,Kendari,
+poltekkes-mamuju,Poltekkes Kemenkes Mamuju,Poltekkes Mamuju,PTKN,Sulawesi Barat,Mamuju,
+poltekkes-maluku,Poltekkes Kemenkes Maluku,Poltekkes Maluku,PTKN,Maluku,Ambon,
+poltekkes-ternate,Poltekkes Kemenkes Ternate,Poltekkes Ternate,PTKN,Maluku Utara,Ternate,
+poltekkes-jpr,Poltekkes Kemenkes Jayapura,Poltekkes Jayapura,PTKN,Papua,Jayapura,
+poltekkes-sorong,Poltekkes Kemenkes Sorong,Poltekkes Sorong,PTKN,Papua Barat Daya,Sorong,
+poltekkes-jambi,Poltekkes Kemenkes Jambi,Poltekkes Jambi,PTKN,Jambi,Jambi,
+poltekkes-bkl,Poltekkes Kemenkes Bengkulu,Poltekkes Bengkulu,PTKN,Bengkulu,Bengkulu,
+poltekkes-pkp,Poltekkes Kemenkes Pangkalpinang,Poltekkes Pangkalpinang,PTKN,Kepulauan Bangka Belitung,Pangkalpinang,
+poltekkes-tpi,Poltekkes Kemenkes Tanjungpinang,Poltekkes Tanjungpinang,PTKN,Kepulauan Riau,Tanjungpinang,
+poltekkes-plk,Poltekkes Kemenkes Palangka Raya,Poltekkes Palangka Raya,PTKN,Kalimantan Tengah,Palangka Raya,
+umsu,Universitas Muhammadiyah Sumatera Utara,UMSU,PTS,Sumatera Utara,Medan,umsu.ac.id
+uisu,Universitas Islam Sumatera Utara,UISU,PTS,Sumatera Utara,Medan,uisu.ac.id
+itdel,Institut Teknologi Del,IT Del,PTS,Sumatera Utara,Toba,del.ac.id
+umsb,Universitas Muhammadiyah Sumatera Barat,UMSB,PTS,Sumatera Barat,Padang,umsb.ac.id
+uir,Universitas Islam Riau,UIR,PTS,Riau,Pekanbaru,uir.ac.id
+umri,Universitas Muhammadiyah Riau,UMRI,PTS,Riau,Pekanbaru,umri.ac.id
+uib,Universitas Internasional Batam,UIB,PTS,Kepulauan Riau,Batam,uib.ac.id
+unbari,Universitas Batanghari,Unbari,PTS,Jambi,Jambi,unbari.ac.id
+ump-plg,Universitas Muhammadiyah Palembang,UMP Palembang,PTS,Sumatera Selatan,Palembang,um-palembang.ac.id
+umb,Universitas Muhammadiyah Bengkulu,UMB,PTS,Bengkulu,Bengkulu,umb.ac.id
+malahayati,Universitas Malahayati,Unmal,PTS,Lampung,Bandar Lampung,malahayati.ac.id
+unmuha,Universitas Muhammadiyah Aceh,Unmuha,PTS,Aceh,Banda Aceh,unmuha.ac.id
+serambimekkah,Universitas Serambi Mekkah,USM,PTS,Aceh,Banda Aceh,serambimekkah.ac.id
+unmuhpnk,Universitas Muhammadiyah Pontianak,UM Pontianak,PTS,Kalimantan Barat,Pontianak,unmuhpnk.ac.id
+umbjm,Universitas Muhammadiyah Banjarmasin,UM Banjarmasin,PTS,Kalimantan Selatan,Banjarmasin,umbjm.ac.id
+umkt,Universitas Muhammadiyah Kalimantan Timur,UMKT,PTS,Kalimantan Timur,Samarinda,umkt.ac.id
+umpr,Universitas Muhammadiyah Palangkaraya,UMPR,PTS,Kalimantan Tengah,Palangka Raya,umpr.ac.id
+unikaltar,Universitas Kaltara,Unikaltar,PTS,Kalimantan Utara,Bulungan,
+umi,Universitas Muslim Indonesia,UMI,PTS,Sulawesi Selatan,Makassar,umi.ac.id
+unismuh,Universitas Muhammadiyah Makassar,Unismuh,PTS,Sulawesi Selatan,Makassar,unismuh.ac.id
+umgo,Universitas Muhammadiyah Gorontalo,UMGO,PTS,Gorontalo,Gorontalo,umgo.ac.id
+unismuhpalu,Universitas Muhammadiyah Palu,Unismuh Palu,PTS,Sulawesi Tengah,Palu,unismuhpalu.ac.id
+umkendari,Universitas Muhammadiyah Kendari,UM Kendari,PTS,Sulawesi Tenggara,Kendari,umkendari.ac.id
+unklab,Universitas Klabat,Unklab,PTS,Sulawesi Utara,Minahasa Utara,unklab.ac.id
+unasman,Universitas Al Asyariah Mandar,Unasman,PTS,Sulawesi Barat,Polewali Mandar,unasman.ac.id
+unidar,Universitas Darussalam Ambon,Unidar,PTS,Maluku,Ambon,unidar.ac.id
+ummu,Universitas Muhammadiyah Maluku Utara,UMMU,PTS,Maluku Utara,Ternate,ummu.ac.id
+ummat,Universitas Muhammadiyah Mataram,Ummat,PTS,Nusa Tenggara Barat,Mataram,ummat.ac.id
+unmuhkupang,Universitas Muhammadiyah Kupang,UM Kupang,PTS,Nusa Tenggara Timur,Kupang,unmuhkupang.ac.id
+unwira,Universitas Katolik Widya Mandira,Unwira,PTS,Nusa Tenggara Timur,Kupang,unwira.ac.id
+warmadewa,Universitas Warmadewa,Unwar,PTS,Bali,Denpasar,warmadewa.ac.id
+ump,Universitas Muhammadiyah Purwokerto,UMP,PTS,Jawa Tengah,Banyumas,ump.ac.id
+unimus,Universitas Muhammadiyah Semarang,Unimus,PTS,Jawa Tengah,Semarang,unimus.ac.id
+unisnu,Universitas Islam Nahdlatul Ulama Jepara,Unisnu,PTS,Jawa Tengah,Jepara,unisnu.ac.id
+umsida,Universitas Muhammadiyah Sidoarjo,Umsida,PTS,Jawa Timur,Sidoarjo,umsida.ac.id
+umsurabaya,Universitas Muhammadiyah Surabaya,UMSurabaya,PTS,Jawa Timur,Surabaya,um-surabaya.ac.id
+unusa,Universitas Nahdlatul Ulama Surabaya,Unusa,PTS,Jawa Timur,Surabaya,unusa.ac.id
+uninus,Universitas Islam Nusantara,Uninus,PTS,Jawa Barat,Bandung,uninus.ac.id
+umbandung,Universitas Muhammadiyah Bandung,UM Bandung,PTS,Jawa Barat,Bandung,umbandung.ac.id
+unjani,Universitas Jenderal Achmad Yani,Unjani,PTS,Jawa Barat,Cimahi,unjani.ac.id
+umt,Universitas Muhammadiyah Tangerang,UMT,PTS,Banten,Tangerang,umt.ac.id
+pertamina,Universitas Pertamina,UPER,PTS,DKI Jakarta,Jakarta Selatan,universitaspertamina.ac.id
+uksw,Universitas Kristen Satya Wacana,UKSW,PTS,Jawa Tengah,Salatiga,uksw.edu
+uajy,Universitas Atma Jaya Yogyakarta,UAJY,PTS,DI Yogyakarta,Sleman,uajy.ac.id
+usd,Universitas Sanata Dharma,USD,PTS,DI Yogyakarta,Sleman,usd.ac.id
+uniyap,Universitas Yapis Papua,Uniyap,PTS,Papua,Jayapura,uniyap.ac.id
+umsorong,Universitas Muhammadiyah Sorong,UM Sorong,PTS,Papua Barat Daya,Sorong,um-sorong.ac.id
+unvic,Universitas Victory Sorong,Unvic,PTS,Papua Barat Daya,Sorong,
+uswim,Universitas Satya Wiyata Mandala Nabire,Uswim,PTS,Papua Tengah,Nabire,
+amamapare,Politeknik Amamapare Timika,Poltek Amamapare,PTS,Papua Tengah,Mimika,
+unaim,Universitas Amal Ilmiah Yapis Wamena,Unaim,PTS,Papua Pegunungan,Jayawijaya,
+poltekbang-mdn,Politeknik Penerbangan Medan,Poltekbang Medan,PTKN,Sumatera Utara,Medan,
+poltekbang-mks,Politeknik Penerbangan Makassar,Poltekbang Makassar,PTKN,Sulawesi Selatan,Maros,
+poltekbang-plg,Politeknik Penerbangan Palembang,Poltekbang Palembang,PTKN,Sumatera Selatan,Palembang,
+api-bwi,Akademi Penerbang Indonesia Banyuwangi,API Banyuwangi,PTKN,Jawa Timur,Banyuwangi,
+poltekpel-sby,Politeknik Pelayaran Surabaya,Poltekpel Surabaya,PTKN,Jawa Timur,Surabaya,
+poltekpel-barombong,Politeknik Pelayaran Barombong,Poltekpel Barombong,PTKN,Sulawesi Selatan,Makassar,
+poltekpel-banten,Politeknik Pelayaran Banten,Poltekpel Banten,PTKN,Banten,Tangerang,
+poltekpel-sumbar,Politeknik Pelayaran Sumatera Barat,Poltekpel Sumbar,PTKN,Sumatera Barat,Padang Pariaman,
+poltekpel-malahayati,Politeknik Pelayaran Malahayati Aceh,Poltekpel Malahayati,PTKN,Aceh,Aceh Besar,
+poltektrans-sdp,"Politeknik Transportasi Sungai, Danau dan Penyeberangan Palembang",Poltektrans SDP,PTKN,Sumatera Selatan,Palembang,
+poltrada-bali,Politeknik Transportasi Darat Bali,Poltrada Bali,PTKN,Bali,Tabanan,
+pktj,Politeknik Keselamatan Transportasi Jalan,PKTJ Tegal,PTKN,Jawa Tengah,Tegal,
+ppi-madiun,Politeknik Perkeretaapian Indonesia Madiun,PPI Madiun,PTKN,Jawa Timur,Madiun,
+stpn,Sekolah Tinggi Pertanahan Nasional,STPN,PTKN,DI Yogyakarta,Sleman,stpn.ac.id
+akmil,Akademi Militer,Akmil,PTKN,Jawa Tengah,Magelang,
+aal,Akademi Angkatan Laut,AAL,PTKN,Jawa Timur,Surabaya,
+aau,Akademi Angkatan Udara,AAU,PTKN,DI Yogyakarta,Sleman,
+akpol,Akademi Kepolisian,Akpol,PTKN,Jawa Tengah,Semarang,
+polteknaker,Politeknik Ketenagakerjaan,Polteknaker,PTKN,DKI Jakarta,Jakarta Timur,
+ptni,Politeknik Teknologi Nuklir Indonesia,PTNI,PTKN,DI Yogyakarta,Yogyakarta,
+sttt,Politeknik STTT Bandung,STTT Bandung,PTKN,Jawa Barat,Bandung,
+aka-bogor,Politeknik AKA Bogor,AKA Bogor,PTKN,Jawa Barat,Bogor,
+atk-yk,Politeknik ATK Yogyakarta,ATK Yogyakarta,PTKN,DI Yogyakarta,Bantul,
+stmi,Politeknik STMI Jakarta,STMI Jakarta,PTKN,DKI Jakarta,Jakarta Pusat,
+app-jkt,Politeknik APP Jakarta,APP Jakarta,PTKN,DKI Jakarta,Jakarta Selatan,
+poltekpar-nhi,Politeknik Pariwisata NHI Bandung,Poltekpar NHI,PTKN,Jawa Barat,Bandung,
+poltekpar-bali,Politeknik Pariwisata Bali,Poltekpar Bali,PTKN,Bali,Badung,
+poltekpar-mks,Politeknik Pariwisata Makassar,Poltekpar Makassar,PTKN,Sulawesi Selatan,Makassar,
+poltekpar-mdn,Politeknik Pariwisata Medan,Poltekpar Medan,PTKN,Sumatera Utara,Medan,
+poltekpar-plg,Politeknik Pariwisata Palembang,Poltekpar Palembang,PTKN,Sumatera Selatan,Palembang,
+poltekpar-lombok,Politeknik Pariwisata Lombok,Poltekpar Lombok,PTKN,Nusa Tenggara Barat,Lombok Tengah,
