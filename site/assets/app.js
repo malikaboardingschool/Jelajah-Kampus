@@ -55,16 +55,16 @@ function renderLogin() {
   const s = META.sekolah;
   document.title = `Masuk · ${s.app}`;
   $("#app").innerHTML = `
-  <div class="login"><form class="login-card" id="lf" novalidate>
-    <div style="display:flex;justify-content:center">${LOGO(88)}</div>
-    <div class="label">${esc(s.nama)}</div>
-    <h1>Masuk ke ${esc(s.app)}</h1>
+  <div class="login">
+    <div class="login-band">${LOGO(76)}<b>${esc(s.app)}</b><small>${esc(s.nama)}</small></div>
+    <div class="login-main"><form class="login-card" id="lf" novalidate>
+    <h1>Masuk</h1>
     <p>Masukkan kata sandi yang dibagikan oleh guru BK.</p>
     <input class="field" id="pw" type="password" autocomplete="current-password" placeholder="Kata sandi" aria-label="Kata sandi">
     <p class="err" id="err" role="alert"></p>
     <button class="btn" type="submit" id="go">Masuk</button>
     <p class="note">Belum tahu kata sandinya? ${esc(s.kontak_bk)}.</p>
-  </form></div>`;
+  </form></div></div>`;
   $("#pw").focus();
   $("#lf").onsubmit = async e => {
     e.preventDefault();
@@ -156,8 +156,8 @@ function viewHome() {
   shell("home");
   $("#main").innerHTML = `
   <section class="hero">
-    <div class="label">Assalamu'alaikum</div>
-    <h1>Pilih prodi dengan <em>ilmu</em>, bukan ikut-ikutan.</h1>
+    <span class="badge">Assalamu'alaikum · Persiapan kuliah ${new Date().getFullYear() + 1}</span>
+    <h1>Pilih Prodi dengan Ilmu, <span class="grad-text">Bukan Ikut-ikutan</span></h1>
     <p>Jelajahi prodi dan kampus, ukur peluangmu dengan skor UTBK, lalu susun rencana untuk didiskusikan dengan guru BK.</p>
   </section>
   ${statsHTML()}
@@ -394,7 +394,7 @@ function viewRencana() {
   shell("rencana");
   const rows = plan.map(x => ROWS.find(r => r.k.id === x.k && r.p.id === x.p && r.j === x.j)).filter(Boolean);
   $("#main").innerHTML = `
-  <section class="hero"><div class="label">Rencanaku</div><h1>Pilihan prodi & kampusmu</h1>
+  <section class="hero"><span class="badge">Rencanaku</span><h1>Pilihan Prodi <span class="grad-text">& Kampusmu</span></h1>
   <p>Susun urutan pilihan dari yang paling kamu inginkan. Bawa daftar ini saat konsultasi dengan guru BK. Daftar ini tersimpan di perangkat ini saja.</p></section>
   <section class="panel">
     ${rows.length ? `<div class="plan">${rows.map((r, i) => `
@@ -467,7 +467,7 @@ function viewPanduan() {
   shell("panduan");
   const s = META.sekolah;
   $("#main").innerHTML = `
-  <section class="hero"><div class="label">Panduan</div><h1>Cara memakai ${esc(s.app)}</h1>
+  <section class="hero"><span class="badge">Panduan</span><h1>Cara Memakai <span class="grad-text">${esc(s.app)}</span></h1>
   <p>Lima langkah menyusun rencana kuliah sebelum konsultasi dengan guru BK.</p></section>
   <section class="panel">
     <ol class="steps">
