@@ -72,7 +72,7 @@ function renderLogin() {
     if (!pw.trim()) { err.textContent = "Isi kata sandi terlebih dahulu."; return; }
     $("#go").disabled = true; $("#go").textContent = "Memeriksa…"; err.textContent = "";
     try {
-      if (!(await cekSandi(pw))) { err.textContent = "Kata sandi salah. Periksa lagi, atau tanyakan ke guru BK."; return; }
+      if (!(await cekSandi(pw))) { err.textContent = "Kata sandi salah. Periksa lagi, atau tanyakan ke orang tua dan sekolah."; return; }
       user = { masuk: true };
       store.set("mp_user", user);
       location.hash = "#/";
@@ -104,7 +104,7 @@ function shell(active) {
 const go = h => { if (location.hash === h) route(); else location.hash = h; };
 const backBtn = (label = "← Beranda", h = "#/") => `<button class="back" data-back="${h}">${label}</button>`;
 const bindBack = () => $$("[data-back]").forEach(b => b.onclick = () => go(b.dataset.back));
-const FOOT = () => `<p class="foot">*Skor aman, daya tampung, dan peminat diisi guru BK dari sumber resmi. Baris bertanda <span class="tag contoh">contoh</span> masih angka ilustrasi. Gunakan untuk perencanaan, bukan jaminan lolos. Data diperbarui ${new Date(META.diperbarui).toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" })}.</p>`;
+const FOOT = () => `<p class="foot">*Skor aman, daya tampung, dan peminat diisi sekolah dari sumber resmi. Baris bertanda <span class="tag contoh">contoh</span> masih angka ilustrasi. Gunakan untuk perencanaan, bukan jaminan lolos. Data diperbarui ${new Date(META.diperbarui).toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" })}.</p>`;
 
 function statsHTML() {
   const j = META.jumlah;
@@ -339,7 +339,7 @@ function viewBahas() {
   $("#main").innerHTML = `${backBtn()}
   <section class="panel">
     <h2>Bahas Prodi</h2>
-    <p class="hint">Pilih prodi untuk membaca penjelasannya. Tanda <span class="star">★</span> berarti rekomendasi guru BK ${esc(META.sekolah.nama)}.</p>
+    <p class="hint">Pilih prodi untuk membaca penjelasannya. Tanda <span class="star">★</span> berarti rekomendasi sekolah ${esc(META.sekolah.nama)}.</p>
     <input class="search" id="b-q" placeholder="Cari nama prodi, misalnya Arsitektur" value="${esc(s.text)}" autocomplete="off">
     <div class="chips" id="b-chips">
       <button class="chip" data-r="">Semua</button>
@@ -372,7 +372,7 @@ function viewProdi(id) {
   const list = a => `<ul>${a.map(x => `<li>${esc(x)}</li>`).join("")}</ul>`;
   $("#main").innerHTML = `${backBtn("← Daftar prodi", "#/bahas")}
   <article class="panel detail">
-    <div><div class="label">${esc(p.rumpun)} · ${p.jenjang.join(" / ")}${p.rek ? ' · <span class="star">★ Rekomendasi BK</span>' : ""}</div><h2>${esc(p.nama)}</h2></div>
+    <div><div class="label">${esc(p.rumpun)} · ${p.jenjang.join(" / ")}${p.rek ? ' · <span class="star">★ Rekomendasi sekolah</span>' : ""}</div><h2>${esc(p.nama)}</h2></div>
     <div class="box"><div class="label">Tentang prodi ini</div><p>${esc(p.ringkas)}</p></div>
     <div class="cols">
       <div class="box"><div class="label">Contoh mata kuliah</div>${list(p.matkul)}</div>
@@ -400,7 +400,7 @@ function viewRencana() {
   const rows = plan.map(x => ROWS.find(r => r.k.id === x.k && r.p.id === x.p && r.j === x.j)).filter(Boolean);
   $("#main").innerHTML = `
   <section class="hero"><span class="badge">Rencanaku</span><h1>Pilihan Prodi <span class="grad-text">& Kampusmu</span></h1>
-  <p>Susun urutan pilihan dari yang paling kamu inginkan. Bawa daftar ini saat konsultasi dengan guru BK. Daftar ini tersimpan di perangkat ini saja.</p></section>
+  <p>Susun urutan pilihan dari yang paling kamu inginkan. Diskusikan daftar ini dengan orang tua dan sekolah. Daftar ini tersimpan di perangkat ini saja.</p></section>
   <section class="panel">
     ${rows.length ? `<div class="plan">${rows.map((r, i) => `
       <div class="plan-item">
@@ -473,14 +473,14 @@ function viewPanduan() {
   const s = META.sekolah;
   $("#main").innerHTML = `
   <section class="hero"><span class="badge">Panduan</span><h1>Cara Memakai <span class="grad-text">${esc(s.app)}</span></h1>
-  <p>Lima langkah menyusun rencana kuliah sebelum konsultasi dengan guru BK.</p></section>
+  <p>Lima langkah menyusun rencana kuliah sebelum berdiskusi dengan orang tua dan sekolah.</p></section>
   <section class="panel">
     <ol class="steps">
       <li><div><b>Kenali prodinya dulu</b><p>Buka <b>Bahas Prodi</b>. Baca mata kuliah dan prospek kariernya. Pastikan kamu tertarik dengan isinya, bukan hanya namanya.</p></div></li>
       <li><div><b>Cek mapel pilihan</b><p>Setiap prodi punya saran mapel pilihan Kelas XI. Sesuaikan pilihan mapelmu sejak awal agar sejalan dengan prodi incaran.</p></div></li>
       <li><div><b>Lihat kampus yang membukanya</b><p>Di <b>Cari Prodi</b>, ketik nama jurusan. Kamu akan melihat daftar kampus beserta skor aman UTBK jika sudah diisi.</p></div></li>
       <li><div><b>Ukur peluangmu</b><p>Di <b>Cek Skormu</b>, masukkan skor tryout terakhirmu. Pilihan dengan selisih tipis bisa jadi target, yang aman bisa jadi cadangan.</p></div></li>
-      <li><div><b>Susun Rencanaku dan diskusikan</b><p>Tambahkan pilihan ke <b>Rencanaku</b>, urutkan, lalu bawa ke sesi BK di ${esc(s.nama)}. Jangan lupa istikharah dan minta doa orang tua.</p></div></li>
+      <li><div><b>Susun Rencanaku dan diskusikan</b><p>Tambahkan pilihan ke <b>Rencanaku</b>, urutkan, lalu diskusikan dengan orang tua dan sekolah ${esc(s.nama)}. Jangan lupa istikharah dan minta doa orang tua.</p></div></li>
     </ol>
     <div class="box"><div class="label">Arti tanda skor</div>
       <div class="pills"><span class="score">700.0</span><span class="hint">650 ke atas</span></div>
@@ -520,5 +520,5 @@ loadData().then(() => {
   window.addEventListener("hashchange", route);
   route();
 }).catch(() => {
-  $("#app").innerHTML = '<div class="boot">Data aplikasi gagal dimuat. Muat ulang halaman, atau hubungi guru BK jika masalah berlanjut.</div>';
+  $("#app").innerHTML = '<div class="boot">Data aplikasi gagal dimuat. Muat ulang halaman, atau hubungi sekolah jika masalah berlanjut.</div>';
 });
