@@ -52,11 +52,19 @@ const kampusIndex = new Map();
 parseCSV(read("data/kampus.csv")).forEach((r, i) => {
   if (!r.id) return;
   if (kampusIndex.has(r.id)) { warn(`kampus.csv baris ${i + 2}: id "${r.id}" duplikat`); return; }
-  if (!["PTN", "PTS", "PTKIN", "PTKN"].includes(r.jenis)) warn(`kampus.csv baris ${i + 2}: jenis "${r.jenis}" tidak dikenal`);
-  if (sekolah.provinsi && !sekolah.provinsi.includes(r.provinsi)) warn(`kampus.csv baris ${i + 2}: provinsi "${r.provinsi}" tidak ada di daftar resmi (data/sekolah.json)`);
+  if (!["PTN", "PTS", "PTKIN", "PTKN", "PTLN"].includes(r.jenis)) warn(`kampus.csv baris ${i + 2}: jenis "${r.jenis}" tidak dikenal`);
+  // Untuk kampus luar negeri (PTLN), kolom provinsi berisi nama negara.
+  if (r.jenis === "PTLN") { if (sekolah.negara && !sekolah.negara.includes(r.provinsi)) warn(`kampus.csv baris ${i + 2}: negara "${r.provinsi}" tidak ada di daftar negara (data/sekolah.json)`); }
+  else if (sekolah.provinsi && !sekolah.provinsi.includes(r.provinsi)) warn(`kampus.csv baris ${i + 2}: provinsi "${r.provinsi}" tidak ada di daftar resmi (data/sekolah.json)`);
   kampusIndex.set(r.id, kampus.length);
   kampus.push({ id: r.id, nama: r.nama, singkat: r.singkatan || "", prov: r.provinsi, kota: r.kota || "", jenis: r.jenis, web: r.website || "" });
 });
+
+// ---------- Info negara (kuliah ke luar negeri) ----------
+const negara = existsSync(root + "data/negara.csv") ? parseCSV(read("data/negara.csv")).map(r => ({
+  nama: r.negara, wilayah: r.wilayah, bahasa: r.bahasa_kuliah, tes: r.tes, beasiswa: r.beasiswa, jalur: r.jalur,
+  persiapan: list(r.persiapan), catatan: r.catatan
+})) : [];
 
 // ---------- Info sekolah kedinasan ----------
 if (existsSync(root + "data/kedinasan.csv")) {
@@ -104,11 +112,12 @@ cpSync(root + "site", dist, { recursive: true });
 const out = (name, obj) => writeFileSync(dist + "data/" + name, JSON.stringify(obj));
 out("prodi.json", prodi);
 out("kampus.json", kampus);
+out("negara.json", negara);
 out("kp.json", kp);
 out("akses.json", akses);
 out("meta.json", {
   sekolah, diperbarui: new Date().toISOString(),
-  jumlah: { prodi: prodi.length, kampus: kampus.length, provinsi: new Set(kampus.map(k => k.prov)).size, provinsiResmi: (sekolah.provinsi || []).length, kampusProdi: kp.length }
+  jumlah: { prodi: prodi.length, kampus: kampus.length, provinsi: new Set(kampus.filter(k => k.jenis !== "PTLN").map(k => k.prov)).size, negara: new Set(kampus.filter(k => k.jenis === "PTLN").map(k => k.prov)).size, kampusLN: kampus.filter(k => k.jenis === "PTLN").length, provinsiResmi: (sekolah.provinsi || []).length, kampusProdi: kp.length }
 });
 writeFileSync(dist + ".nojekyll", "");
 

@@ -9,7 +9,7 @@ const store = {
   set(k, v) { try { v == null ? localStorage.removeItem(k) : localStorage.setItem(k, JSON.stringify(v)); } catch {} }
 };
 
-let META, PRODI, KAMPUS, ROWS, PROVS, prodiById, kampusById;
+let META, PRODI, KAMPUS, ROWS, PROVS, NEGARA = [], negaraByName = {}, prodiById, kampusById;
 let user = store.get("mp_user");
 let plan = store.get("mp_rencana") || []; // [{k, p, j}]
 const q = {}; // isi filter per halaman, bertahan selama sesi
@@ -19,6 +19,7 @@ const ICON = {
   campus: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 10 12 4l9 6"/><path d="M5 10v9h14v-9"/><path d="M9 19v-5h6v5"/></svg>',
   target: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1" fill="currentColor"/></svg>',
   book: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5"/></svg>',
+  globe: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3z"/></svg>',
   list: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6h11M9 12h11M9 18h11"/><path d="m3 6 1.5 1.5L7 5M3 12l1.5 1.5L7 11M3 18l1.5 1.5L7 17"/></svg>'
 };
 // Logo sekolah dari data/sekolah.json; kalau gagal dimuat, pakai logo cadangan bawaan.
@@ -29,6 +30,8 @@ async function loadData() {
   const get = f => fetch(`data/${f}`, { cache: "no-cache" }).then(r => { if (!r.ok) throw new Error(f); return r.json(); });
   const [meta, prodi, kampus, kp] = await Promise.all([get("meta.json"), get("prodi.json"), get("kampus.json"), get("kp.json")]);
   META = meta; PRODI = prodi; KAMPUS = kampus;
+  NEGARA = await get("negara.json").catch(() => []);
+  negaraByName = Object.fromEntries(NEGARA.map(n => [n.nama, n]));
   ROWS = kp.map(([k, p, j, skor, tampung, peminat, sumber]) => ({ k: kampus[k], p: prodi[p], j, skor, tampung, peminat, contoh: sumber === "CONTOH" }));
   // Urutan resmi (barat ke timur) dari data/sekolah.json; provinsi tanpa kampus tetap tampil di filter.
   PROVS = meta.sekolah.provinsi?.length ? meta.sekolah.provinsi : [...new Set(kampus.map(k => k.prov))].sort();
@@ -110,12 +113,14 @@ function statsHTML() {
   const j = META.jumlah;
   return `<div class="stats">
     <div class="stat"><b class="mono">${j.prodi}</b><span class="label">Prodi</span></div>
-    <div class="stat"><b class="mono">${j.kampus}</b><span class="label">Kampus</span></div>
+    <div class="stat"><b class="mono">${j.kampus}</b><span class="label">Kampus${j.kampusLN ? ` (${j.kampusLN} luar negeri)` : ""}</span></div>
     <div class="stat"><b class="mono">${j.provinsi}${j.provinsiResmi && j.provinsi < j.provinsiResmi ? `/${j.provinsiResmi}` : ""}</b><span class="label">Provinsi</span></div>
+    ${j.negara ? `<div class="stat"><b class="mono">${j.negara}</b><span class="label">Negara</span></div>` : ""}
   </div>`;
 }
 
 const scoreBadge = r => {
+  if (r.k.jenis === "PTLN") return `<span class="score na">${BENDERA[r.k.prov] || ""} ${esc(r.k.prov)}</span>`;
   if (r.skor == null) return `<span class="score na">${r.k.jenis === "PTS" ? "Mandiri" : "Belum ada skor"}</span>`;
   return `${r.contoh ? '<span class="tag contoh">contoh</span>' : ""}<span class="score ${r.skor < 650 ? "mid" : ""}">${r.skor.toFixed(1)}</span>`;
 };
@@ -171,6 +176,7 @@ function viewHome() {
     ${tile("#/kampus", "campus", "Daftar Kampus", "Telusuri PTN, UIN, politeknik, sekolah kedinasan, dan PTS per provinsi.")}
     ${tile("#/skor", "target", "Cek Skormu", "Masukkan perkiraan skor UTBK-mu, lihat pilihan yang peluangnya realistis.")}
     ${tile("#/bahas", "book", "Bahas Prodi", "Baca penjelasan tiap prodi: mata kuliah, prospek karier, dan mapel pendukung.")}
+    ${tile("#/luar-negeri", "globe", "Kuliah ke Luar Negeri", `${KAMPUS.filter(k => k.jenis === "PTLN").length} kampus di ${NEGARA.length} negara: Al-Azhar, Madinah, Tokyo, Oxford, MIT, NUS, dan lainnya. Lengkap dengan beasiswa, syarat bahasa, dan linimasa persiapan.`).replace('class="tile"', 'class="tile wide"')}
     ${tile("#/kedinasan", "campus", "Sekolah Kedinasan", `${KAMPUS.filter(k => k.jenis === "PTKN").length} sekolah kedinasan: STAN, STIS, IPDN, akademi TNI/Polri, pelayaran, penerbangan, Poltekkes, dan lainnya. Lihat mana yang ikatan dinas.`).replace('class="tile"', 'class="tile wide"')}
   </div>`;
   $$("[data-go]").forEach(b => b.onclick = () => go(b.dataset.go));
@@ -190,7 +196,7 @@ function viewCari() {
     <div class="chips">${CHIPS.map(c => `<button class="chip" data-chip="${esc(c)}" aria-pressed="${s.text === c}">${esc(c)}</button>`).join("")}</div>
     <div class="row">
       <select class="search" id="c-j" aria-label="Jenjang"><option value="">Semua jenjang</option>${["S1", "D4", "D3"].map(j => `<option ${s.jenjang === j ? "selected" : ""}>${j}</option>`).join("")}</select>
-      <select class="search" id="c-t" aria-label="Jenis kampus"><option value="">Semua jenis kampus</option>${[["PTN","PTN"],["PTKIN","UIN/IAIN (PTKIN)"],["PTKN","Kedinasan"],["PTS","Swasta"]].map(([v,l]) => `<option value="${v}" ${s.jenis === v ? "selected" : ""}>${l}</option>`).join("")}</select>
+      <select class="search" id="c-t" aria-label="Jenis kampus"><option value="">Semua jenis kampus</option>${JENIS_OPTS.map(([v,l]) => `<option value="${v}" ${s.jenis === v ? "selected" : ""}>${l}</option>`).join("")}</select>
       <button class="search" id="c-s">↕ Skor ${s.asc ? "terendah dulu" : "tertinggi dulu"}</button>
     </div>
     <div id="c-out"></div>
@@ -222,7 +228,10 @@ function viewCari() {
 }
 
 /* ---------------- Daftar Kampus ---------------- */
-const JENIS_LABEL = { PTN: "PTN", PTKIN: "PTKIN", PTKN: "Kedinasan", PTS: "PTS" };
+const JENIS_LABEL = { PTN: "PTN", PTKIN: "PTKIN", PTKN: "Kedinasan", PTS: "PTS", PTLN: "Luar Negeri" };
+const JENIS_OPTS = [["PTN","PTN"],["PTKIN","UIN/IAIN (PTKIN)"],["PTKN","Sekolah kedinasan"],["PTS","Swasta"],["PTLN","Luar negeri"]];
+const BENDERA = { "Mesir":"🇪🇬","Turkiye":"🇹🇷","Jepang":"🇯🇵","Amerika Serikat":"🇺🇸","Inggris":"🇬🇧","Korea Selatan":"🇰🇷","Arab Saudi":"🇸🇦","Malaysia":"🇲🇾","Australia":"🇦🇺","Jerman":"🇩🇪","Cina":"🇨🇳","Singapura":"🇸🇬","Brunei":"🇧🇳","Sudan":"🇸🇩","Yordania":"🇯🇴","Maroko":"🇲🇦" };
+const negaraLink = n => `#/negara/${encodeURIComponent(n)}`;
 const IKATAN = { ya: ["ok", "Ikatan dinas"], sebagian: ["warn", "Sebagian ikatan dinas"], tidak: ["", "Bukan ikatan dinas"] };
 const ikatanPill = d => d && IKATAN[d.ikatan] ? `<span class="pill ${IKATAN[d.ikatan][0]}">${IKATAN[d.ikatan][1]}</span>` : "";
 const dinasBox = d => d ? `<div class="box"><div class="label">Info sekolah kedinasan</div>
@@ -237,11 +246,13 @@ function viewKampus() {
   $("#main").innerHTML = `${backBtn()}
   <section class="panel">
     <h2>Daftar Kampus</h2>
-    <p class="hint">Cari kampus atau saring per provinsi dan jenis. Ketuk kampus untuk melihat semua prodinya.</p>
+    <p class="hint">Cari kampus atau saring per provinsi, negara, dan jenis. Ketuk kampus untuk melihat semua prodinya.</p>
     <input class="search" id="k-q" placeholder="Contoh: UIN, Gadjah Mada, Politeknik" value="${esc(s.text)}" autocomplete="off">
     <div class="row">
-      <select class="search" id="k-p" aria-label="Provinsi"><option value="">Semua provinsi</option>${PROVS.map(p => `<option ${s.prov === p ? "selected" : ""}>${esc(p)}</option>`).join("")}</select>
-      <select class="search" id="k-j" aria-label="Jenis kampus"><option value="">Semua jenis</option>${[["PTN","PTN"],["PTKIN","UIN/IAIN (PTKIN)"],["PTKN","Sekolah kedinasan"],["PTS","Swasta"]].map(([v,l]) => `<option value="${v}" ${s.jenis === v ? "selected" : ""}>${l}</option>`).join("")}</select>
+      <select class="search" id="k-p" aria-label="Provinsi atau negara"><option value="">Semua provinsi & negara</option>
+        <optgroup label="Indonesia">${PROVS.map(p => `<option ${s.prov === p ? "selected" : ""}>${esc(p)}</option>`).join("")}</optgroup>
+        ${NEGARA.length ? `<optgroup label="Luar negeri">${NEGARA.map(n => `<option ${s.prov === n.nama ? "selected" : ""}>${esc(n.nama)}</option>`).join("")}</optgroup>` : ""}</select>
+      <select class="search" id="k-j" aria-label="Jenis kampus"><option value="">Semua jenis</option>${JENIS_OPTS.map(([v,l]) => `<option value="${v}" ${s.jenis === v ? "selected" : ""}>${l}</option>`).join("")}</select>
     </div>
     <div class="chips" id="k-ik" ${s.jenis === "PTKN" ? "" : "hidden"}>
       <button class="chip" data-ik="">Semua kedinasan</button>
@@ -261,7 +272,7 @@ function viewKampus() {
     const ks = KAMPUS.filter(k => (!t || k._n.includes(t)) && (!s.prov || k.prov === s.prov) && (!s.jenis || k.jenis === s.jenis) && (s.jenis !== "PTKN" || !s.ikatan || k.dinas?.ikatan === s.ikatan)).sort((a, b) => a.nama.localeCompare(b.nama));
     if (!ks.length) { out.innerHTML = '<div class="empty">Kampus tidak ditemukan. Coba hapus filter provinsi atau jenis.</div>'; return; }
     out.insertAdjacentHTML("beforeend", `<p class="label" style="margin:0 0 8px">${ks.length} kampus</p>`);
-    pagedList(out, ks, (k, i) => `<button class="item" data-i="${i}"><div class="t"><b>${esc(k.nama)}</b><span>${esc(k.kota ? k.kota + ", " : "")}${esc(k.prov)} · ${k._prodi} prodi</span></div>${k.dinas?.ikatan === "ya" ? '<span class="pill ok">Ikatan dinas</span>' : ""}<span class="tag">${JENIS_LABEL[k.jenis]}</span></button>`, k => go(`#/kampus/${k.id}`));
+    pagedList(out, ks, (k, i) => `<button class="item" data-i="${i}"><div class="t"><b>${esc(k.nama)}</b><span>${k.jenis === "PTLN" ? (BENDERA[k.prov] || "") + " " : ""}${esc(k.kota ? k.kota + ", " : "")}${esc(k.prov)} · ${k._prodi} prodi</span></div>${k.dinas?.ikatan === "ya" ? '<span class="pill ok">Ikatan dinas</span>' : ""}<span class="tag">${JENIS_LABEL[k.jenis]}</span></button>`, k => go(`#/kampus/${k.id}`));
   };
   $("#k-q").oninput = e => { s.text = e.target.value; draw(); };
   $("#k-p").onchange = e => { s.prov = e.target.value; draw(); };
@@ -279,6 +290,7 @@ function viewKampusDetail(id) {
     <div><div class="label">${JENIS_LABEL[k.jenis]} · ${esc(k.kota ? k.kota + ", " : "")}${esc(k.prov)}</div><h2>${esc(k.nama)}</h2></div>
     ${k.web ? `<p class="hint">Situs resmi: <a href="https://${esc(k.web)}" target="_blank" rel="noopener">${esc(k.web)}</a></p>` : ""}
     ${dinasBox(k.dinas)}
+    ${k.jenis === "PTLN" ? negaraBox(negaraByName[k.prov], true) : ""}
     <div id="kd-out"></div>
     ${FOOT()}
   </section>`;
@@ -387,6 +399,53 @@ function viewProdi(id) {
   else pagedList($("#pd-out"), rows, (r, i) => rowItem(r, i, "kampus"), openModal, 40);
 }
 
+/* ---------------- Kuliah ke Luar Negeri ---------------- */
+function negaraBox(n, ringkas = false) {
+  if (!n) return "";
+  return `<div class="box ${n.catatan.startsWith("PERHATIAN") ? "box-warn" : ""}">
+    <div class="label">Info kuliah di ${esc(n.nama)}</div>
+    <p><b>Bahasa kuliah:</b> ${esc(n.bahasa)}</p>
+    <p><b>Tes & syarat:</b> ${esc(n.tes)}</p>
+    <p><b>Beasiswa:</b> ${esc(n.beasiswa)}</p>
+    <p><b>Jalur daftar:</b> ${esc(n.jalur)}</p>
+    ${n.catatan ? `<p class="${n.catatan.startsWith("PERHATIAN") ? "warn-text" : "hint"}">${esc(n.catatan)}</p>` : ""}
+    ${ringkas ? `<p><a href="${negaraLink(n.nama)}">Lihat linimasa persiapan dan kampus lain di ${esc(n.nama)} →</a></p>` : ""}
+  </div>`;
+}
+function viewLuarNegeri() {
+  shell("home");
+  const wil = [...new Set(NEGARA.map(n => n.wilayah))];
+  $("#main").innerHTML = `${backBtn()}
+  <section class="hero"><span class="badge">Kuliah ke Luar Negeri</span>
+    <h1>Kampus Dunia, <span class="grad-text">Persiapan Sejak Kelas X</span></h1>
+    <p>Pilih negara untuk melihat bahasa kuliah, tes yang diperlukan, beasiswa, linimasa persiapan, dan daftar kampusnya. Syarat dan kuota beasiswa berubah setiap tahun, jadi selalu cek situs resminya.</p>
+  </section>
+  ${wil.map(w => `<section class="neg-group"><p class="label">${esc(w)}</p><div class="neg-grid">${NEGARA.filter(n => n.wilayah === w).map(n => {
+      const jml = KAMPUS.filter(k => k.jenis === "PTLN" && k.prov === n.nama).length;
+      return `<button class="neg-card" data-go="${negaraLink(n.nama)}"><span class="flag" aria-hidden="true">${BENDERA[n.nama] || "🌐"}</span><span><b>${esc(n.nama)}</b><small>${jml} kampus · ${esc(n.beasiswa.split(/[;(]/)[0].trim())}</small></span></button>`;
+    }).join("")}</div></section>`).join("")}`;
+  bindBack();
+  $$("[data-go]").forEach(b => b.onclick = () => go(b.dataset.go));
+}
+function viewNegara(nama) {
+  shell("home");
+  const n = negaraByName[nama];
+  if (!n) return notFound();
+  const ks = KAMPUS.filter(k => k.jenis === "PTLN" && k.prov === nama).sort((a, b) => a.nama.localeCompare(b.nama));
+  $("#main").innerHTML = `${backBtn("← Kuliah ke Luar Negeri", "#/luar-negeri")}
+  <article class="panel detail">
+    <div><div class="label">${esc(n.wilayah)}</div><h2>${BENDERA[n.nama] || ""} Kuliah di ${esc(n.nama)}</h2></div>
+    ${negaraBox(n)}
+    <div class="box"><div class="label">Linimasa persiapan</div>
+      <ol class="steps">${n.persiapan.map(x => { const [h, ...rest] = x.split(":"); return `<li><div><b>${esc(h.trim())}</b><p>${esc(rest.join(":").trim())}</p></div></li>`; }).join("")}</ol>
+    </div>
+    <div class="box"><div class="label">${ks.length} kampus di ${esc(n.nama)}</div><div id="ng-out"></div></div>
+    <p class="foot">Informasi bersifat umum. Biaya, kuota, tenggat, dan syarat beasiswa berubah setiap tahun; cek situs resmi kampus dan penyelenggara beasiswa.</p>
+  </article>`;
+  bindBack();
+  pagedList($("#ng-out"), ks, (k, i) => `<button class="item" data-i="${i}"><div class="t"><b>${esc(k.nama)}</b><span>${esc(k.kota)} · ${k._prodi} prodi</span></div><span class="tag">${esc(k.singkat)}</span></button>`, k => go(`#/kampus/${k.id}`));
+}
+
 /* ---------------- Rencanaku ---------------- */
 const planKey = r => `${r.k.id}|${r.p.id}|${r.j}`;
 const inPlan = r => plan.some(x => `${x.k}|${x.p}|${x.j}` === planKey(r));
@@ -444,6 +503,7 @@ function openModal(r) {
       <div>Saran mapel pendukung</div><div>${esc(r.p.mapel.join(" / "))}</div>
       ${r.k.web ? `<div>Situs resmi</div><div><a href="https://${esc(r.k.web)}" target="_blank" rel="noopener">${esc(r.k.web)}</a></div>` : ""}
     </div>
+    ${r.k.jenis === "PTLN" && negaraByName[r.k.prov] ? `<p class="hint"><b>Beasiswa:</b> ${esc(negaraByName[r.k.prov].beasiswa)}. <a href="${negaraLink(r.k.prov)}">Lihat persiapan kuliah ke ${esc(r.k.prov)}</a></p>` : ""}
     ${r.k.jenis === "PTS" ? '<p class="hint">Kampus swasta menerima mahasiswa lewat seleksi mandiri. Cek jadwal dan syaratnya di situs resmi.</p>' : ""}
     ${r.k.jenis === "PTKN" ? (r.k.dinas ? `<p class="hint">${ikatanPill(r.k.dinas)} ${esc(r.k.dinas.instansi)}. ${esc(r.k.dinas.jalur)}.</p>` : '<p class="hint">Sekolah kedinasan punya seleksi sendiri dengan syarat usia, tinggi badan, dan kesehatan.</p>') : ""}
     <div class="row">
@@ -507,6 +567,8 @@ function route() {
   if (!a) return viewHome();
   if (a === "cari") return viewCari();
   if (a === "kampus") return b ? viewKampusDetail(decodeURIComponent(b)) : viewKampus();
+  if (a === "luar-negeri") return viewLuarNegeri();
+  if (a === "negara") return viewNegara(decodeURIComponent(b || ""));
   if (a === "kedinasan") { q.kampus = { text: "", prov: "", jenis: "PTKN", ikatan: "" }; return viewKampus(); }
   if (a === "skor") return viewSkor();
   if (a === "bahas") return viewBahas();

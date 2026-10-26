@@ -10,6 +10,7 @@ Fitur:
 - **Jelajah Kampus**: PTN, UIN/PTKIN, politeknik, sekolah kedinasan, dan PTS per provinsi
 - **Cek Skormu**: pilihan yang realistis berdasarkan skor tryout
 - **Sekolah Kedinasan**: STAN, STIS, IPDN, akademi TNI/Polri, pelayaran, penerbangan, Poltekkes, dll., dengan filter ikatan dinas
+- **Kuliah ke Luar Negeri**: 16 negara (Mesir, Arab Saudi, Turkiye, Jepang, AS, Inggris, Korea, Malaysia, Australia, Jerman, Cina, Singapura, Brunei, Sudan, Yordania, Maroko)
 - **Bahas Prodi**: penjelasan 714 prodi, contoh mata kuliah, prospek karier, dan saran mapel pilihan Kelas XI
 - **Rencanaku**: siswa menyusun urutan pilihan untuk dibawa saat konsultasi BK
 
@@ -22,9 +23,10 @@ Semua data ada di folder `data/` dalam bentuk **CSV**, yang bisa dibuka dan died
 | File | Isi | Jumlah awal |
 |---|---|---|
 | `data/prodi.csv` | Daftar prodi, penjelasan, mata kuliah, karier, mapel | 714 prodi |
-| `data/kampus.csv` | Daftar kampus, jenis, provinsi, situs resmi | 348 kampus di 38 provinsi (93 sekolah kedinasan) |
-| `data/kampus_prodi.csv` | Prodi apa saja yang dibuka tiap kampus, plus skor aman, daya tampung, peminat | ±6.600 baris |
+| `data/kampus.csv` | Daftar kampus, jenis, provinsi, situs resmi | 429 kampus: 348 di 38 provinsi (93 sekolah kedinasan) + 81 kampus luar negeri di 16 negara |
+| `data/kampus_prodi.csv` | Prodi apa saja yang dibuka tiap kampus, plus skor aman, daya tampung, peminat | ±7.850 baris |
 | `data/kedinasan.csv` | Info sekolah kedinasan: instansi, ikatan dinas (ya/sebagian/tidak), jalur masuk, catatan | 93 sekolah |
+| `data/negara.csv` | Info kuliah per negara: bahasa, tes, beasiswa, jalur, linimasa persiapan kelas X–XII | 16 negara |
 | `data/alias.csv` | Nama lain prodi (misal "Informatika" = "Teknik Informatika") | — |
 | `data/sekolah.json` | Nama sekolah, nama aplikasi, daftar rumpun, daftar resmi 38 provinsi | — |
 
@@ -50,6 +52,7 @@ Semua penjelasan prodi ditulis khusus untuk aplikasi ini dan boleh diubah sesuka
 - `rumpun` harus salah satu yang tercantum di `data/sekolah.json`
 
 **kampus.csv**: `id, nama, singkatan, jenis, provinsi, kota, website`
+- Untuk kampus luar negeri, `jenis` = `PTLN` dan kolom `provinsi` diisi **nama negara** (harus ada di daftar `negara` pada `data/sekolah.json`)
 - `id` adalah kode pendek unik tanpa spasi, misal `ugm`, `uin-jkt`
 - `jenis`: `PTN`, `PTKIN` (UIN/IAIN), `PTKN` (kedinasan), atau `PTS`
 

@@ -347,3 +347,84 @@ poltekpar-mks,Politeknik Pariwisata Makassar,Poltekpar Makassar,PTKN,Sulawesi Se
 poltekpar-mdn,Politeknik Pariwisata Medan,Poltekpar Medan,PTKN,Sumatera Utara,Medan,
 poltekpar-plg,Politeknik Pariwisata Palembang,Poltekpar Palembang,PTKN,Sumatera Selatan,Palembang,
 poltekpar-lombok,Politeknik Pariwisata Lombok,Poltekpar Lombok,PTKN,Nusa Tenggara Barat,Lombok Tengah,
+azhar,Universitas Al-Azhar,Al-Azhar,PTLN,Mesir,Kairo,azhar.edu.eg
+cairo,Cairo University,CU,PTLN,Mesir,Giza,cu.edu.eg
+ainshams,Ain Shams University,ASU,PTLN,Mesir,Kairo,asu.edu.eg
+alexandria,Alexandria University,AlexU,PTLN,Mesir,Aleksandria,alexu.edu.eg
+auc,The American University in Cairo,AUC,PTLN,Mesir,Kairo,aucegypt.edu
+istanbul,Istanbul University,IU,PTLN,Turkiye,Istanbul,istanbul.edu.tr
+metu,Middle East Technical University,METU,PTLN,Turkiye,Ankara,metu.edu.tr
+bogazici,Boğaziçi University,Boğaziçi,PTLN,Turkiye,Istanbul,bogazici.edu.tr
+ankara,Ankara University,AU,PTLN,Turkiye,Ankara,ankara.edu.tr
+itu,Istanbul Technical University,ITU,PTLN,Turkiye,Istanbul,itu.edu.tr
+marmara,Marmara University,Marmara,PTLN,Turkiye,Istanbul,marmara.edu.tr
+utokyo,The University of Tokyo,UTokyo,PTLN,Jepang,Tokyo,u-tokyo.ac.jp
+kyoto,Kyoto University,Kyodai,PTLN,Jepang,Kyoto,kyoto-u.ac.jp
+osaka,Osaka University,Handai,PTLN,Jepang,Osaka,osaka-u.ac.jp
+tohoku,Tohoku University,Tohoku,PTLN,Jepang,Sendai,tohoku.ac.jp
+waseda,Waseda University,Waseda,PTLN,Jepang,Tokyo,waseda.jp
+apu,Ritsumeikan Asia Pacific University,APU,PTLN,Jepang,Beppu,apu.ac.jp
+mit,Massachusetts Institute of Technology,MIT,PTLN,Amerika Serikat,"Cambridge, Massachusetts",mit.edu
+stanford,Stanford University,Stanford,PTLN,Amerika Serikat,"Stanford, California",stanford.edu
+harvard,Harvard University,Harvard,PTLN,Amerika Serikat,"Cambridge, Massachusetts",harvard.edu
+berkeley,"University of California, Berkeley",UC Berkeley,PTLN,Amerika Serikat,"Berkeley, California",berkeley.edu
+umich,University of Michigan,UMich,PTLN,Amerika Serikat,"Ann Arbor, Michigan",umich.edu
+purdue,Purdue University,Purdue,PTLN,Amerika Serikat,"West Lafayette, Indiana",purdue.edu
+oxford,University of Oxford,Oxford,PTLN,Inggris,Oxford,ox.ac.uk
+cambridge,University of Cambridge,Cambridge,PTLN,Inggris,Cambridge,cam.ac.uk
+imperial,Imperial College London,Imperial,PTLN,Inggris,London,imperial.ac.uk
+ucl,University College London,UCL,PTLN,Inggris,London,ucl.ac.uk
+edinburgh,The University of Edinburgh,Edinburgh,PTLN,Inggris,Edinburgh,ed.ac.uk
+manchester,The University of Manchester,Manchester,PTLN,Inggris,Manchester,manchester.ac.uk
+snu,Seoul National University,SNU,PTLN,Korea Selatan,Seoul,snu.ac.kr
+kaist,Korea Advanced Institute of Science and Technology,KAIST,PTLN,Korea Selatan,Daejeon,kaist.ac.kr
+yonsei,Yonsei University,Yonsei,PTLN,Korea Selatan,Seoul,yonsei.ac.kr
+koreauniv,Korea University,KU,PTLN,Korea Selatan,Seoul,korea.ac.kr
+postech,Pohang University of Science and Technology,POSTECH,PTLN,Korea Selatan,Pohang,postech.ac.kr
+hanyang,Hanyang University,Hanyang,PTLN,Korea Selatan,Seoul,hanyang.ac.kr
+iu-madinah,Islamic University of Madinah,IU Madinah,PTLN,Arab Saudi,Madinah,iu.edu.sa
+uqu,Umm Al-Qura University,UQU,PTLN,Arab Saudi,Makkah,uqu.edu.sa
+ksu,King Saud University,KSU,PTLN,Arab Saudi,Riyadh,ksu.edu.sa
+kau,King Abdulaziz University,KAU,PTLN,Arab Saudi,Jeddah,kau.edu.sa
+imamu,Imam Mohammad Ibn Saud Islamic University,IMSIU,PTLN,Arab Saudi,Riyadh,imamu.edu.sa
+kfupm,King Fahd University of Petroleum and Minerals,KFUPM,PTLN,Arab Saudi,Dhahran,kfupm.edu.sa
+um-my,Universiti Malaya,UM,PTLN,Malaysia,Kuala Lumpur,um.edu.my
+ukm,Universiti Kebangsaan Malaysia,UKM,PTLN,Malaysia,Bangi,ukm.my
+utm-my,Universiti Teknologi Malaysia,UTM,PTLN,Malaysia,Johor Bahru,utm.my
+usm-my,Universiti Sains Malaysia,USM,PTLN,Malaysia,Penang,usm.my
+upm-my,Universiti Putra Malaysia,UPM,PTLN,Malaysia,Serdang,upm.edu.my
+iium,International Islamic University Malaysia,IIUM,PTLN,Malaysia,Gombak,iium.edu.my
+unimelb,The University of Melbourne,UniMelb,PTLN,Australia,Melbourne,unimelb.edu.au
+anu,Australian National University,ANU,PTLN,Australia,Canberra,anu.edu.au
+usyd,The University of Sydney,USyd,PTLN,Australia,Sydney,sydney.edu.au
+unsw,UNSW Sydney,UNSW,PTLN,Australia,Sydney,unsw.edu.au
+monash,Monash University,Monash,PTLN,Australia,Melbourne,monash.edu
+uq,The University of Queensland,UQ,PTLN,Australia,Brisbane,uq.edu.au
+tum,Technical University of Munich,TUM,PTLN,Jerman,München,tum.de
+lmu,Ludwig-Maximilians-Universität München,LMU,PTLN,Jerman,München,lmu.de
+heidelberg,Universität Heidelberg,Heidelberg,PTLN,Jerman,Heidelberg,uni-heidelberg.de
+rwth,RWTH Aachen University,RWTH,PTLN,Jerman,Aachen,rwth-aachen.de
+kit,Karlsruher Institut für Technologie,KIT,PTLN,Jerman,Karlsruhe,kit.edu
+tuberlin,Technische Universität Berlin,TU Berlin,PTLN,Jerman,Berlin,tu.berlin
+tsinghua,Tsinghua University,Tsinghua,PTLN,Cina,Beijing,tsinghua.edu.cn
+pku,Peking University,PKU,PTLN,Cina,Beijing,pku.edu.cn
+zju,Zhejiang University,ZJU,PTLN,Cina,Hangzhou,zju.edu.cn
+fudan,Fudan University,Fudan,PTLN,Cina,Shanghai,fudan.edu.cn
+sjtu,Shanghai Jiao Tong University,SJTU,PTLN,Cina,Shanghai,sjtu.edu.cn
+nus,National University of Singapore,NUS,PTLN,Singapura,Singapura,nus.edu.sg
+ntu-sg,Nanyang Technological University,NTU,PTLN,Singapura,Singapura,ntu.edu.sg
+smu-sg,Singapore Management University,SMU,PTLN,Singapura,Singapura,smu.edu.sg
+sutd,Singapore University of Technology and Design,SUTD,PTLN,Singapura,Singapura,sutd.edu.sg
+ubd,Universiti Brunei Darussalam,UBD,PTLN,Brunei,Bandar Seri Begawan,ubd.edu.bn
+unissa,Universiti Islam Sultan Sharif Ali,UNISSA,PTLN,Brunei,Bandar Seri Begawan,unissa.edu.bn
+utb,Universiti Teknologi Brunei,UTB,PTLN,Brunei,Bandar Seri Begawan,utb.edu.bn
+iua,International University of Africa,IUA,PTLN,Sudan,Khartoum,iua.edu.sd
+khartoum,University of Khartoum,UofK,PTLN,Sudan,Khartoum,uofk.edu
+omdurman,Omdurman Islamic University,OIU,PTLN,Sudan,Omdurman,
+ujordan,The University of Jordan,UJ,PTLN,Yordania,Amman,ju.edu.jo
+yarmouk,Yarmouk University,YU,PTLN,Yordania,Irbid,yu.edu.jo
+just,Jordan University of Science and Technology,JUST,PTLN,Yordania,Irbid,just.edu.jo
+aabu,Al al-Bayt University,AABU,PTLN,Yordania,Mafraq,aabu.edu.jo
+qarawiyyin,Universitas Al-Qarawiyyin,Al-Qarawiyyin,PTLN,Maroko,Fes,
+um5,Mohammed V University in Rabat,UM5,PTLN,Maroko,Rabat,um5.ac.ma
+aui,Al Akhawayn University,AUI,PTLN,Maroko,Ifrane,aui.ma
