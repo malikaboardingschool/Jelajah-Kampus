@@ -9,7 +9,7 @@ const store = {
   set(k, v) { try { v == null ? localStorage.removeItem(k) : localStorage.setItem(k, JSON.stringify(v)); } catch {} }
 };
 
-let META, PRODI, KAMPUS, ROWS, PROVS, NEGARA = [], negaraByName = {}, prodiById, kampusById;
+let META, PRODI, KAMPUS, KAMPUS_DN, ROWS_ALL, ROWS, ROWS_LN, PROVS, NEGARA = [], negaraByName = {}, prodiById, kampusById;
 let user = store.get("mp_user");
 let plan = store.get("mp_rencana") || []; // [{k, p, j}]
 const q = {}; // isi filter per halaman, bertahan selama sesi
@@ -32,14 +32,18 @@ async function loadData() {
   META = meta; PRODI = prodi; KAMPUS = kampus;
   NEGARA = await get("negara.json").catch(() => []);
   negaraByName = Object.fromEntries(NEGARA.map(n => [n.nama, n]));
-  ROWS = kp.map(([k, p, j, skor, tampung, peminat, sumber]) => ({ k: kampus[k], p: prodi[p], j, skor, tampung, peminat, contoh: sumber === "CONTOH" }));
+  ROWS_ALL = kp.map(([k, p, j, skor, tampung, peminat, sumber]) => ({ k: kampus[k], p: prodi[p], j, skor, tampung, peminat, contoh: sumber === "CONTOH" }));
+  // Halaman pencarian Indonesia hanya memakai ROWS (dalam negeri); kampus luar negeri punya halaman sendiri.
+  ROWS = ROWS_ALL.filter(r => r.k.jenis !== "PTLN");
+  ROWS_LN = ROWS_ALL.filter(r => r.k.jenis === "PTLN");
+  KAMPUS_DN = kampus.filter(k => k.jenis !== "PTLN");
   // Urutan resmi (barat ke timur) dari data/sekolah.json; provinsi tanpa kampus tetap tampil di filter.
   PROVS = meta.sekolah.provinsi?.length ? meta.sekolah.provinsi : [...new Set(kampus.map(k => k.prov))].sort();
   prodiById = Object.fromEntries(prodi.map(p => [p.id, p]));
   kampusById = Object.fromEntries(kampus.map(k => [k.id, k]));
-  prodi.forEach(p => { p._n = norm(p.nama); p._kampus = 0; });
+  prodi.forEach(p => { p._n = norm(p.nama); p._kampus = 0; p._kampusLN = 0; });
   kampus.forEach(k => { k._n = norm(`${k.nama} ${k.singkat}`); k._prodi = 0; });
-  ROWS.forEach(r => { r.p._kampus++; r.k._prodi++; });
+  ROWS_ALL.forEach(r => { r.k.jenis === "PTLN" ? r.p._kampusLN++ : r.p._kampus++; r.k._prodi++; });
 }
 
 /* ---------------- Login ---------------- */
@@ -113,7 +117,7 @@ function statsHTML() {
   const j = META.jumlah;
   return `<div class="stats">
     <div class="stat"><b class="mono">${j.prodi}</b><span class="label">Prodi</span></div>
-    <div class="stat"><b class="mono">${j.kampus}</b><span class="label">Kampus${j.kampusLN ? ` (${j.kampusLN} luar negeri)` : ""}</span></div>
+    <div class="stat"><b class="mono">${j.kampus - (j.kampusLN || 0)}</b><span class="label">Kampus Indonesia</span></div>
     <div class="stat"><b class="mono">${j.provinsi}${j.provinsiResmi && j.provinsi < j.provinsiResmi ? `/${j.provinsiResmi}` : ""}</b><span class="label">Provinsi</span></div>
     ${j.negara ? `<div class="stat"><b class="mono">${j.negara}</b><span class="label">Negara</span></div>` : ""}
   </div>`;
@@ -229,7 +233,7 @@ function viewCari() {
 
 /* ---------------- Daftar Kampus ---------------- */
 const JENIS_LABEL = { PTN: "PTN", PTKIN: "PTKIN", PTKN: "Kedinasan", PTS: "PTS", PTLN: "Luar Negeri" };
-const JENIS_OPTS = [["PTN","PTN"],["PTKIN","UIN/IAIN (PTKIN)"],["PTKN","Sekolah kedinasan"],["PTS","Swasta"],["PTLN","Luar negeri"]];
+const JENIS_OPTS = [["PTN","PTN"],["PTKIN","UIN/IAIN (PTKIN)"],["PTKN","Sekolah kedinasan"],["PTS","Swasta"]];
 const BENDERA = { "Mesir":"🇪🇬","Turkiye":"🇹🇷","Jepang":"🇯🇵","Amerika Serikat":"🇺🇸","Inggris":"🇬🇧","Korea Selatan":"🇰🇷","Arab Saudi":"🇸🇦","Malaysia":"🇲🇾","Australia":"🇦🇺","Jerman":"🇩🇪","Cina":"🇨🇳","Singapura":"🇸🇬","Brunei":"🇧🇳","Tunisia":"🇹🇳","Yordania":"🇯🇴","Maroko":"🇲🇦" };
 const negaraLink = n => `#/negara/${encodeURIComponent(n)}`;
 const IKATAN = { ya: ["ok", "Ikatan dinas"], sebagian: ["warn", "Sebagian ikatan dinas"], tidak: ["", "Bukan ikatan dinas"] };
@@ -246,12 +250,10 @@ function viewKampus() {
   $("#main").innerHTML = `${backBtn()}
   <section class="panel">
     <h2>Daftar Kampus</h2>
-    <p class="hint">Cari kampus atau saring per provinsi, negara, dan jenis. Ketuk kampus untuk melihat semua prodinya.</p>
+    <p class="hint">Cari kampus di Indonesia atau saring per provinsi dan jenis. Ketuk kampus untuk melihat semua prodinya. Kampus luar negeri ada di menu <a href="#/luar-negeri">Kuliah ke Luar Negeri</a>.</p>
     <input class="search" id="k-q" placeholder="Contoh: UIN, Gadjah Mada, Politeknik" value="${esc(s.text)}" autocomplete="off">
     <div class="row">
-      <select class="search" id="k-p" aria-label="Provinsi atau negara"><option value="">Semua provinsi & negara</option>
-        <optgroup label="Indonesia">${PROVS.map(p => `<option ${s.prov === p ? "selected" : ""}>${esc(p)}</option>`).join("")}</optgroup>
-        ${NEGARA.length ? `<optgroup label="Luar negeri">${NEGARA.map(n => `<option ${s.prov === n.nama ? "selected" : ""}>${esc(n.nama)}</option>`).join("")}</optgroup>` : ""}</select>
+      <select class="search" id="k-p" aria-label="Provinsi"><option value="">Semua provinsi</option>${PROVS.map(p => `<option ${s.prov === p ? "selected" : ""}>${esc(p)}</option>`).join("")}</select>
       <select class="search" id="k-j" aria-label="Jenis kampus"><option value="">Semua jenis</option>${JENIS_OPTS.map(([v,l]) => `<option value="${v}" ${s.jenis === v ? "selected" : ""}>${l}</option>`).join("")}</select>
     </div>
     <div class="chips" id="k-ik" ${s.jenis === "PTKN" ? "" : "hidden"}>
@@ -269,10 +271,10 @@ function viewKampus() {
     const t = norm(s.text.trim());
     $("#k-ik").hidden = s.jenis !== "PTKN";
     $$("[data-ik]").forEach(c => c.setAttribute("aria-pressed", c.dataset.ik === (s.ikatan || "")));
-    const ks = KAMPUS.filter(k => (!t || k._n.includes(t)) && (!s.prov || k.prov === s.prov) && (!s.jenis || k.jenis === s.jenis) && (s.jenis !== "PTKN" || !s.ikatan || k.dinas?.ikatan === s.ikatan)).sort((a, b) => a.nama.localeCompare(b.nama));
+    const ks = KAMPUS_DN.filter(k => (!t || k._n.includes(t)) && (!s.prov || k.prov === s.prov) && (!s.jenis || k.jenis === s.jenis) && (s.jenis !== "PTKN" || !s.ikatan || k.dinas?.ikatan === s.ikatan)).sort((a, b) => a.nama.localeCompare(b.nama));
     if (!ks.length) { out.innerHTML = '<div class="empty">Kampus tidak ditemukan. Coba hapus filter provinsi atau jenis.</div>'; return; }
     out.insertAdjacentHTML("beforeend", `<p class="label" style="margin:0 0 8px">${ks.length} kampus</p>`);
-    pagedList(out, ks, (k, i) => `<button class="item" data-i="${i}"><div class="t"><b>${esc(k.nama)}</b><span>${k.jenis === "PTLN" ? (BENDERA[k.prov] || "") + " " : ""}${esc(k.kota ? k.kota + ", " : "")}${esc(k.prov)} · ${k._prodi} prodi</span></div>${k.dinas?.ikatan === "ya" ? '<span class="pill ok">Ikatan dinas</span>' : ""}<span class="tag">${JENIS_LABEL[k.jenis]}</span></button>`, k => go(`#/kampus/${k.id}`));
+    pagedList(out, ks, (k, i) => `<button class="item" data-i="${i}"><div class="t"><b>${esc(k.nama)}</b><span>${esc(k.kota ? k.kota + ", " : "")}${esc(k.prov)} · ${k._prodi} prodi</span></div>${k.dinas?.ikatan === "ya" ? '<span class="pill ok">Ikatan dinas</span>' : ""}<span class="tag">${JENIS_LABEL[k.jenis]}</span></button>`, k => go(`#/kampus/${k.id}`));
   };
   $("#k-q").oninput = e => { s.text = e.target.value; draw(); };
   $("#k-p").onchange = e => { s.prov = e.target.value; draw(); };
@@ -284,8 +286,8 @@ function viewKampusDetail(id) {
   shell("home");
   const k = kampusById[id];
   if (!k) return notFound();
-  const rows = sortRows(ROWS.filter(r => r.k === k), false);
-  $("#main").innerHTML = `${backBtn("← Daftar kampus", "#/kampus")}
+  const rows = sortRows(ROWS_ALL.filter(r => r.k === k), false);
+  $("#main").innerHTML = `${backBtn(k.jenis === "PTLN" ? `← Kuliah di ${esc(k.prov)}` : "← Daftar kampus", k.jenis === "PTLN" ? negaraLink(k.prov) : "#/kampus")}
   <section class="panel">
     <div><div class="label">${JENIS_LABEL[k.jenis]} · ${esc(k.kota ? k.kota + ", " : "")}${esc(k.prov)}</div><h2>${esc(k.nama)}</h2></div>
     ${k.web ? `<p class="hint">Situs resmi: <a href="https://${esc(k.web)}" target="_blank" rel="noopener">${esc(k.web)}</a></p>` : ""}
@@ -391,11 +393,14 @@ function viewProdi(id) {
       <div class="box"><div class="label">Prospek karier</div>${list(p.karier)}</div>
       <div class="box"><div class="label">Saran mapel pilihan (Kelas XI)</div>${list(p.mapel)}</div>
     </div>
-    <div class="box"><div class="label">Tersedia di ${rows.length} kampus</div><div id="pd-out"></div></div>
+    <div class="box"><div class="label">Tersedia di ${rows.length} kampus di Indonesia</div><div id="pd-out"></div></div>
+    ${p._kampusLN ? `<div class="box"><div class="label">Di luar negeri</div><p>Prodi ini juga ada di ${p._kampusLN} kampus luar negeri.</p><div><button class="btn ghost" id="pd-ln">Lihat kampus luar negeri</button></div></div>` : ""}
     ${FOOT()}
   </article>`;
   bindBack();
-  if (!rows.length) $("#pd-out").innerHTML = '<div class="empty">Belum ada kampus yang tercatat untuk prodi ini.</div>';
+  const ln = $("#pd-ln");
+  if (ln) ln.onclick = () => { q.ln = { text: p.nama, negara: "" }; go("#/luar-negeri"); };
+  if (!rows.length) $("#pd-out").innerHTML = '<div class="empty">Belum ada kampus di Indonesia yang tercatat untuk prodi ini.</div>';
   else pagedList($("#pd-out"), rows, (r, i) => rowItem(r, i, "kampus"), openModal, 40);
 }
 
@@ -414,11 +419,20 @@ function negaraBox(n, ringkas = false) {
 }
 function viewLuarNegeri() {
   shell("home");
+  const s = q.ln ||= { text: "", negara: "" };
   const wil = [...new Set(NEGARA.map(n => n.wilayah))];
   $("#main").innerHTML = `${backBtn()}
   <section class="hero"><span class="badge">Kuliah ke Luar Negeri</span>
     <h1>Kampus Dunia, <span class="grad-text">Persiapan Sejak Kelas X</span></h1>
     <p>Pilih negara untuk melihat bahasa kuliah, tes yang diperlukan, beasiswa, linimasa persiapan, dan daftar kampusnya. Syarat dan kuota beasiswa berubah setiap tahun, jadi selalu cek situs resminya.</p>
+  </section>
+  <section class="panel" style="margin-bottom:24px">
+    <h2>Cari Prodi di Luar Negeri</h2>
+    <div class="row">
+      <input class="search" id="ln-q" placeholder="Contoh: Kedokteran, Syariah, Teknik Informatika" value="${esc(s.text)}" autocomplete="off" style="flex:2 1 240px">
+      <select class="search" id="ln-n" aria-label="Negara"><option value="">Semua negara</option>${NEGARA.map(n => `<option ${s.negara === n.nama ? "selected" : ""}>${esc(n.nama)}</option>`).join("")}</select>
+    </div>
+    <div id="ln-out"></div>
   </section>
   ${wil.map(w => `<section class="neg-group"><p class="label">${esc(w)}</p><div class="neg-grid">${NEGARA.filter(n => n.wilayah === w).map(n => {
       const jml = KAMPUS.filter(k => k.jenis === "PTLN" && k.prov === n.nama).length;
@@ -426,6 +440,21 @@ function viewLuarNegeri() {
     }).join("")}</div></section>`).join("")}`;
   bindBack();
   $$("[data-go]").forEach(b => b.onclick = () => go(b.dataset.go));
+  const draw = () => {
+    const out = $("#ln-out"); out.innerHTML = "";
+    const t = norm(s.text.trim());
+    if (t.length < 2 && !s.negara) { out.innerHTML = '<p class="hint">Ketik nama jurusan atau pilih negara untuk melihat kampusnya.</p>'; return; }
+    const rows = ROWS_LN.filter(r => (t.length < 2 || r.p._n.includes(t)) && (!s.negara || r.k.prov === s.negara))
+      .sort((a, b) => a.k.prov.localeCompare(b.k.prov) || a.k.nama.localeCompare(b.k.nama) || a.p.nama.localeCompare(b.p.nama));
+    if (!rows.length) { out.innerHTML = '<div class="empty">Belum ada kampus luar negeri untuk pencarian ini.</div>'; return; }
+    const nNeg = new Set(rows.map(r => r.k.prov)).size;
+    out.insertAdjacentHTML("beforeend", `<div class="summary" style="margin-bottom:10px">Ditemukan <b>${rows.length}</b> pilihan di <b>${new Set(rows.map(r => r.k.id)).size}</b> kampus, <b>${nNeg}</b> negara.</div>`);
+    pagedList(out, rows, (r, i) => rowItem(r, i, "kampus"), openModal, 40);
+  };
+  let timer;
+  $("#ln-q").oninput = e => { s.text = e.target.value; clearTimeout(timer); timer = setTimeout(draw, 150); };
+  $("#ln-n").onchange = e => { s.negara = e.target.value; draw(); };
+  draw();
 }
 function viewNegara(nama) {
   shell("home");
@@ -456,7 +485,7 @@ function togglePlan(r) {
 }
 function viewRencana() {
   shell("rencana");
-  const rows = plan.map(x => ROWS.find(r => r.k.id === x.k && r.p.id === x.p && r.j === x.j)).filter(Boolean);
+  const rows = plan.map(x => ROWS_ALL.find(r => r.k.id === x.k && r.p.id === x.p && r.j === x.j)).filter(Boolean);
   $("#main").innerHTML = `
   <section class="hero"><span class="badge">Rencanaku</span><h1>Pilihan Prodi <span class="grad-text">& Kampusmu</span></h1>
   <p>Susun urutan pilihan dari yang paling kamu inginkan. Diskusikan daftar ini dengan orang tua dan sekolah. Daftar ini tersimpan di perangkat ini saja.</p></section>
