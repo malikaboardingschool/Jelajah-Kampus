@@ -59,11 +59,10 @@ function renderLogin() {
     <div class="login-band">${LOGO(76)}<b>${esc(s.app)}</b><small>${esc(s.nama)}</small></div>
     <div class="login-main"><form class="login-card" id="lf" novalidate>
     <h1>Masuk</h1>
-    <p>Masukkan kata sandi yang dibagikan oleh guru BK.</p>
+    <p>Masukkan kata sandi eksklusif.</p>
     <input class="field" id="pw" type="password" autocomplete="current-password" placeholder="Kata sandi" aria-label="Kata sandi">
     <p class="err" id="err" role="alert"></p>
     <button class="btn" type="submit" id="go">Masuk</button>
-    <p class="note">Belum tahu kata sandinya? ${esc(s.kontak_bk)}.</p>
   </form></div></div>`;
   $("#pw").focus();
   $("#lf").onsubmit = async e => {
@@ -157,9 +156,8 @@ function viewHome() {
   $("#main").innerHTML = `
   <section class="hero hero-home">
     <div class="hero-text">
-      <span class="badge">Assalamu'alaikum · Persiapan kuliah ${new Date().getFullYear() + 1}</span>
-      <h1>Pilih Prodi dengan Ilmu, <span class="grad-text">Bukan Ikut-ikutan</span></h1>
-      <p>Jelajahi prodi dan kampus, ukur peluangmu dengan skor UTBK, lalu susun rencana untuk didiskusikan dengan guru BK.</p>
+      <h1>Pilih Program Studi <span class="grad-text">dengan Data dan Strategi</span></h1>
+      <p>Sistem ini dibuat eksklusif hanya untuk siswa siswi SMA Malika IBS. Jelajahi prodi dan kampus, ukur peluangmu dengan skor UTBK, lalu susun rencana untuk didiskusikan dengan orang tuamu dan sekolah.</p>
       <div class="hero-cta">
         <button class="btn" data-go="#/cari">Mulai Cari Prodi</button>
         <button class="btn ghost" data-go="#/kedinasan">Sekolah Kedinasan</button>
