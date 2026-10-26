@@ -1,4 +1,4 @@
-id,nama,singkatan,jenis,provinsi,kota,website
+﻿id,nama,singkatan,jenis,provinsi,kota,website
 ui,Universitas Indonesia,UI,PTN,Jawa Barat,Depok,ui.ac.id
 ugm,Universitas Gadjah Mada,UGM,PTN,DI Yogyakarta,Sleman,ugm.ac.id
 itb,Institut Teknologi Bandung,ITB,PTN,Jawa Barat,Bandung,itb.ac.id
@@ -418,9 +418,6 @@ sutd,Singapore University of Technology and Design,SUTD,PTLN,Singapura,Singapura
 ubd,Universiti Brunei Darussalam,UBD,PTLN,Brunei,Bandar Seri Begawan,ubd.edu.bn
 unissa,Universiti Islam Sultan Sharif Ali,UNISSA,PTLN,Brunei,Bandar Seri Begawan,unissa.edu.bn
 utb,Universiti Teknologi Brunei,UTB,PTLN,Brunei,Bandar Seri Begawan,utb.edu.bn
-iua,International University of Africa,IUA,PTLN,Sudan,Khartoum,iua.edu.sd
-khartoum,University of Khartoum,UofK,PTLN,Sudan,Khartoum,uofk.edu
-omdurman,Omdurman Islamic University,OIU,PTLN,Sudan,Omdurman,
 ujordan,The University of Jordan,UJ,PTLN,Yordania,Amman,ju.edu.jo
 yarmouk,Yarmouk University,YU,PTLN,Yordania,Irbid,yu.edu.jo
 just,Jordan University of Science and Technology,JUST,PTLN,Yordania,Irbid,just.edu.jo
@@ -428,3 +425,7 @@ aabu,Al al-Bayt University,AABU,PTLN,Yordania,Mafraq,aabu.edu.jo
 qarawiyyin,Universitas Al-Qarawiyyin,Al-Qarawiyyin,PTLN,Maroko,Fes,
 um5,Mohammed V University in Rabat,UM5,PTLN,Maroko,Rabat,um5.ac.ma
 aui,Al Akhawayn University,AUI,PTLN,Maroko,Ifrane,aui.ma
+zitouna,Universitas Ez-Zitouna,Ez-Zitouna,PTLN,Tunisia,Tunis,
+tunis-elmanar,University of Tunis El Manar,UTM,PTLN,Tunisia,Tunis,utm.rnu.tn
+carthage,University of Carthage,UCAR,PTLN,Tunisia,Tunis,ucar.rnu.tn
+sfax,University of Sfax,USS,PTLN,Tunisia,Sfax,

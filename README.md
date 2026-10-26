@@ -10,7 +10,7 @@ Fitur:
 - **Jelajah Kampus**: PTN, UIN/PTKIN, politeknik, sekolah kedinasan, dan PTS per provinsi
 - **Cek Skormu**: pilihan yang realistis berdasarkan skor tryout
 - **Sekolah Kedinasan**: STAN, STIS, IPDN, akademi TNI/Polri, pelayaran, penerbangan, Poltekkes, dll., dengan filter ikatan dinas
-- **Kuliah ke Luar Negeri**: 16 negara (Mesir, Arab Saudi, Turkiye, Jepang, AS, Inggris, Korea, Malaysia, Australia, Jerman, Cina, Singapura, Brunei, Sudan, Yordania, Maroko)
+- **Kuliah ke Luar Negeri**: 16 negara (Mesir, Arab Saudi, Turkiye, Jepang, AS, Inggris, Korea, Malaysia, Australia, Jerman, Cina, Singapura, Brunei, Tunisia, Yordania, Maroko)
 - **Bahas Prodi**: penjelasan 714 prodi, contoh mata kuliah, prospek karier, dan saran mapel pilihan Kelas XI
 - **Rencanaku**: siswa menyusun urutan pilihan untuk dibawa saat konsultasi BK
 

@@ -230,7 +230,7 @@ function viewCari() {
 /* ---------------- Daftar Kampus ---------------- */
 const JENIS_LABEL = { PTN: "PTN", PTKIN: "PTKIN", PTKN: "Kedinasan", PTS: "PTS", PTLN: "Luar Negeri" };
 const JENIS_OPTS = [["PTN","PTN"],["PTKIN","UIN/IAIN (PTKIN)"],["PTKN","Sekolah kedinasan"],["PTS","Swasta"],["PTLN","Luar negeri"]];
-const BENDERA = { "Mesir":"🇪🇬","Turkiye":"🇹🇷","Jepang":"🇯🇵","Amerika Serikat":"🇺🇸","Inggris":"🇬🇧","Korea Selatan":"🇰🇷","Arab Saudi":"🇸🇦","Malaysia":"🇲🇾","Australia":"🇦🇺","Jerman":"🇩🇪","Cina":"🇨🇳","Singapura":"🇸🇬","Brunei":"🇧🇳","Sudan":"🇸🇩","Yordania":"🇯🇴","Maroko":"🇲🇦" };
+const BENDERA = { "Mesir":"🇪🇬","Turkiye":"🇹🇷","Jepang":"🇯🇵","Amerika Serikat":"🇺🇸","Inggris":"🇬🇧","Korea Selatan":"🇰🇷","Arab Saudi":"🇸🇦","Malaysia":"🇲🇾","Australia":"🇦🇺","Jerman":"🇩🇪","Cina":"🇨🇳","Singapura":"🇸🇬","Brunei":"🇧🇳","Tunisia":"🇹🇳","Yordania":"🇯🇴","Maroko":"🇲🇦" };
 const negaraLink = n => `#/negara/${encodeURIComponent(n)}`;
 const IKATAN = { ya: ["ok", "Ikatan dinas"], sebagian: ["warn", "Sebagian ikatan dinas"], tidak: ["", "Bukan ikatan dinas"] };
 const ikatanPill = d => d && IKATAN[d.ikatan] ? `<span class="pill ${IKATAN[d.ikatan][0]}">${IKATAN[d.ikatan][1]}</span>` : "";
