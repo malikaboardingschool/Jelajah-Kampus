@@ -155,10 +155,17 @@ const rowItem = (r, i, mode = "kampus") => {
 function viewHome() {
   shell("home");
   $("#main").innerHTML = `
-  <section class="hero">
-    <span class="badge">Assalamu'alaikum · Persiapan kuliah ${new Date().getFullYear() + 1}</span>
-    <h1>Pilih Prodi dengan Ilmu, <span class="grad-text">Bukan Ikut-ikutan</span></h1>
-    <p>Jelajahi prodi dan kampus, ukur peluangmu dengan skor UTBK, lalu susun rencana untuk didiskusikan dengan guru BK.</p>
+  <section class="hero hero-home">
+    <div class="hero-text">
+      <span class="badge">Assalamu'alaikum · Persiapan kuliah ${new Date().getFullYear() + 1}</span>
+      <h1>Pilih Prodi dengan Ilmu, <span class="grad-text">Bukan Ikut-ikutan</span></h1>
+      <p>Jelajahi prodi dan kampus, ukur peluangmu dengan skor UTBK, lalu susun rencana untuk didiskusikan dengan guru BK.</p>
+      <div class="hero-cta">
+        <button class="btn" data-go="#/cari">Mulai Cari Prodi</button>
+        <button class="btn ghost" data-go="#/kedinasan">Sekolah Kedinasan</button>
+      </div>
+    </div>
+    <figure class="hero-img"><img src="assets/hero.webp" alt="Siswa dan siswi SMA Malika IBS bersiap melanjutkan kuliah" width="722" height="784" fetchpriority="high"></figure>
   </section>
   ${statsHTML()}
   <div class="menu">
