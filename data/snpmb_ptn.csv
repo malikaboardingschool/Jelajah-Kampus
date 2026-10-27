@@ -1,0 +1,146 @@
+﻿id_ptn,kampus_id,nama_snpmb,ptnbh,vokasi,ptkin,laman_pmb
+111,usk,UNIVERSITAS SYIAH KUALA,1,0,0,https://pmb.usk.ac.id/
+112,unimal,UNIVERSITAS MALIKUSSALEH,0,0,0,http://pmb.unimal.ac.id/
+113,utu,UNIVERSITAS TEUKU UMAR,0,0,0,https://pmb.utu.ac.id/
+114,unsam,UNIVERSITAS SAMUDRA,0,0,0,https://camaba.unsam.ac.id/
+115,isbi-aceh,ISBI ACEH,0,0,0,http://pmb.isbiaceh.ac.id/
+116,uin-arraniry,UIN AR-RANIRY,0,0,1,https://ar-raniry.ac.id/admisi/
+121,usu,UNIVERSITAS SUMATERA UTARA,1,0,0,https://www.usu.ac.id/id/penerimaan
+122,unimed,UNIVERSITAS NEGERI MEDAN,0,0,0,https://www.unimed.ac.id/pmb/
+123,uinsu,UIN SUMATERA UTARA,0,0,1,https://maba.uinsu.ac.id/
+124,uin-syahada,UIN SYEKH ALI HASAN AHMAD ADDARY PADANGSIDIMPUAN,0,0,1,https://www.uinsyahada.ac.id
+131,unri,UNIVERSITAS RIAU,0,0,0,https://registrasiulang.unri.ac.id/
+132,uin-suska,UIN SULTAN SYARIF KASIM,0,0,1,https://sireg.uin-suska.ac.id
+133,umrah,UNIVERSITAS MARITIM RAJA ALI HAJI,0,0,0,https://penerimaan.umrah.ac.id/
+141,unand,UNIVERSITAS ANDALAS,1,0,0,https://pmb.unand.ac.id/
+142,unp,UNIVERSITAS NEGERI PADANG,1,0,0,https://spmb.unp.ac.id
+143,isi-pp,ISI PADANG PANJANG,0,0,0,https://www.isi-padangpanjang.ac.id/
+144,uin-ib,UIN IMAM BONJOL PADANG,0,0,1,https://pmb.uinib.ac.id/
+151,unja,UNIVERSITAS JAMBI,0,0,0,https://regis.unja.ac.id/
+152,uin-jambi,UIN SULTAN THAHA SAIFUDDIN JAMBI,0,0,1,https://pmb.uinjambi.ac.id/
+161,unib,UNIVERSITAS BENGKULU,0,0,0,https://portal.unib.ac.id
+171,unsri,UNIVERSITAS SRIWIJAYA,1,0,0,https://pmb.unsri.ac.id/
+172,uin-rf,UIN RADEN FATAH,0,0,1,https://registrasi.radenfatah.ac.id
+181,ubb,UNIVERSITAS BANGKA BELITUNG,0,0,0,https://pmb.ubb.ac.id
+191,unila,UNIVERSITAS LAMPUNG,0,0,0,http://simanila.unila.ac.id/
+192,itera,INSTITUT TEKNOLOGI SUMATERA,0,0,0,https://pmb.itera.ac.id/
+193,uin-ril,UIN RADEN INTAN LAMPUNG,0,0,1,https://www.radenintan.ac.id/
+194,uin-batusangkar,UIN MAHMUD YUNUS BATUSANGKAR,0,0,1,https://pmb.uinmybatusangkar.ac.id
+195,uin-bukittinggi,UIN SJECH M. DJAMIL DJAMBEK BUKITTINGGI,0,0,1,http://pmb.uinbukittinggi.ac.id
+221,pnl,POLITEKNIK NEGERI LHOKSEUMAWE,0,1,0,http://pmb.pnl.ac.id/
+222,polmed,POLITEKNIK NEGERI MEDAN,0,1,0,https://polmed.ac.id/
+231,polibatam,POLITEKNIK NEGERI BATAM,0,1,0,http://registrasi.polibatam.ac.id/
+232,polbeng,POLITEKNIK NEGERI BENGKALIS,0,1,0,http://pmb.polbeng.ac.id/
+241,pnp,POLITEKNIK NEGERI PADANG,0,1,0,https://penerimaan.pnp.ac.id/
+242,politani-pyk,POLITEKNIK PERTANIAN NEGERI PAYAKUMBUH,0,1,0,https://infopmb.ppnp.ac.id
+271,polsri,POLITEKNIK NEGERI SRIWIJAYA,0,1,0,https://spmb.polsri.ac.id
+281,polman-babel,POLITEKNIK MANUFAKTUR NEGERI BANGKA BELITUNG,0,1,0,http://pmb.polman-babel.ac.id/
+291,polinela,POLITEKNIK NEGERI LAMPUNG,0,1,0,https://polinela.ac.id/
+311,untirta,UNIVERSITAS SULTAN AGENG TIRTAYASA,0,0,0,https://pmb.untirta.ac.id/
+312,uin-smh,UIN SULTAN MAULANA HASANUDDIN BANTEN,0,0,1,https://pmb.uinbanten.ac.id/
+321,ui,UNIVERSITAS INDONESIA,1,0,0,https://enrollment.ui.ac.id/
+322,uin-jkt,UIN JAKARTA,0,0,1,https://admisi.uinjkt.ac.id/
+323,unj,UNIVERSITAS NEGERI JAKARTA,1,0,0,http://penmaba.unj.ac.id/
+324,upnvj,"UPN ""VETERAN"" JAKARTA",0,0,0,https://penmaru.upnvj.ac.id/
+331,unsika,UNIVERSITAS SINGAPERBANGSA KARAWANG,0,0,0,https://pmb.unsika.ac.id/
+332,itb,INSTITUT TEKNOLOGI BANDUNG,1,0,0,https://admission.itb.ac.id
+333,unpad,UNIVERSITAS PADJADJARAN,1,0,0,https://smup.unpad.ac.id/
+334,upi,UNIVERSITAS PENDIDIKAN INDONESIA,1,0,0,https://pmb.upi.edu/
+335,isbi-bdg,ISBI BANDUNG,0,0,0,https://pmb.isbi.ac.id/
+336,uin-sgd,UIN SUNAN GUNUNG DJATI,0,0,1,https://pmb.uinsgd.ac.id/
+341,ipb,INSTITUT PERTANIAN BOGOR,1,0,0,https://registrasi.admisi.ipb.ac.id
+342,unsil,UNIVERSITAS SILIWANGI,0,0,0,https://pmb.unsil.ac.id/
+351,unsoed,UNIVERSITAS JENDERAL SOEDIRMAN,0,0,0,http://admisi.unsoed.ac.id/
+352,untidar,UNIVERSITAS TIDAR,0,0,0,https://smart.untidar.ac.id
+353,uns,UNIVERSITAS SEBELAS MARET,1,0,0,https://spmb.uns.ac.id
+354,isi-ska,ISI SURAKARTA,0,0,0,https://spmb.isi-ska.ac.id/
+355,undip,UNIVERSITAS DIPONEGORO,1,0,0,https://pmb.undip.ac.id/
+356,unnes,UNIVERSITAS NEGERI SEMARANG,1,0,0,https://unnes.ac.id/admission
+357,walisongo,UIN WALISONGO,0,0,1,https://pmb.walisongo.ac.id
+358,uin-rmsaid,UIN RADEN MAS SAID SURAKARTA,0,0,1,https://www.uinsaid.ac.id/
+361,ugm,UNIVERSITAS GADJAH MADA,1,0,0,https://admissions.ugm.ac.id
+362,uny,UNIVERSITAS NEGERI YOGYAKARTA,1,0,0,http://pmb.uny.ac.id
+363,upnyk,"UPN ""VETERAN"" YOGYAKARTA",0,0,0,https://pmb.upnyk.ac.id/
+364,isi-yk,ISI YOGYAKARTA,0,0,0,https://pmb.isi.ac.id/
+365,uin-suka,UIN SUNAN KALIJAGA,0,0,1,https://admisi.uin-suka.ac.id/
+366,uin-saizu,UIN PROFESOR KIAI HAJI SAIFUDDIN ZUHRI PURWOKERTO,0,0,1,https://pmb.uinsaizu.ac.id/
+367,uin-salatiga,UIN SALATIGA,0,0,1,https://pmb.uinsalatiga.ac.id
+368,uin-gusdur,UIN K.H. ABDURRAHMAN WAHID PEKALONGAN,0,0,1,https://uingusdur.ac.id
+371,unej,UNIVERSITAS JEMBER,0,0,0,https://pmb.unej.ac.id
+372,ub,UNIVERSITAS BRAWIJAYA,1,0,0,https://selma.ub.ac.id/
+373,um,UNIVERSITAS NEGERI MALANG,1,0,0,http://seleksi.um.ac.id/
+374,uin-malang,UIN MALANG,0,0,1,http://pmb.uin-malang.ac.id/
+381,unair,UNIVERSITAS AIRLANGGA,1,0,0,https://ppmb.unair.ac.id
+382,its,INSTITUT TEKNOLOGI SEPULUH NOPEMBER,1,0,0,https://www.its.ac.id/admission/
+383,unesa,UNIVERSITAS NEGERI SURABAYA,1,0,0,https://admisi.unesa.ac.id/
+384,trunojoyo,UNIVERSITAS TRUNOJOYO MADURA,0,0,0,https://pmb.trunojoyo.ac.id
+385,upnjatim,"UPN ""VETERAN"" JAWA TIMUR",0,0,0,https://simaba.upnjatim.ac.id/
+386,uinsa,UIN SUNAN AMPEL SURABAYA,0,0,1,https://pmb.uinsa.ac.id/pengumuman
+421,pnj,POLITEKNIK NEGERI JAKARTA,0,1,0,https://penerimaan.pnj.ac.id/
+422,polimedia,POLITEKNIK NEGERI MEDIA KREATIF,0,1,0,https://pmb.polimedia.ac.id/
+431,polban,POLITEKNIK NEGERI BANDUNG,0,1,0,https://smb.polban.ac.id/
+432,polman-bdg,POLITEKNIK MANUFAKTUR BANDUNG,0,1,0,https://pmb.polman-bandung.ac.id/
+433,polindra,POLITEKNIK NEGERI INDRAMAYU,0,1,0,https://pmb.polindra.ac.id/
+434,polsub,POLITEKNIK NEGERI SUBANG,0,1,0,https://pmb.polsub.ac.id/
+452,polines,POLITEKNIK NEGERI SEMARANG,0,1,0,https://pmb.polines.ac.id
+453,pnc,POLITEKNIK NEGERI CILACAP,0,1,0,https://pmb.pnc.ac.id/
+454,polimarin,POLITEKNIK MARITIM NEGERI INDONESIA,0,1,0,https://pmb.polimarin.ac.id/
+471,poliwangi,POLITEKNIK NEGERI BANYUWANGI,0,1,0,https://www.poliwangi.ac.id
+472,polije,POLITEKNIK NEGERI JEMBER,0,1,0,https://www.polije.ac.id/
+473,pnm,POLITEKNIK NEGERI MADIUN,0,1,0,https://pmb.pnm.ac.id/
+474,polinema,POLITEKNIK NEGERI MALANG,0,1,0,http://spmb.polinema.ac.id/
+481,ppns,POLITEKNIK PERKAPALAN NEGERI SURABAYA,0,1,0,https://pmb.ppns.ac.id/
+482,pens,POLITEKNIK ELEKTRONIKA NEGERI SURABAYA (PENS),0,1,0,https://pmb.pens.ac.id/
+483,poltera,POLITEKNIK NEGERI MADURA,0,1,0,https://www.portal-pmb.poltera.ac.idb.poltera.ac.id
+511,untan,UNIVERSITAS TANJUNGPURA,0,0,0,https://scmb.untan.ac.id
+515,polnep,POLITEKNIK NEGERI PONTIANAK,0,1,0,https://spmb.polnep.ac.id/
+516,politap,POLITEKNIK NEGERI KETAPANG,0,1,0,https://pmb.politap.ac.id
+517,poltesa,POLITEKNIK NEGERI SAMBAS,0,1,0,https://poltesa.ac.id/
+521,upr,UNIVERSITAS PALANGKARAYA,0,0,0,https://pmb.upr.ac.id/
+531,ulm,UNIVERSITAS LAMBUNG MANGKURAT,0,0,0,https://pmb.ulm.ac.id/
+532,uin-antasari,UIN ANTASARI BANJARMASIN,0,0,1,https://pmb.uin-antasari.ac.id
+536,poliban,POLITEKNIK NEGERI BANJARMASIN,0,1,0,https://pmb.poliban.ac.id/
+537,politala,POLITEKNIK NEGERI TANAH LAUT,0,1,0,https://sinema.politala.ac.id
+541,unmul,UNIVERSITAS MULAWARMAN,0,0,0,https://unmul.ac.id
+542,itk,INSTITUT TEKNOLOGI KALIMANTAN,0,0,0,http://pmb.itk.ac.id/
+551,ubt,UNIVERSITAS BORNEO TARAKAN,0,0,0,https://www.ubt.ac.id/pmb/pengumuman-snbt/
+552,pnup-kaltara,POLITEKNIK NEGERI NUNUKAN,0,1,0,http://pnn.ac.id/
+561,politani-smd,POLITEKNIK PERTANIAN NEGERI SAMARINDA,0,1,0,https://politanisamarinda.ac.id/
+562,polnes,POLITEKNIK NEGERI SAMARINDA,0,1,0,https://pmb.polnes.ac.id/
+563,poltekba,POLITEKNIK NEGERI BALIKPAPAN,0,1,0,https://pmb.poltekba.ac.id/
+571,uinsi,UIN SULTAN AJI MUHAMMAD IDRIS SAMARINDA,0,0,1,https://www.uinsi.ac.id/
+611,unud,UNIVERSITAS UDAYANA,0,0,0,https://www.unud.ac.id/
+612,undiksha,UNIVERSITAS PENDIDIKAN GANESHA,0,0,0,https://penerimaan.undiksha.ac.id/
+613,isi-dps,ISI BALI,0,0,0,https://isibali.ac.id/
+617,pnb,POLITEKNIK NEGERI BALI,0,1,0,https://pnb.ac.id/
+621,unram,UNIVERSITAS MATARAM,0,0,0,https://unram.ac.id/
+622,uin-mataram,UIN MATARAM,0,0,1,https://pmb.uinmataram.ac.id/
+631,undana,UNIVERSITAS NUSA CENDANA,0,0,0,https://undana.ac.id/admissions/
+632,unimor,UNIVERSITAS TIMOR,0,0,0,https://www.unimor.ac.id
+641,pnk,POLITEKNIK NEGERI KUPANG,0,1,0,https://sidalang.pnk.ac.id/login
+642,politani-kupang,POLITEKNIK PERTANIAN NEGERI KUPANG,0,1,0,http://pmb.politanikoe.ac.id/
+711,unhas,UNIVERSITAS HASANUDDIN,1,0,0,https://regpmb.unhas.ac.id
+712,unm,UNIVERSITAS NEGERI MAKASSAR,0,0,0,https://unm.ac.id/info-pmb/
+713,uin-alauddin,UIN ALAUDDIN,0,0,1,http://pmb.uin-alauddin.ac.id/site/login
+716,poliupg,POLITEKNIK NEGERI UJUNG PANDANG,0,1,0,https://pmb.poliupg.ac.id/pengumuman
+717,polipangkep,POLITEKNIK PERTANIAN NEGERI PANGKAJENE KEPULAUAN,0,1,0,https://polipangkep.ac.id/
+718,ith,INSTITUT TEKNOLOGI BJ. HABIBIE SULAWESI SELATAN,0,0,0,https://admission.ith.ac.id/
+721,unsrat,UNIVERSITAS SAM RATULANGI,0,0,0,https://regmaba.unsrat.ac.id
+722,unima,UNIVERSITAS NEGERI MANADO,0,0,0,https://penerimaan.unima.ac.id/
+727,polimdo,POLITEKNIK NEGERI MANADO,0,1,0,https://polimdo.ac.id/
+728,polnustar,POLITEKNIK NEGERI NUSA UTARA,0,1,0,https://www.polnustar.ac.id/
+731,untad,UNIVERSITAS TADULAKO,0,0,0,https://pmb.untad.ac.id/
+732,uin-datokarama,UIN DATOKARAMA PALU,0,0,1,https://siakad.uindatokarama.ac.id/spmbfront
+741,unsulbar,UNIVERSITAS SULAWESI BARAT,0,0,0,https://pmb.unsulbar.ac.id/
+751,uho,UNIVERSITAS HALUOLEO,0,0,0,https://spmb.uho.ac.id/
+752,ung,UNIVERSITAS NEGERI GORONTALO,0,0,0,https://spmb.ung.ac.id/
+753,usn,UNIVERSITAS SEMBILAN BELAS NOVEMBER KOLAKA,0,0,0,https://spmb.usn.ac.id/
+811,unpatti,UNIVERSITAS PATTIMURA,0,0,0,https://pmb.unpatti.ac.id
+821,unkhair,UNIVERSITAS KHAIRUN,0,0,0,http://ukt.unkhair.ac.id/
+831,polnam,POLITEKNIK NEGERI AMBON,0,1,0,http://pmb.polnam.ac.id
+832,polikan-tual,POLITEKNIK PERIKANAN NEGERI TUAL,0,1,0,http://www.polikant.ac.id/
+911,uncen,UNIVERSITAS CENDERAWASIH,0,0,0,https://pmb.uncen.ac.id
+912,musamus,UNIVERSITAS MUSAMUS MERAUKE,0,0,0,http://admisi.unmus.ac.id/
+913,isbi-papua,ISBI TANAH PAPUA,0,0,0,https://www.pmb.isbi-tanahpapua.ac.id
+921,unipa,UNIVERSITAS PAPUA,0,0,0,https://bpak.unipa.ac.id/
+931,polinef,POLITEKNIK NEGERI FAKFAK,0,1,0,https://www.polinef.ac.id/

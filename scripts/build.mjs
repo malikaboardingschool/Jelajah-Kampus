@@ -81,21 +81,130 @@ if (existsSync(root + "data/kedinasan.csv")) {
   });
 }
 
+// ---------- Data resmi SNPMB (daya tampung & peminat) ----------
+// snpmb_ptn.csv  : pemetaan PTN SNPMB -> kampus_id, status PTN-BH, laman PMB
+// snpmb_prodi.csv: daftar prodi resmi per PTN + daya tampung 2026 + riwayat 2021–2025
+const num = v => { const n = parseFloat(String(v ?? "").replace(/\./g, "").replace(",", ".")); return Number.isFinite(n) ? n : null; };
+let TAHUN = [2021, 2022, 2023, 2024, 2025]; // diganti otomatis sesuai kolom dt_<tahun> di snpmb_prodi.csv
+if (existsSync(root + "data/snpmb_ptn.csv")) {
+  for (const r of parseCSV(read("data/snpmb_ptn.csv"))) {
+    const k = kampusIndex.get(r.kampus_id);
+    if (k == null) { warn(`snpmb_ptn.csv: kampus "${r.kampus_id}" tidak ada di kampus.csv`); continue; }
+    Object.assign(kampus[k], { snpmb: true, ptnbh: r.ptnbh === "1", pmb: r.laman_pmb || "" });
+  }
+}
+
+// Menautkan nama prodi resmi (mis. "Pendidikan Dokter") ke katalog penjelasan prodi (mis. "Kedokteran").
+const ATURAN = { "pendidikan-dokter": "kedokteran", "pendidikan-dokter-gigi": "kedokteran-gigi", "pendidikan-dokter-hewan": "kedokteran-hewan",
+  "keperawatan": "ilmu-keperawatan", "ilmu-gizi": "gizi", "statistik": "statistika", "ilmu-peternakan": "peternakan",
+  "ilmu-administrasi-publik": "administrasi-publik", "ilmu-administrasi-negara": "administrasi-negara", "ilmu-administrasi-bisnis": "administrasi-bisnis",
+  "ilmu-hubungan-internasional": "hubungan-internasional", "akuakultur": "budidaya-perairan", "ilmu-perpustakaan-dan-informasi": "ilmu-perpustakaan",
+  "bahasa-dan-sastra-inggris": "sastra-inggris", "bahasa-dan-sastra-indonesia": "sastra-indonesia", "sastra-arab": "bahasa-dan-sastra-arab",
+  "bimbingan-dan-konseling-pendidikan-islam": "bimbingan-dan-konseling-pendidikan-islam", "pendidikan-guru-sekolah-dasar-pgsd": "pendidikan-guru-sekolah-dasar",
+  "ilmu-al-quran-dan-tafsir": "ilmu-al-qur-an-dan-tafsir", "ilmu-alquran-dan-tafsir": "ilmu-al-qur-an-dan-tafsir", "teknologi-informasi": "teknologi-informasi",
+  "pendidikan-ilmu-pengetahuan-alam": "pendidikan-ipa", "pendidikan-ilmu-pengetahuan-sosial": "pendidikan-ips", "ppkn": "pendidikan-pancasila-dan-kewarganegaraan",
+  "pendidikan-pancasila-dan-kewarganegaraan-ppkn": "pendidikan-pancasila-dan-kewarganegaraan", "pgsd": "pendidikan-guru-sekolah-dasar",
+  "pendidikan-guru-paud": "pendidikan-guru-pendidikan-anak-usia-dini", "pg-paud": "pendidikan-guru-pendidikan-anak-usia-dini", "pendidikan-anak-usia-dini": "pendidikan-guru-pendidikan-anak-usia-dini",
+  "bimbingan-konseling": "bimbingan-dan-konseling", "sains-aktuaria": "aktuaria", "antropologi-sosial": "antropologi",
+  "teknik-pertanian": "teknik-pertanian-dan-biosistem", "keteknikan-pertanian": "teknik-pertanian-dan-biosistem", "perpajakan": "administrasi-perpajakan",
+  "keuangan-dan-perbankan": "perbankan-dan-keuangan", "perbankan-dan-keuangan-digital": "perbankan-dan-keuangan", "perpustakaan-dan-sains-informasi": "ilmu-perpustakaan",
+  "perpustakaan-dan-ilmu-informasi": "ilmu-perpustakaan", "teknologi-pangan-dan-hasil-pertanian": "teknologi-pangan", "agrobisnis-perikanan": "agribisnis-perikanan",
+  "pendidikan-khusus": "pendidikan-luar-biasa", "pendidikan-musik": "pendidikan-seni-musik", "pendidikan-tari": "pendidikan-seni-tari",
+  "pendidikan-luar-sekolah": "pendidikan-masyarakat", "pendidikan-non-formal": "pendidikan-masyarakat", "manajemen-pendidikan": "administrasi-pendidikan",
+  "nutrisi-dan-teknologi-pakan-ternak": "nutrisi-dan-teknologi-pakan", "seni-murni": "seni-rupa-murni", "tari": "seni-tari", "musik": "seni-musik", "teater": "seni-teater",
+  "statistika-dan-sains-data": "statistika", "sains-data-terapan": "sains-data", "ekonomi-dan-keuangan-islam": "ekonomi-islam",
+  "pendidikan-teknik-informatika": "pendidikan-teknik-informatika-dan-komputer", "pendidikan-komputer": "pendidikan-ilmu-komputer", "akuntansi-manajerial": "akuntansi-manajemen",
+  "bahasa-inggris-untuk-komunikasi-bisnis-dan-profesional": "bahasa-inggris-untuk-komunikasi-bisnis", "administrasi-bisnis-terapan": "administrasi-bisnis",
+  "perancangan-jalan-dan-jembatan": "teknik-perancangan-jalan-dan-jembatan", "teknologi-kimia-industri": "teknologi-rekayasa-kimia-industri",
+  "pemeliharaan-mesin": "teknik-perawatan-dan-perbaikan-mesin", "teknik-alat-berat": "teknologi-rekayasa-alat-berat", "teknologi-rekayasa-pemeliharaan-alat-berat": "teknologi-rekayasa-alat-berat",
+  "budidaya-perikanan": "akuakultur", "kesekretariatan": "sekretari", "teknologi-listrik": "teknik-listrik-vokasi", "pendidikan-seni-pertunjukan": "pendidikan-seni-drama-tari-dan-musik",
+  "arsitektur-bangunan-gedung": "teknik-arsitektur-bangunan-vokasi", "sumber-daya-akuatik": "manajemen-sumber-daya-perairan", "sains-biomedis": "biomedis", "kriya-seni": "kriya",
+  "ekonomi-manajemen": "manajemen", "manajemen-perusahaan": "manajemen", "bahasa-dan-kebudayaan-inggris": "sastra-inggris", "sastra-perancis": "sastra-prancis",
+  "pendidikan-vokasional-teknik-mesin": "pendidikan-teknik-mesin", "pendidikan-vokasional-rekayasa-elektro": "pendidikan-teknik-elektro", "pendidikan-vokasional-seni-kuliner": "pendidikan-tata-boga",
+  "teknik-sumber-daya-air": "teknik-pengairan", "pengolahan-dan-penyimpanan-hasil-perikanan": "teknologi-hasil-perikanan", "pendidikan-bahasa-sastra-indonesia-dan-daerah": "pendidikan-bahasa-dan-sastra-indonesia",
+  "teknologi-produksi-tanaman-perkebunan": "budidaya-tanaman-perkebunan", "teknologi-produksi-ternak": "peternakan-vokasi", "pengelolaan-agribisnis": "agribisnis-vokasi",
+  "pengembangan-produk-agroindustri": "agroindustri", "administrasi-perkantoran-digital": "administrasi-perkantoran", "teknik-mesin-produksi-dan-perawatan": "teknik-mesin-vokasi",
+  "rekayasa-perancangan-mekanik": "teknologi-rekayasa-perancangan-manufaktur", "teknologi-rekayasa-konstruksi-bangunan-air": "teknologi-rekayasa-sumber-daya-air" };
+// Rapikan singkatan umum di nama resmi sebelum dicocokkan.
+const rapikan = n => n.replace(/\bPend\.\s*/gi, "Pendidikan ").replace(/&/g, " dan ").replace(/sumberdaya/gi, "sumber daya").replace(/perancis/gi, "prancis").split("/")[0];
+const tautProdi = (nama, jenjang) => {
+  const dasar = slug(rapikan(nama).replace(/\(.*?\)/g, " ").replace(/\b(program studi|prodi|kampus [a-z ]+|psdku [a-z ]+)\b/gi, " "));
+  const coba = [dasar, ATURAN[dasar], dasar.replace(/^ilmu-/, ""), "ilmu-" + dasar, dasar.replace(/^teknologi-rekayasa-/, "teknik-"), dasar.replace(/^sarjana-terapan-/, "")];
+  if (jenjang !== "S1") coba.unshift(dasar + "-vokasi");
+  for (const c of coba) {
+    if (!c) continue;
+    const i = prodiIndex.get(c) ?? prodiIndex.get(alias.get(c));
+    if (i != null) return i;
+  }
+  return -1;
+};
+
+// ---------- Biaya (UKT & biaya masuk) dan skor aman: diisi sekolah dari SK resmi PTN ----------
+const biaya = new Map(); // kunci: kode_prodi atau kampus_id|nama
+if (existsSync(root + "data/biaya_ptn.csv")) {
+  for (const r of parseCSV(read("data/biaya_ptn.csv"))) {
+    const val = [num(r.ukt_terendah), num(r.ukt_tertinggi), num(r.ipi_terendah), num(r.ipi_tertinggi), r.tahun || "", r.sumber || ""];
+    if (val.slice(0, 4).every(v => v == null)) continue;
+    biaya.set(r.kode_prodi ? `k${r.kode_prodi}` : `${r.kampus_id}|${slug(r.nama_prodi || "")}`, val);
+  }
+}
+const skorAman = new Map();
+if (existsSync(root + "data/skor_aman.csv")) {
+  for (const r of parseCSV(read("data/skor_aman.csv"))) {
+    const v = num(r.skor_aman); if (v == null) continue;
+    skorAman.set(r.kode_prodi ? `k${r.kode_prodi}` : `${r.kampus_id}|${slug(r.nama_prodi || "")}`, [v, r.sumber || ""]);
+  }
+}
+const cariBy = (map, kode, kampusId, nama) => map.get(`k${kode}`) ?? map.get(`${kampusId}|${slug(nama)}`) ?? null;
+
+// ---------- Profil kampus (diisi sekolah dari situs resmi kampus) ----------
+if (existsSync(root + "data/profil_kampus.csv")) {
+  for (const r of parseCSV(read("data/profil_kampus.csv"))) {
+    const k = kampusIndex.get(r.kampus_id); if (k == null) continue;
+    const pr = { akreditasi: r.akreditasi, berdiri: r.tahun_berdiri, mahasiswa: r.jumlah_mahasiswa, ringkas: r.ringkas, sumber: r.sumber };
+    if (Object.values(pr).some(Boolean)) kampus[k].profil = pr;
+  }
+}
+
 // ---------- Prodi per kampus ----------
-const num = v => { const n = parseFloat(String(v).replace(",", ".")); return Number.isFinite(n) ? n : null; };
+// Baris kp.json: [kampus, prodiKatalog|-1, jenjang, skor_aman, daya_tampung, peminat, sumber, nama_resmi, riwayat, kode_prodi, biaya, portofolio]
+//   riwayat = [[daya_tampung, peminat] untuk 2021..2025], biaya = [ukt_min, ukt_max, ipi_min, ipi_max, tahun, sumber]
 const kp = [];
+const tercakupSnpmb = new Set();
+let tertaut = 0, totalSnpmb = 0;
+if (existsSync(root + "data/snpmb_prodi.csv")) {
+  const barisSnpmb = parseCSV(read("data/snpmb_prodi.csv"));
+  const kolom = Object.keys(barisSnpmb[0] || {});
+  const th = kolom.filter(c => /^dt_\d{4}$/.test(c)).map(c => +c.slice(3)).sort();
+  if (th.length) TAHUN = th.slice(-5);
+  const kolomDT = kolom.find(c => /^daya_tampung_\d{4}$/.test(c)) || "daya_tampung_2026";
+  for (const r of barisSnpmb) {
+    const k = kampusIndex.get(r.kampus_id);
+    if (k == null) { warn(`snpmb_prodi.csv: kampus "${r.kampus_id}" tidak ada di kampus.csv`); continue; }
+    tercakupSnpmb.add(k);
+    const p = r.prodi_katalog ? (findProdi(r.prodi_katalog) ?? -1) : tautProdi(r.nama_resmi, r.jenjang);
+    totalSnpmb++; if (p >= 0) tertaut++;
+    const riwayat = TAHUN.map(t => [num(r[`dt_${t}`]), num(r[`peminat_${t}`])]);
+    const sk = cariBy(skorAman, r.kode_prodi, r.kampus_id, r.nama_resmi);
+    kp.push([k, p, r.jenjang || "S1", sk ? sk[0] : null, num(r[kolomDT]), riwayat[riwayat.length - 1][1], "SNPMB", r.nama_resmi, riwayat, r.kode_prodi,
+      cariBy(biaya, r.kode_prodi, r.kampus_id, r.nama_resmi), r.portofolio || ""]);
+  }
+}
+// Kampus lain (PTS, kedinasan, luar negeri, dll.) memakai daftar perkiraan di kampus_prodi.csv.
 const seen = new Set();
 parseCSV(read("data/kampus_prodi.csv")).forEach((r, i) => {
   const line = `kampus_prodi.csv baris ${i + 2}`;
   const k = kampusIndex.get(r.kampus_id);
   if (k == null) { warn(`${line}: kampus "${r.kampus_id}" tidak ada di kampus.csv`); return; }
+  if (tercakupSnpmb.has(k)) return; // sudah memakai daftar resmi SNPMB
   const p = findProdi(r.prodi);
   if (p == null) { warn(`${line}: prodi "${r.prodi}" tidak ada di prodi.csv (tambahkan, atau daftarkan di alias.csv)`); return; }
   const key = `${k}|${p}|${r.jenjang}`;
   if (seen.has(key)) return;
   seen.add(key);
-  // [kampus, prodi, jenjang, skor_aman, daya_tampung, peminat, sumber]
-  kp.push([k, p, r.jenjang || "S1", num(r.skor_aman), num(r.daya_tampung), num(r.peminat), r.sumber || ""]);
+  if (r.sumber === "CONTOH") return; // angka ilustrasi lama tidak dipakai lagi
+  const sk = cariBy(skorAman, "", r.kampus_id, prodi[p].nama);
+  kp.push([k, p, r.jenjang || "S1", sk ? sk[0] : num(r.skor_aman), num(r.daya_tampung), num(r.peminat), r.sumber || "", "", null, "", cariBy(biaya, "", r.kampus_id, prodi[p].nama), ""]);
 });
 
 // ---------- Kata sandi ----------
@@ -124,10 +233,11 @@ out("kp.json", kp);
 out("akses.json", akses);
 out("meta.json", {
   sekolah, diperbarui: new Date().toISOString(),
-  jumlah: { prodi: prodi.length, kampus: kampus.length, provinsi: new Set(kampus.filter(k => k.jenis !== "PTLN").map(k => k.prov)).size, negara: new Set(kampus.filter(k => k.jenis === "PTLN").map(k => k.prov)).size, kampusLN: kampus.filter(k => k.jenis === "PTLN").length, provinsiResmi: (sekolah.provinsi || []).length, kampusProdi: kp.length }
+  jumlah: { prodi: prodi.length, kampus: kampus.length, provinsi: new Set(kampus.filter(k => k.jenis !== "PTLN").map(k => k.prov)).size, negara: new Set(kampus.filter(k => k.jenis === "PTLN").map(k => k.prov)).size, kampusLN: kampus.filter(k => k.jenis === "PTLN").length, provinsiResmi: (sekolah.provinsi || []).length, kampusProdi: kp.length, snpmbProdi: totalSnpmb, snpmbPTN: tercakupSnpmb.size }
 });
 writeFileSync(dist + ".nojekyll", "");
 
+console.log(`SNPMB: ${totalSnpmb} prodi resmi di ${tercakupSnpmb.size} PTN, ${tertaut} tertaut ke katalog (${Math.round(tertaut / Math.max(totalSnpmb, 1) * 100)}%)`);
 console.log(`Selesai: ${prodi.length} prodi, ${kampus.length} kampus, ${kp.length} prodi-kampus, kata sandi ${sandi ? "terpasang" : "BELUM diisi"} -> dist/`);
 if (warnings.length) {
   console.log(`\n${warnings.length} peringatan:`);

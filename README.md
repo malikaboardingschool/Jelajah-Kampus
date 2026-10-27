@@ -29,6 +29,11 @@ Semua data ada di folder `data/` dalam bentuk **CSV**, yang bisa dibuka dan died
 | `data/kedinasan.csv` | Info sekolah kedinasan: instansi, ikatan dinas (ya/sebagian/tidak), jalur masuk, catatan | 93 sekolah |
 | `data/negara.csv` | Info kuliah per negara: bahasa, tes, beasiswa, jalur, linimasa persiapan kelas X–XII | 16 negara |
 | `data/linimasa.csv` | Jadwal TKA, SNBP, UTBK-SNBT, kedinasan, dan mandiri untuk Kelas XII (tanggal `YYYY-MM-DD`, label waktu, kegiatan, label singkat, jalur, tips). Teks yang berisi koma harus diberi tanda kutip | 12 agenda |
+| `data/snpmb_ptn.csv` | **Data resmi SNPMB**: 145 PTN, kampus_id di aplikasi, status PTN-BH, laman penerimaan | 145 PTN |
+| `data/snpmb_prodi.csv` | **Data resmi SNPMB**: prodi per PTN, daya tampung SNBT 2026, riwayat daya tampung & peminat 2021–2025. Kolom `prodi_katalog` boleh diisi untuk menautkan ke penjelasan prodi | 5.140 prodi |
+| `data/biaya_ptn.csv` | UKT & biaya masuk (IPI) per prodi, **diisi sekolah dari SK resmi PTN** (`kode_prodi` atau `kampus_id` + `nama_prodi`) | kosong |
+| `data/skor_aman.csv` | Skor aman UTBK, diisi sekolah dari tryout/data alumni | kosong |
+| `data/profil_kampus.csv` | Profil kampus (akreditasi, tahun berdiri, jumlah mahasiswa, ringkasan), diisi dari situs resmi kampus | kosong |
 | `data/alias.csv` | Nama lain prodi (misal "Informatika" = "Teknik Informatika") | — |
 | `data/sekolah.json` | Nama sekolah, nama aplikasi, daftar rumpun, daftar resmi 38 provinsi | — |
 
@@ -83,6 +88,16 @@ Semua penjelasan prodi ditulis khusus untuk aplikasi ini dan boleh diubah sesuka
    - Huruf besar/kecil dan spasi berlebih diabaikan, jadi siswa yang mengetik `halim mbs` tetap bisa masuk.
 6. Buka tab **Actions → Terbitkan Malika Prodi → Run workflow**.
    Setelah selesai (±1 menit), alamat aplikasi muncul di **Settings → Pages**, misalnya `https://nama-akun.github.io/malika-prodi/`.
+
+## Memperbarui data resmi SNPMB (setahun sekali)
+
+Setelah SNPMB mengumumkan daya tampung tahun baru, jalankan di Terminal:
+
+```bash
+python3 scripts/perbarui_snpmb.py
+```
+
+Skrip mengunduh ulang data publik dari snpmb.id lalu menulis `data/snpmb_ptn.csv` dan `data/snpmb_prodi.csv`. PTN baru akan ditandai `BARU-…` dan perlu ditambahkan ke `data/kampus.csv`. Setelah itu jalankan `git push` agar situs terbit ulang.
 
 ## Cara memperbarui data
 
