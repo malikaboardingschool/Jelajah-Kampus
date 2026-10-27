@@ -66,6 +66,12 @@ const negara = existsSync(root + "data/negara.csv") ? parseCSV(read("data/negara
   persiapan: list(r.persiapan), catatan: r.catatan
 })) : [];
 
+// ---------- Linimasa seleksi (TKA, SNBP, SNBT, kedinasan, mandiri) ----------
+const linimasa = existsSync(root + "data/linimasa.csv") ? parseCSV(read("data/linimasa.csv")).map((r, i) => {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(r.mulai) || !/^\d{4}-\d{2}-\d{2}$/.test(r.selesai)) warn(`linimasa.csv baris ${i + 2}: tanggal harus berformat YYYY-MM-DD`);
+  return { mulai: r.mulai, selesai: r.selesai, waktu: r.waktu, kegiatan: r.kegiatan, singkat: r.singkat || r.kegiatan, jalur: r.jalur, tips: r.tips };
+}).sort((a, b) => a.mulai.localeCompare(b.mulai)) : [];
+
 // ---------- Info sekolah kedinasan ----------
 if (existsSync(root + "data/kedinasan.csv")) {
   parseCSV(read("data/kedinasan.csv")).forEach((r, i) => {
@@ -113,6 +119,7 @@ const out = (name, obj) => writeFileSync(dist + "data/" + name, JSON.stringify(o
 out("prodi.json", prodi);
 out("kampus.json", kampus);
 out("negara.json", negara);
+out("linimasa.json", linimasa);
 out("kp.json", kp);
 out("akses.json", akses);
 out("meta.json", {

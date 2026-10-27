@@ -9,6 +9,7 @@ const store = {
   set(k, v) { try { v == null ? localStorage.removeItem(k) : localStorage.setItem(k, JSON.stringify(v)); } catch {} }
 };
 
+let LINIMASA = [];
 let META, PRODI, KAMPUS, KAMPUS_DN, ROWS_ALL, ROWS, ROWS_LN, PROVS, NEGARA = [], negaraByName = {}, prodiById, kampusById;
 let user = store.get("mp_user");
 let plan = store.get("mp_rencana") || []; // [{k, p, j}]
@@ -19,6 +20,7 @@ const ICON = {
   campus: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 10 12 4l9 6"/><path d="M5 10v9h14v-9"/><path d="M9 19v-5h6v5"/></svg>',
   target: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1" fill="currentColor"/></svg>',
   book: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5"/></svg>',
+  calendar: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>',
   globe: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3z"/></svg>',
   list: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6h11M9 12h11M9 18h11"/><path d="m3 6 1.5 1.5L7 5M3 12l1.5 1.5L7 11M3 18l1.5 1.5L7 17"/></svg>'
 };
@@ -31,6 +33,7 @@ async function loadData() {
   const [meta, prodi, kampus, kp] = await Promise.all([get("meta.json"), get("prodi.json"), get("kampus.json"), get("kp.json")]);
   META = meta; PRODI = prodi; KAMPUS = kampus;
   NEGARA = await get("negara.json").catch(() => []);
+  LINIMASA = await get("linimasa.json").catch(() => []);
   negaraByName = Object.fromEntries(NEGARA.map(n => [n.nama, n]));
   ROWS_ALL = kp.map(([k, p, j, skor, tampung, peminat, sumber]) => ({ k: kampus[k], p: prodi[p], j, skor, tampung, peminat, contoh: sumber === "CONTOH" }));
   // Halaman pencarian Indonesia hanya memakai ROWS (dalam negeri); kampus luar negeri punya halaman sendiri.
@@ -174,12 +177,14 @@ function viewHome() {
     </div>
     <figure class="hero-img"><img src="assets/hero.webp" alt="Siswa dan siswi SMA Malika IBS bersiap melanjutkan kuliah" width="722" height="784" fetchpriority="high"></figure>
   </section>
+  ${agendaCard()}
   ${statsHTML()}
   <div class="menu">
     ${tile("#/cari", "search", "Cari Prodi", "Ketik nama jurusan, lihat kampus mana saja yang membukanya beserta skor amannya.")}
     ${tile("#/kampus", "campus", "Daftar Kampus", "Telusuri PTN, UIN, politeknik, sekolah kedinasan, dan PTS per provinsi.")}
     ${tile("#/skor", "target", "Cek Skormu", "Masukkan perkiraan skor UTBK-mu, lihat pilihan yang peluangnya realistis.")}
     ${tile("#/bahas", "book", "Bahas Prodi", "Baca penjelasan tiap prodi: mata kuliah, prospek karier, dan mapel pendukung.")}
+    ${tile("#/linimasa", "calendar", "Linimasa TKA & Seleksi PTN", "Jadwal Kelas XII dari TKA, SNBP, UTBK-SNBT, sekolah kedinasan, sampai seleksi mandiri, lengkap dengan hitung mundur.").replace('class="tile"', 'class="tile wide"')}
     ${tile("#/luar-negeri", "globe", "Kuliah ke Luar Negeri", `${KAMPUS.filter(k => k.jenis === "PTLN").length} kampus di ${NEGARA.length} negara: Al-Azhar, Madinah, Tokyo, Oxford, MIT, NUS, dan lainnya. Lengkap dengan beasiswa, syarat bahasa, dan linimasa persiapan.`).replace('class="tile"', 'class="tile wide"')}
     ${tile("#/kedinasan", "campus", "Sekolah Kedinasan", `${KAMPUS.filter(k => k.jenis === "PTKN").length} sekolah kedinasan: STAN, STIS, IPDN, akademi TNI/Polri, pelayaran, penerbangan, Poltekkes, dan lainnya. Lihat mana yang ikatan dinas.`).replace('class="tile"', 'class="tile wide"')}
   </div>`;
@@ -404,6 +409,104 @@ function viewProdi(id) {
   else pagedList($("#pd-out"), rows, (r, i) => rowItem(r, i, "kampus"), openModal, 40);
 }
 
+/* ---------------- Linimasa seleksi ---------------- */
+const JALUR_WARNA = { TKA: "#4f46e5", SNBP: "#2563eb", SNBT: "#0891b2", Kedinasan: "#d97706", Mandiri: "#16a34a" };
+const JALUR_NAMA = { TKA: "Tes Kemampuan Akademik", SNBP: "Seleksi Nasional Berdasarkan Prestasi", SNBT: "Seleksi Nasional Berdasarkan Tes", Kedinasan: "Sekolah Kedinasan", Mandiri: "Seleksi Mandiri PTN" };
+const BULAN = ["Jan","Feb","Mar","Apr","Mei","Jun","Jul","Agu","Sep","Okt","Nov","Des"];
+const BULAN_PANJANG = ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
+const tgl = s => new Date(s + "T00:00:00");
+const hariIni = () => { const d = new Date(); d.setHours(0, 0, 0, 0); return d; };
+const selisihHari = (a, b) => Math.round((a - b) / 86400000);
+function statusAgenda(e, today = hariIni()) {
+  const m = tgl(e.mulai), z = tgl(e.selesai);
+  if (z < today) return { kode: "selesai", teks: "Selesai" };
+  if (m <= today) return { kode: "jalan", teks: "Sedang berlangsung" };
+  return { kode: "nanti", teks: `${selisihHari(m, today)} hari lagi` };
+}
+function agendaCard() {
+  if (!LINIMASA.length) return "";
+  const today = hariIni();
+  const e = LINIMASA.find(x => tgl(x.selesai) >= today);
+  if (!e) return "";
+  const st = statusAgenda(e, today);
+  const n = selisihHari(tgl(e.mulai), today);
+  return `<button class="agenda" data-go="#/linimasa" style="--c:${JALUR_WARNA[e.jalur] || "var(--primary)"}">
+    <span class="agenda-num">${st.kode === "jalan" ? "Kini" : `<b class="mono">${n}</b><small>hari</small>`}</span>
+    <span class="agenda-body"><span class="label">Agenda terdekat · ${esc(e.jalur)}</span><b>${esc(e.kegiatan)}</b><span class="hint">${esc(e.waktu)}</span></span>
+    <span class="agenda-go" aria-hidden="true">Lihat linimasa →</span>
+  </button>`;
+}
+function viewLinimasa() {
+  shell("home");
+  const today = hariIni();
+  const items = LINIMASA;
+  if (!items.length) { $("#main").innerHTML = `${backBtn()}<section class="panel"><div class="empty">Linimasa belum diisi.</div></section>`; bindBack(); return; }
+  // Rentang bulan untuk peta jalur
+  const d0 = tgl(items.reduce((a, e) => e.mulai < a ? e.mulai : a, items[0].mulai));
+  const d1 = tgl(items.reduce((a, e) => e.selesai > a ? e.selesai : a, items[0].selesai));
+  const idx = d => (d.getFullYear() - d0.getFullYear()) * 12 + d.getMonth() - d0.getMonth();
+  const nBulan = idx(d1) + 1;
+  const bulanList = Array.from({ length: nBulan }, (_, i) => { const d = new Date(d0.getFullYear(), d0.getMonth() + i, 1); return d; });
+  const lanes = [...new Set(items.map(e => e.jalur))];
+  const nomor = new Map(items.map((e, i) => [e, i + 1]));
+  // Posisi penanda "hari ini" (persen dari lebar peta), bila berada dalam rentang
+  const awal = new Date(d0.getFullYear(), d0.getMonth(), 1), akhir = new Date(d1.getFullYear(), d1.getMonth() + 1, 1);
+  const posHariIni = today >= awal && today < akhir ? (today - awal) / (akhir - awal) * 100 : null;
+  const next = items.find(e => tgl(e.selesai) >= today);
+  const nNext = next ? selisihHari(tgl(next.mulai), today) : null;
+  const tahun = d0.getFullYear();
+
+  // Kelompokkan kartu per bulan mulai
+  const groups = [];
+  for (const e of items) {
+    const d = tgl(e.mulai), key = `${d.getFullYear()}-${d.getMonth()}`;
+    let g = groups.find(x => x.key === key);
+    if (!g) groups.push(g = { key, judul: `${BULAN_PANJANG[d.getMonth()]} ${d.getFullYear()}`, items: [] });
+    g.items.push(e);
+  }
+
+  $("#main").innerHTML = `${backBtn()}
+  <section class="hero"><span class="badge">Kelas XII · ${tahun}/${tahun + 1}</span>
+    <h1>Timeline TKA & <span class="grad-text">Seleksi PTN Kelas XII</span></h1>
+    <p>Semua jadwal penting dari TKA sampai pengumuman seleksi mandiri dalam satu halaman. Tanggal pasti mengikuti pengumuman resmi panitia; pantau terus informasi dari sekolah.</p>
+  </section>
+
+  <div class="tl-summary">
+    <div class="tl-count">
+      ${next ? (nNext > 0 ? `<b class="mono">${nNext}</b><span>hari menuju<br><strong>${esc(next.kegiatan)}</strong></span>` : `<b>Kini</b><span>sedang berlangsung<br><strong>${esc(next.kegiatan)}</strong></span>`) : `<b>✓</b><span>Semua agenda sudah selesai</span>`}
+    </div>
+    <div class="tl-legend">${lanes.map(l => `<span class="legend" style="--c:${JALUR_WARNA[l] || "#64748b"}"><i></i><b>${esc(l)}</b> ${esc(JALUR_NAMA[l] || "")}</span>`).join("")}</div>
+  </div>
+
+  <section class="panel tl-map-panel">
+    <div class="tl-map-head"><h2>Peta Jalur</h2><span class="hint">Geser ke samping di HP</span></div>
+    <div class="tl-scroll"><div class="tl-map" style="--n:${nBulan}">
+      <div class="tl-row tl-months"><span></span><div class="tl-track">${bulanList.map(d => `<span class="${d.getMonth() === 0 ? "tl-year" : ""}">${BULAN[d.getMonth()]}${d.getMonth() === 0 || d === bulanList[0] ? `<small>${d.getFullYear()}</small>` : ""}</span>`).join("")}</div></div>
+      ${lanes.map(l => `<div class="tl-row"><span class="tl-lane" style="--c:${JALUR_WARNA[l]}">${esc(l)}</span><div class="tl-track">
+        ${items.filter(e => e.jalur === l).map(e => { const st = statusAgenda(e, today); return `<a class="tl-bar ${st.kode}" href="#ag-${nomor.get(e)}" style="--c:${JALUR_WARNA[l]};grid-column:${idx(tgl(e.mulai)) + 1} / ${idx(tgl(e.selesai)) + 2}" title="${esc(e.waktu)}: ${esc(e.kegiatan)}"><b>${nomor.get(e)}</b><span>${esc(e.singkat)}</span></a>`; }).join("")}
+      </div></div>`).join("")}
+      ${posHariIni != null ? `<div class="tl-today" style="--x:${posHariIni}%"><span>Hari ini</span></div>` : ""}
+    </div></div>
+  </section>
+
+  <section class="tl-list">
+    ${groups.map(g => `<div class="tl-month"><h3 class="tl-month-title">${g.judul}</h3>
+      ${g.items.map(e => { const st = statusAgenda(e, today); const c = JALUR_WARNA[e.jalur] || "#64748b"; return `
+        <article class="tl-item ${st.kode}" id="ag-${nomor.get(e)}" style="--c:${c}">
+          <span class="tl-dot">${nomor.get(e)}</span>
+          <div class="tl-card">
+            <div class="tl-card-top"><span class="tl-when">${esc(e.waktu)}</span><span class="tl-chip">${esc(e.jalur)}</span><span class="tl-status ${st.kode}">${st.teks}</span></div>
+            <h4>${esc(e.kegiatan)}</h4>
+            ${e.tips ? `<p>${esc(e.tips)}</p>` : ""}
+          </div>
+        </article>`; }).join("")}
+    </div>`).join("")}
+  </section>
+  <p class="foot">Jadwal bersifat perkiraan berdasarkan pola tahun sebelumnya. Selalu cocokkan dengan pengumuman resmi SNPMB, panitia TKA, SSCASN, dan masing-masing PTN.</p>`;
+  bindBack();
+  $$(".tl-bar").forEach(a => a.onclick = e => { e.preventDefault(); const t = document.querySelector(a.getAttribute("href")); if (t) { t.scrollIntoView({ behavior: "smooth", block: "center" }); t.classList.add("flash"); setTimeout(() => t.classList.remove("flash"), 1400); } });
+}
+
 /* ---------------- Kuliah ke Luar Negeri ---------------- */
 function negaraBox(n, ringkas = false) {
   if (!n) return "";
@@ -597,6 +700,7 @@ function route() {
   if (a === "cari") return viewCari();
   if (a === "kampus") return b ? viewKampusDetail(decodeURIComponent(b)) : viewKampus();
   if (a === "luar-negeri") return viewLuarNegeri();
+  if (a === "linimasa") return viewLinimasa();
   if (a === "negara") return viewNegara(decodeURIComponent(b || ""));
   if (a === "kedinasan") { q.kampus = { text: "", prov: "", jenis: "PTKN", ikatan: "" }; return viewKampus(); }
   if (a === "skor") return viewSkor();

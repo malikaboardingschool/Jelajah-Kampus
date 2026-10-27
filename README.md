@@ -10,6 +10,7 @@ Fitur:
 - **Jelajah Kampus**: PTN, UIN/PTKIN, politeknik, sekolah kedinasan, dan PTS per provinsi
 - **Cek Skormu**: pilihan yang realistis berdasarkan skor tryout
 - **Sekolah Kedinasan**: STAN, STIS, IPDN, akademi TNI/Polri, pelayaran, penerbangan, Poltekkes, dll., dengan filter ikatan dinas
+- **Linimasa TKA & Seleksi PTN**: peta jalur per bulan, kartu agenda dengan status dan hitung mundur, serta kartu agenda terdekat di beranda
 - **Kuliah ke Luar Negeri**: 16 negara (Mesir, Arab Saudi, Turkiye, Jepang, AS, Inggris, Korea, Malaysia, Australia, Jerman, Cina, Singapura, Brunei, Tunisia, Yordania, Maroko)
 - **Bahas Prodi**: penjelasan 714 prodi, contoh mata kuliah, prospek karier, dan saran mapel pilihan Kelas XI
 - **Rencanaku**: siswa menyusun urutan pilihan untuk dibawa saat konsultasi BK
@@ -27,6 +28,7 @@ Semua data ada di folder `data/` dalam bentuk **CSV**, yang bisa dibuka dan died
 | `data/kampus_prodi.csv` | Prodi apa saja yang dibuka tiap kampus, plus skor aman, daya tampung, peminat | ±7.850 baris |
 | `data/kedinasan.csv` | Info sekolah kedinasan: instansi, ikatan dinas (ya/sebagian/tidak), jalur masuk, catatan | 93 sekolah |
 | `data/negara.csv` | Info kuliah per negara: bahasa, tes, beasiswa, jalur, linimasa persiapan kelas X–XII | 16 negara |
+| `data/linimasa.csv` | Jadwal TKA, SNBP, UTBK-SNBT, kedinasan, dan mandiri untuk Kelas XII (tanggal `YYYY-MM-DD`, label waktu, kegiatan, label singkat, jalur, tips). Teks yang berisi koma harus diberi tanda kutip | 12 agenda |
 | `data/alias.csv` | Nama lain prodi (misal "Informatika" = "Teknik Informatika") | — |
 | `data/sekolah.json` | Nama sekolah, nama aplikasi, daftar rumpun, daftar resmi 38 provinsi | — |
 
