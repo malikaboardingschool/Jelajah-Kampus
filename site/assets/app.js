@@ -201,7 +201,7 @@ function viewHome() {
   <section class="hero hero-home">
     <div class="hero-text">
       <h1>Pilih Program Studi <span class="grad-text">dengan Data dan Strategi</span></h1>
-      <p>Sistem ini dibuat eksklusif hanya untuk siswa siswi SMA Malika IBS. Jelajahi prodi dan kampus, ukur peluangmu dengan skor UTBK, lalu susun rencana untuk didiskusikan dengan orang tuamu dan sekolah.</p>
+      <p>Sistem ini dibuat eksklusif hanya untuk siswa siswi SMA Malika IBS. Jelajahi prodi dan kampus, temukan jurusan sesuai mapel yang kamu kuasai, lalu susun rencana untuk didiskusikan dengan orang tuamu dan sekolah.</p>
       <div class="hero-cta">
         <button class="btn" data-go="#/cari">Mulai Cari Prodi</button>
         <button class="btn ghost" data-go="#/mapel">Cek Jurusan Sesuai Mapel</button>
