@@ -8,7 +8,7 @@ Fitur:
 - **Login dengan satu kata sandi bersama** yang dibagikan guru BK kepada siswa
 - **Cari Prodi**: kampus mana saja yang membuka suatu jurusan, beserta skor aman UTBK
 - **Jelajah Kampus**: PTN, UIN/PTKIN, politeknik, sekolah kedinasan, dan PTS per provinsi
-- **Cek Skormu**: pilihan yang realistis berdasarkan skor tryout
+- **Cek Jurusan**: jurusan yang linear dengan mapel rapor favorit (isi di `data/mapel_jurusan.csv`)
 - **Sekolah Kedinasan**: STAN, STIS, IPDN, akademi TNI/Polri, pelayaran, penerbangan, Poltekkes, dll., dengan filter ikatan dinas
 - **Linimasa TKA & Seleksi PTN**: peta jalur per bulan, kartu agenda dengan status dan hitung mundur, serta kartu agenda terdekat di beranda
 - **Kuliah ke Luar Negeri**: 16 negara (Mesir, Arab Saudi, Turkiye, Jepang, AS, Inggris, Korea, Malaysia, Australia, Jerman, Cina, Singapura, Brunei, Tunisia, Yordania, Maroko)

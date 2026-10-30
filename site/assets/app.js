@@ -125,7 +125,7 @@ function shell(active) {
   $("#logout").onclick = () => { store.set("mp_user", null); user = null; location.hash = ""; route(); };
 }
 // Sub-menu Kampus Indonesia
-const SUBMENU = [["#/cari", "Cari Prodi", "cari"], ["#/kampus", "Daftar Kampus", "kampus"], ["#/kedinasan", "Sekolah Kedinasan", "kedinasan"], ["#/bahas", "Bahas Prodi", "bahas"], ["#/skor", "Cek Skor", "skor"], ["#/mapel", "Cek Jurusan", "mapel"]];
+const SUBMENU = [["#/cari", "Cari Prodi", "cari"], ["#/kampus", "Daftar Kampus", "kampus"], ["#/kedinasan", "Sekolah Kedinasan", "kedinasan"], ["#/bahas", "Bahas Prodi", "bahas"]];
 const subnav = active => `<nav class="subnav" aria-label="Kampus Indonesia">${SUBMENU.map(([h, l, k]) => `<button class="subbtn" data-href="${h}" aria-current="${active === k ? "page" : "false"}">${l}</button>`).join("")}</nav>`;
 const bindNav = () => $$("#main [data-href]").forEach(b => b.onclick = () => go(b.dataset.href));
 const go = h => { if (location.hash === h) route(); else location.hash = h; };
@@ -204,7 +204,7 @@ function viewHome() {
       <p>Sistem ini dibuat eksklusif hanya untuk siswa siswi SMA Malika IBS. Jelajahi prodi dan kampus, ukur peluangmu dengan skor UTBK, lalu susun rencana untuk didiskusikan dengan orang tuamu dan sekolah.</p>
       <div class="hero-cta">
         <button class="btn" data-go="#/cari">Mulai Cari Prodi</button>
-        <button class="btn ghost" data-go="#/linimasa">Jadwal Penting</button>
+        <button class="btn ghost" data-go="#/mapel">Cek Jurusan Sesuai Mapel</button>
       </div>
     </div>
     <figure class="hero-img"><img src="assets/hero.webp" alt="Siswa dan siswi SMA Malika IBS bersiap melanjutkan kuliah" width="722" height="784" fetchpriority="high"></figure>
@@ -349,51 +349,6 @@ function viewKampusDetail(id) {
   else pagedList($("#kd-out"), rows, (r, i) => rowItem(r, i, "prodi"), openModal, 100);
 }
 
-/* ---------------- Cek Skor ---------------- */
-function viewSkor() {
-  shell("indonesia");
-  const s = q.skor ||= { skor: "", jenjang: "", text: "", jenis: "" };
-  const nSkor = ROWS.filter(r => r.skor != null).length;
-  $("#main").innerHTML = `${subnav("skor")}
-  <section class="panel">
-    <h2>Cek Skormu</h2>
-    <p class="hint">Masukkan perkiraan skor UTBK-mu (rata-rata, skala 0–1000), misalnya dari tryout terakhir. Pilihan dengan skor aman sama atau di bawah skormu tergolong realistis.</p>
-    <div class="row">
-      <input class="search mono" id="s-v" type="number" min="200" max="1000" step="1" inputmode="numeric" placeholder="Contoh: 620" value="${esc(s.skor)}" aria-label="Skor UTBK">
-      <select class="search" id="s-j" aria-label="Jenjang"><option value="">Semua jenjang</option>${["S1", "D4", "D3"].map(j => `<option ${s.jenjang === j ? "selected" : ""}>${j}</option>`).join("")}</select>
-    </div>
-    <input class="search" id="s-t" placeholder="(opsional) saring nama prodi atau kampus" value="${esc(s.text)}" autocomplete="off">
-    <div id="s-out"></div>
-    <p class="foot">${nSkor ? `Saat ini ${nSkor} pilihan sudah memiliki skor aman.` : `<b>Belum ada data skor aman.</b> SNPMB tidak menerbitkan skor aman; sekolah dapat mengisinya di <code>data/skor_aman.csv</code> dari hasil tryout atau data alumni. Sementara itu, pakai <a href="#/cari">Cari Prodi</a> untuk melihat keketatan resmi.`}</p>
-    ${FOOT()}
-  </section>`;
-  bindNav();
-  const draw = () => {
-    const out = $("#s-out"); out.innerHTML = "";
-    const v = parseFloat(s.skor);
-    if (!(v >= 200 && v <= 1000)) { out.innerHTML = '<div class="empty">Isi skor antara 200 dan 1000 untuk mulai.</div>'; return; }
-    const t = norm(s.text.trim());
-    const base = ROWS.filter(r => r.skor != null && (!s.jenjang || r.j === s.jenjang) && (!t || r._n.includes(t) || r.k._n.includes(t)));
-    const aman = sortRows(base.filter(r => r.skor <= v), "skor");
-    const tipis = sortRows(base.filter(r => r.skor > v && r.skor <= v + 25), "skor").reverse();
-    out.insertAdjacentHTML("beforeend", `<div class="summary">Dengan skor <b class="mono">${v}</b>, ada <b>${aman.length}</b> pilihan yang tergolong aman dan <b>${tipis.length}</b> pilihan yang selisihnya tipis (maksimal 25 poin di atas skormu).</div>`);
-    if (tipis.length) {
-      out.insertAdjacentHTML("beforeend", '<p class="label" style="margin:14px 0 8px">Selisih tipis: perlu usaha ekstra</p>');
-      const d = document.createElement("div"); out.append(d);
-      pagedList(d, tipis, (r, i) => rowItem(r, i, "skor"), openModal, 30);
-    }
-    out.insertAdjacentHTML("beforeend", '<p class="label" style="margin:14px 0 8px">Peluang realistis</p>');
-    if (!aman.length) { out.insertAdjacentHTML("beforeend", '<div class="empty">Belum ada pilihan dengan skor aman di bawah skormu. Coba naikkan target belajarmu atau pertimbangkan PTS dan jalur lain.</div>'); return; }
-    const d2 = document.createElement("div"); out.append(d2);
-    pagedList(d2, aman, (r, i) => rowItem(r, i, "skor"), openModal, 40);
-  };
-  let timer;
-  $("#s-v").oninput = e => { s.skor = e.target.value; clearTimeout(timer); timer = setTimeout(draw, 200); };
-  $("#s-j").onchange = e => { s.jenjang = e.target.value; draw(); };
-  $("#s-t").oninput = e => { s.text = e.target.value; clearTimeout(timer); timer = setTimeout(draw, 200); };
-  draw();
-}
-
 /* ---------------- Cek Jurusan (mapel favorit) ---------------- */
 // Cocokkan nama jurusan dengan katalog prodi; keterangan dalam kurung diabaikan.
 const prodiDariNama = j => {
@@ -401,10 +356,9 @@ const prodiDariNama = j => {
   return PRODI.find(p => norm(p.nama) === n) || PRODI.find(p => norm(p.nama) === `ilmu ${n}`) || null;
 };
 function viewMapel() {
-  shell("indonesia");
+  shell("home");
   const s = q.mapel ||= { pilih: [] };
-  $("#main").innerHTML = `${subnav("mapel")}
-  <section class="panel">
+  $("#main").innerHTML = `<section class="panel">
     <h2>Cek Jurusan Sesuai Mapel Favoritmu</h2>
     <p class="hint">Pilih satu atau beberapa mata pelajaran rapor yang paling kamu kuasai. Jurusan yang linear dengan lebih banyak mapel pilihanmu tampil paling atas.</p>
     <div class="chips" id="m-chips">${MAPEL.map((m, i) => `<button class="chip" data-m="${i}">${esc(m.mapel)}</button>`).join("")}</div>
@@ -824,7 +778,6 @@ function route() {
   if (a === "linimasa") return viewLinimasa();
   if (a === "negara") return viewNegara(decodeURIComponent(b || ""));
   if (a === "kedinasan") { q.kampus = { text: "", prov: "", jenis: "PTKN", ikatan: "" }; return viewKampus("kedinasan"); }
-  if (a === "skor") return viewSkor();
   if (a === "mapel") return viewMapel();
   if (a === "bahas") return viewBahas();
   if (a === "prodi") return viewProdi(decodeURIComponent(b || ""));
