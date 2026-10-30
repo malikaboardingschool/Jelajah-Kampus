@@ -5,7 +5,7 @@ Berjalan gratis di **GitHub Pages**, tanpa server dan tanpa biaya database.
 
 Fitur:
 
-- **Login dengan satu kata sandi bersama** yang dibagikan guru BK kepada siswa
+- **Login dengan satu kata sandi bersama** yang dibagikan sekolah kepada siswa
 - **Cari Prodi**: kampus mana saja yang membuka suatu jurusan, beserta skor aman UTBK
 - **Jelajah Kampus**: PTN, UIN/PTKIN, politeknik, sekolah kedinasan, dan PTS per provinsi
 - **Cek Jurusan**: jurusan yang linear dengan mapel rapor favorit (isi di `data/mapel_jurusan.csv`)
@@ -84,8 +84,8 @@ Semua penjelasan prodi ditulis khusus untuk aplikasi ini dan boleh diubah sesuka
 4. Di repo, buka **Settings → Pages**. Pada *Build and deployment → Source*, pilih **GitHub Actions**.
 5. Pasang kata sandi: buka **Settings → Secrets and variables → Actions → New repository secret**.
    - Name: `KATA_SANDI`
-   - Secret: kata sandi untuk siswa, misalnya `Halim MBS`
-   - Huruf besar/kecil dan spasi berlebih diabaikan, jadi siswa yang mengetik `halim mbs` tetap bisa masuk.
+   - Secret: kata sandi untuk siswa (contoh bentuknya: `Nama Sekolah 2027`)
+   - Huruf besar/kecil dan spasi berlebih diabaikan, jadi siswa yang mengetik semuanya huruf kecil tetap bisa masuk.
 6. Buka tab **Actions → Terbitkan Malika Prodi → Run workflow**.
    Setelah selesai (±1 menit), alamat aplikasi muncul di **Settings → Pages**, misalnya `https://nama-akun.github.io/malika-prodi/`.
 
@@ -103,12 +103,13 @@ Skrip mengunduh ulang data publik dari snpmb.id lalu menulis `data/snpmb_ptn.csv
 
 - **Mengubah prodi, kampus, atau skor**: buka file CSV di GitHub, klik ikon pensil (Edit), simpan dengan **Commit changes**. Situs terbit ulang otomatis dalam ±1 menit.
   Untuk perubahan besar: unduh CSV, edit di Excel, simpan sebagai **CSV UTF-8**, lalu unggah ulang lewat **Add file → Upload files** dengan nama file yang sama.
-- **Mengganti kata sandi**: buka Settings → Secrets → Actions → `KATA_SANDI` → Update, lalu jalankan ulang workflow di tab **Actions**. Siswa yang sudah masuk di perangkatnya tetap bisa membuka aplikasi sampai mereka menekan **Keluar**.
+- **Mengganti kata sandi**: buka Settings → Secrets → Actions → `KATA_SANDI` → Update, lalu jalankan ulang workflow di tab **Actions** (Terbitkan → Run workflow). Setelah situs terbit ulang, semua siswa yang masih masuk dengan kata sandi lama otomatis keluar dan harus memakai kata sandi baru.
 - Cek hasil di tab **Actions**. Bila ada peringatan (misalnya nama prodi salah ketik di kampus_prodi.csv), peringatan itu tampil di log langkah "Bangun situs dari CSV".
 
 ## Keamanan
 
 - Kata sandi **tidak pernah** ditulis ke situs maupun repo. Yang tersimpan hanya hash PBKDF2-nya di `data/akses.json` hasil build.
+- Untuk uji di komputer sendiri, kata sandi dibaca dari `data-private/kata-sandi.txt` (tidak ikut diunggah).
 - Kata sandi ini hanya menyaring siapa yang bisa membuka tampilan aplikasi. Isi database (prodi dan kampus) tetap berupa file publik, sehingga orang yang paham teknis masih bisa membacanya. Jangan simpan data rahasia di aplikasi ini.
 - Kata sandi bersama mudah tersebar. Gantilah secara berkala, misalnya setiap awal semester.
 - Pilihan di "Rencanaku" hanya tersimpan di HP atau laptop siswa masing-masing, tidak dikirim ke mana pun.

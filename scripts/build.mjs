@@ -5,7 +5,7 @@
 //
 // Jalankan: node scripts/build.mjs
 import { readFileSync, writeFileSync, mkdirSync, rmSync, cpSync, existsSync } from "node:fs";
-import { pbkdf2Sync, randomBytes } from "node:crypto";
+import { createHash, pbkdf2Sync } from "node:crypto";
 import { fileURLToPath } from "node:url";
 import { parseCSV, slug, list } from "./csv.mjs";
 
@@ -212,13 +212,15 @@ parseCSV(read("data/kampus_prodi.csv")).forEach((r, i) => {
 
 // ---------- Kata sandi ----------
 // Kata sandi tidak pernah ditulis ke situs. Yang ditulis hanya salt dan hash PBKDF2-nya.
-// Huruf besar/kecil dan spasi berlebih diabaikan, jadi "halim mbs" juga diterima.
+// Huruf besar/kecil dan spasi berlebih diabaikan, jadi versi huruf kecil juga diterima.
 const ITER = 150000;
 const normSandi = s => String(s).trim().replace(/\s+/g, " ").toLowerCase();
 let sandi = process.env.KATA_SANDI || "";
 if (!sandi && existsSync(root + "data-private/kata-sandi.txt")) sandi = read("data-private/kata-sandi.txt");
 sandi = normSandi(sandi);
-const salt = randomBytes(16);
+// Salt tetap per situs (tidak bergantung pada kata sandi), jadi hash hanya berubah saat kata sandi diganti.
+// Aplikasi memakai perubahan hash itu untuk mengeluarkan semua siswa yang masih masuk dengan kata sandi lama.
+const salt = createHash("sha256").update("jelajah-kampus:" + (sekolah.nama || "")).digest().subarray(0, 16);
 if (!sandi) warn("Kata sandi kosong: tidak ada yang bisa masuk. Isi secret KATA_SANDI di GitHub, atau data-private/kata-sandi.txt untuk uji lokal.");
 const akses = { salt: salt.toString("base64"), iter: ITER, hash: sandi ? pbkdf2Sync(sandi, salt, ITER, 32, "sha256").toString("hex") : "" };
 

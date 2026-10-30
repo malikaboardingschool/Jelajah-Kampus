@@ -9,7 +9,7 @@ const store = {
   set(k, v) { try { v == null ? localStorage.removeItem(k) : localStorage.setItem(k, JSON.stringify(v)); } catch {} }
 };
 
-let LINIMASA = [], MAPEL = [];
+let LINIMASA = [], MAPEL = [], AKSES = {};
 let META, PRODI, KAMPUS, KAMPUS_DN, ROWS_ALL, ROWS, ROWS_LN, PROVS, NEGARA = [], negaraByName = {}, prodiById, kampusById;
 let user = store.get("mp_user");
 let plan = store.get("mp_rencana") || []; // [{k, p, j}]
@@ -33,6 +33,9 @@ async function loadData() {
   const get = f => fetch(`data/${f}`, { cache: "no-cache" }).then(r => { if (!r.ok) throw new Error(f); return r.json(); });
   const [meta, prodi, kampus, kp] = await Promise.all([get("meta.json"), get("prodi.json"), get("kampus.json"), get("kp.json")]);
   META = meta; PRODI = prodi; KAMPUS = kampus;
+  // Kata sandi diganti -> sesi lama tidak berlaku lagi.
+  AKSES = await get("akses.json").catch(() => ({}));
+  if (user && user.v !== (AKSES.hash || "").slice(0, 16)) { user = null; store.set("mp_user", null); }
   NEGARA = await get("negara.json").catch(() => []);
   LINIMASA = await get("linimasa.json").catch(() => []);
   MAPEL = await get("mapel.json").catch(() => []);
@@ -64,7 +67,7 @@ const b64 = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
 const hex = buf => [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, "0")).join("");
 const normSandi = s => String(s).trim().replace(/\s+/g, " ").toLowerCase();
 async function cekSandi(sandi) {
-  const akses = await fetch("data/akses.json", { cache: "no-cache" }).then(r => r.json());
+  const akses = AKSES;
   if (!akses.hash) return false;
   const base = await crypto.subtle.importKey("raw", new TextEncoder().encode(normSandi(sandi)), "PBKDF2", false, ["deriveBits"]);
   const bits = await crypto.subtle.deriveBits({ name: "PBKDF2", hash: "SHA-256", salt: b64(akses.salt), iterations: akses.iter }, base, 256);
@@ -93,7 +96,7 @@ function renderLogin() {
     $("#go").disabled = true; $("#go").textContent = "Memeriksa…"; err.textContent = "";
     try {
       if (!(await cekSandi(pw))) { err.textContent = "Kata sandi salah. Periksa lagi, atau tanyakan ke orang tua dan sekolah."; return; }
-      user = { masuk: true };
+      user = { masuk: true, v: AKSES.hash.slice(0, 16) };
       store.set("mp_user", user);
       location.hash = "#/";
       route();
@@ -131,6 +134,10 @@ const subnav = active => `<nav class="subnav" aria-label="Kampus Indonesia">${SU
 const bindNav = () => $$("#main [data-href]").forEach(b => b.onclick = () => go(b.dataset.href));
 const go = h => { if (location.hash === h) route(); else location.hash = h; };
 const backBtn = (label = "← Beranda", h = "#/") => `<button class="back" data-back="${h}">${label}</button>`;
+// Tombol kembali di halaman prodi mengikuti halaman asal siswa.
+let hashLalu = "", hashKini = location.hash;
+const ASAL = [["#/mapel", "← Cek Jurusan"], ["#/cari", "← Cari Prodi"], ["#/rencana", "← Rencanaku"], ["#/kampus/", "← Kembali ke kampus"], ["#/negara/", "← Kembali"], ["#/luar-negeri", "← Kampus Luar Negeri"]];
+const asalProdi = () => { const a = ASAL.find(([h]) => hashLalu.startsWith(h)); return a ? [a[1], hashLalu] : ["← Daftar prodi", "#/bahas"]; };
 const bindBack = () => $$("[data-back]").forEach(b => b.onclick = () => go(b.dataset.back));
 const FOOT = () => `<p class="foot">*Daya tampung dan peminat PTN: data resmi <a href="https://snpmb.id/utbk-snbt/daya-tampung-snbt" target="_blank" rel="noopener">SNPMB</a> (daya tampung SNBT 2026, peminat 2021–2025). Keketatan = daya tampung ÷ peminat tahun terakhir. Skor aman, UKT, dan biaya masuk diisi sekolah dari SK resmi PTN. Gunakan untuk perencanaan, bukan jaminan lolos. Data diperbarui ${new Date(META.diperbarui).toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" })}.</p>`;
 
@@ -204,8 +211,8 @@ function viewHome() {
       <h1>Pilih Program Studi <span class="grad-text">dengan Data dan Strategi</span></h1>
       <p>Sistem ini dibuat eksklusif hanya untuk siswa siswi SMA Malika IBS. Jelajahi prodi dan kampus, temukan jurusan sesuai mapel yang kamu kuasai, lalu susun rencana untuk didiskusikan dengan orang tuamu dan sekolah.</p>
       <div class="hero-cta">
-        <button class="btn" data-go="#/cari">Mulai Cari Prodi</button>
-        <button class="btn ghost" data-go="#/mapel">Cek Jurusan Sesuai Mapel</button>
+        <button class="btn" data-go="#/mapel">Cek Jurusan Sesuai Mapel</button>
+        <button class="btn ghost" data-go="#/cari">Mulai Cari Prodi</button>
       </div>
     </div>
     <figure class="hero-img"><img src="assets/hero.webp" alt="Siswa dan siswi SMA Malika IBS bersiap melanjutkan kuliah" width="722" height="784" fetchpriority="high"></figure>
@@ -435,7 +442,8 @@ function viewProdi(id) {
   if (!p) return notFound();
   const rows = sortRows(ROWS.filter(r => r.p === p), "ketat");
   const list = a => `<ul>${a.map(x => `<li>${esc(x)}</li>`).join("")}</ul>`;
-  $("#main").innerHTML = `${backBtn("← Daftar prodi", "#/bahas")}
+  const [lbl, h] = asalProdi();
+  $("#main").innerHTML = `${backBtn(lbl, h)}
   <article class="panel detail">
     <div><div class="label">${esc(p.rumpun)} · ${p.jenjang.join(" / ")}${p.rek ? ' · <span class="star">★ Rekomendasi sekolah</span>' : ""}</div><h2>${esc(p.nama)}</h2></div>
     <div class="box"><div class="label">Tentang prodi ini</div><p>${esc(p.ringkas)}</p></div>
@@ -708,7 +716,7 @@ function openModal(r) {
       <div>Perkiraan skor aman UTBK</div><div class="mono">${r.skor != null ? r.skor.toFixed(1) : "—"}</div>
       ${r.porto ? `<div>Portofolio</div><div>${esc(r.porto)}</div>` : ""}
       ${b ? `<div>UKT${b[4] ? ` ${esc(b[4])}` : ""}</div><div class="mono">${rupiah(b[0])} – ${rupiah(b[1])}</div>
-      <div>Biaya masuk / IPI</div><div class="mono">${b[2] == null && b[3] == null ? "—" : `${rupiah(b[2])} – ${rupiah(b[3])}`}</div>` : `<div>UKT & biaya masuk</div><div class="hint" style="font-weight:500">Belum diisi</div>`}
+      <div>Biaya masuk / IPI</div><div class="mono">${b[2] == null && b[3] == null ? "—" : `${rupiah(b[2])} – ${rupiah(b[3])}`}</div>` : `<div>UKT & biaya masuk</div><div class="hint" style="font-weight:500">Silakan cek website universitas${r.k.web ? ` (<a href="https://${esc(r.k.web)}" target="_blank" rel="noopener">${esc(r.k.web)}</a>)` : ""}</div>`}
       ${r.p ? `<div>Saran mapel pendukung</div><div>${esc(r.p.mapel.join(" / "))}</div>` : ""}
     </div>
     ${grafikRiwayat(r.riwayat)}
@@ -772,6 +780,7 @@ function notFound() {
 
 /* ---------------- Router ---------------- */
 function route() {
+  if (location.hash !== hashKini) { if (!location.hash.startsWith("#/prodi/")) hashLalu = location.hash; else if (!hashKini.startsWith("#/prodi/")) hashLalu = hashKini; hashKini = location.hash; }
   $$(".scrim").forEach(el => el.remove());
   if (!user) return renderLogin();
   document.title = `${META.sekolah.app} · ${META.sekolah.singkat || META.sekolah.nama}`;
