@@ -333,3 +333,13 @@ select.search,button.search{cursor:pointer;text-align:left}
 .kstats b{font-size:20px;font-weight:800;color:var(--primary)}
 .kstats span{font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
 code{font-family:var(--mono);font-size:.9em;background:var(--surface-2);padding:1px 5px;border-radius:5px}
+
+/* Tautan Info Beasiswa di Beranda */
+.beasiswa{display:flex;align-items:center;gap:14px;margin-bottom:16px;padding:16px 18px;border-radius:16px;text-decoration:none;background:linear-gradient(120deg,#fffbeb,#fef3c7);border:1px solid #fde68a;box-shadow:var(--shadow-sm);transition:transform .15s,box-shadow .15s}
+.beasiswa:hover{transform:translateY(-2px);box-shadow:var(--shadow-md)}
+.beasiswa .ic{flex:none;width:44px;height:44px;border-radius:12px;display:grid;place-items:center;background:#f59e0b;color:#fff}
+.beasiswa .t{flex:1;min-width:0}
+.beasiswa b{display:block;color:var(--heading);font-size:15px}
+.beasiswa small{display:block;color:#78350f;font-size:12.5px;line-height:1.4}
+.beasiswa .go{flex:none;font-weight:800;font-size:13px;color:#b45309;background:#fff;border:1px solid #fde68a;border-radius:10px;padding:7px 12px}
+@media (max-width:520px){.beasiswa{padding:14px;gap:10px}.beasiswa .go{padding:6px 9px}}

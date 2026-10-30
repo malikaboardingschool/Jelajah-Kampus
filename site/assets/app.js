@@ -22,6 +22,7 @@ const ICON = {
   book: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5"/></svg>',
   calendar: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>',
   globe: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3z"/></svg>',
+  gift: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12v9H4v-9M2 7h20v5H2zM12 21V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7zM12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>',
   list: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6h11M9 12h11M9 18h11"/><path d="m3 6 1.5 1.5L7 5M3 12l1.5 1.5L7 11M3 18l1.5 1.5L7 17"/></svg>'
 };
 // Logo sekolah dari data/sekolah.json; kalau gagal dimuat, pakai logo cadangan bawaan.
@@ -216,6 +217,11 @@ function viewHome() {
     ${quick("#/linimasa", "calendar", "Jadwal Penting", "TKA, SNBP, SNBT, mandiri")}
     ${quick("#/rencana", "list", "Rencanaku", plan.length ? `${plan.length} pilihan tersimpan` : "Susun pilihanmu")}
   </div>
+  <a class="beasiswa" href="https://satubeasiswa.kemdiktisaintek.go.id/" target="_blank" rel="noopener">
+    <span class="ic">${ICON.gift}</span>
+    <span class="t"><b>Info Beasiswa</b><small>Cari beasiswa kuliah dalam dan luar negeri di portal resmi Satu Beasiswa Kemdiktisaintek</small></span>
+    <span class="go" aria-hidden="true">Buka ↗</span>
+  </a>
   ${statsHTML()}`;
   $$("[data-go]").forEach(b => b.onclick = () => go(b.dataset.go));
 }
