@@ -9,7 +9,7 @@ const store = {
   set(k, v) { try { v == null ? localStorage.removeItem(k) : localStorage.setItem(k, JSON.stringify(v)); } catch {} }
 };
 
-let LINIMASA = [];
+let LINIMASA = [], MAPEL = [];
 let META, PRODI, KAMPUS, KAMPUS_DN, ROWS_ALL, ROWS, ROWS_LN, PROVS, NEGARA = [], negaraByName = {}, prodiById, kampusById;
 let user = store.get("mp_user");
 let plan = store.get("mp_rencana") || []; // [{k, p, j}]
@@ -34,6 +34,7 @@ async function loadData() {
   META = meta; PRODI = prodi; KAMPUS = kampus;
   NEGARA = await get("negara.json").catch(() => []);
   LINIMASA = await get("linimasa.json").catch(() => []);
+  MAPEL = await get("mapel.json").catch(() => []);
   negaraByName = Object.fromEntries(NEGARA.map(n => [n.nama, n]));
   ROWS_ALL = kp.map(([k, p, j, skor, tampung, peminat, sumber, nama, riwayat, kode, biaya, porto]) => {
     const pr = p >= 0 ? prodi[p] : null;
@@ -124,7 +125,7 @@ function shell(active) {
   $("#logout").onclick = () => { store.set("mp_user", null); user = null; location.hash = ""; route(); };
 }
 // Sub-menu Kampus Indonesia
-const SUBMENU = [["#/cari", "Cari Prodi", "cari"], ["#/kampus", "Daftar Kampus", "kampus"], ["#/kedinasan", "Sekolah Kedinasan", "kedinasan"], ["#/bahas", "Bahas Prodi", "bahas"], ["#/skor", "Cek Skor", "skor"]];
+const SUBMENU = [["#/cari", "Cari Prodi", "cari"], ["#/kampus", "Daftar Kampus", "kampus"], ["#/kedinasan", "Sekolah Kedinasan", "kedinasan"], ["#/bahas", "Bahas Prodi", "bahas"], ["#/skor", "Cek Skor", "skor"], ["#/mapel", "Cek Jurusan", "mapel"]];
 const subnav = active => `<nav class="subnav" aria-label="Kampus Indonesia">${SUBMENU.map(([h, l, k]) => `<button class="subbtn" data-href="${h}" aria-current="${active === k ? "page" : "false"}">${l}</button>`).join("")}</nav>`;
 const bindNav = () => $$("#main [data-href]").forEach(b => b.onclick = () => go(b.dataset.href));
 const go = h => { if (location.hash === h) route(); else location.hash = h; };
@@ -390,6 +391,49 @@ function viewSkor() {
   $("#s-v").oninput = e => { s.skor = e.target.value; clearTimeout(timer); timer = setTimeout(draw, 200); };
   $("#s-j").onchange = e => { s.jenjang = e.target.value; draw(); };
   $("#s-t").oninput = e => { s.text = e.target.value; clearTimeout(timer); timer = setTimeout(draw, 200); };
+  draw();
+}
+
+/* ---------------- Cek Jurusan (mapel favorit) ---------------- */
+// Cocokkan nama jurusan dengan katalog prodi; keterangan dalam kurung diabaikan.
+const prodiDariNama = j => {
+  const n = norm(j.replace(/\s*\(.*?\)/g, "").trim());
+  return PRODI.find(p => norm(p.nama) === n) || PRODI.find(p => norm(p.nama) === `ilmu ${n}`) || null;
+};
+function viewMapel() {
+  shell("indonesia");
+  const s = q.mapel ||= { pilih: [] };
+  $("#main").innerHTML = `${subnav("mapel")}
+  <section class="panel">
+    <h2>Cek Jurusan Sesuai Mapel Favoritmu</h2>
+    <p class="hint">Pilih satu atau beberapa mata pelajaran rapor yang paling kamu kuasai. Jurusan yang linear dengan lebih banyak mapel pilihanmu tampil paling atas.</p>
+    <div class="chips" id="m-chips">${MAPEL.map((m, i) => `<button class="chip" data-m="${i}">${esc(m.mapel)}</button>`).join("")}</div>
+    <div id="m-out"></div>
+    <p class="foot">Daftar ini panduan awal, bukan syarat resmi. Cek mapel pendukung tiap prodi di halaman prodinya dan diskusikan pilihanmu dengan orang tua dan sekolah.</p>
+  </section>`;
+  bindNav();
+  const draw = () => {
+    $$("#m-chips .chip").forEach(c => c.setAttribute("aria-pressed", s.pilih.includes(+c.dataset.m)));
+    const out = $("#m-out");
+    if (!s.pilih.length) { out.innerHTML = '<div class="empty">Pilih minimal satu mapel favoritmu untuk melihat jurusan yang linear.</div>'; return; }
+    const skor = new Map();
+    s.pilih.forEach(i => MAPEL[i].jurusan.forEach(j => { const e = skor.get(j) || { j, dari: [] }; e.dari.push(MAPEL[i].mapel); skor.set(j, e); }));
+    const hasil = [...skor.values()].sort((a, b) => b.dari.length - a.dari.length || a.j.localeCompare(b.j, "id"));
+    hasil.forEach(e => e.p = prodiDariNama(e.j));
+    out.innerHTML = `<p class="label" style="margin:12px 0 8px">${hasil.length} jurusan linear</p><div class="list" id="m-list"></div>`;
+    $("#m-list").innerHTML = hasil.map((e, i) => `<button class="item" data-i="${i}"><div class="t"><b>${esc(e.j)}</b><span>${e.dari.map(esc).join(" · ")}${e.p?._kampus ? ` · ${e.p._kampus} kampus` : ""}</span></div>${s.pilih.length > 1 ? `<span class="tag">${e.dari.length} mapel</span>` : ""}</button>`).join("");
+    $$("#m-list .item").forEach(b => b.onclick = () => {
+      const e = hasil[+b.dataset.i];
+      if (e.p) return go(`#/prodi/${e.p.id}`);
+      q.cari = { ...(q.cari || { jenjang: "", jenis: "", urut: "ketat" }), text: e.j.replace(/\s*\(.*?\)/g, "").replace(/^Jurusan lain di rumpun /, "") };
+      go("#/cari");
+    });
+  };
+  $$("#m-chips .chip").forEach(c => c.onclick = () => {
+    const i = +c.dataset.m;
+    s.pilih = s.pilih.includes(i) ? s.pilih.filter(x => x !== i) : [...s.pilih, i];
+    draw();
+  });
   draw();
 }
 
@@ -781,6 +825,7 @@ function route() {
   if (a === "negara") return viewNegara(decodeURIComponent(b || ""));
   if (a === "kedinasan") { q.kampus = { text: "", prov: "", jenis: "PTKN", ikatan: "" }; return viewKampus("kedinasan"); }
   if (a === "skor") return viewSkor();
+  if (a === "mapel") return viewMapel();
   if (a === "bahas") return viewBahas();
   if (a === "prodi") return viewProdi(decodeURIComponent(b || ""));
   if (a === "rencana") return viewRencana();

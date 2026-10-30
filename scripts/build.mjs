@@ -72,6 +72,9 @@ const linimasa = existsSync(root + "data/linimasa.csv") ? parseCSV(read("data/li
   return { mulai: r.mulai, selesai: r.selesai, waktu: r.waktu, kegiatan: r.kegiatan, singkat: r.singkat || r.kegiatan, jalur: r.jalur, tips: r.tips };
 }).sort((a, b) => a.mulai.localeCompare(b.mulai)) : [];
 
+// ---------- Jurusan yang linear dengan mapel rapor favorit ----------
+const mapel = existsSync(root + "data/mapel_jurusan.csv") ? parseCSV(read("data/mapel_jurusan.csv")).map(r => ({ mapel: r.mapel, jurusan: list(r.jurusan) })) : [];
+
 // ---------- Info sekolah kedinasan ----------
 if (existsSync(root + "data/kedinasan.csv")) {
   parseCSV(read("data/kedinasan.csv")).forEach((r, i) => {
@@ -229,6 +232,7 @@ out("prodi.json", prodi);
 out("kampus.json", kampus);
 out("negara.json", negara);
 out("linimasa.json", linimasa);
+out("mapel.json", mapel);
 out("kp.json", kp);
 out("akses.json", akses);
 out("meta.json", {
