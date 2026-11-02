@@ -215,7 +215,7 @@ function viewHome() {
         <button class="btn ghost" data-go="#/cari">Mulai Cari Prodi</button>
       </div>
     </div>
-    <figure class="hero-img"><img src="assets/hero.webp" alt="Siswa dan siswi SMA Malika IBS bersiap melanjutkan kuliah" width="722" height="784" fetchpriority="high"></figure>
+    <figure class="hero-img"><img src="assets/hero.webp" alt="Siswa dan siswi SMA Malika IBS bersiap melanjutkan kuliah" width="1226" height="1283" fetchpriority="high"></figure>
   </section>
   ${agendaCard()}
   <div class="quick">
