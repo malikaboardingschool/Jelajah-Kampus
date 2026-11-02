@@ -779,7 +779,19 @@ function notFound() {
 }
 
 /* ---------------- Router ---------------- */
+// Statistik kunjungan GoatCounter; aktif bila data/sekolah.json mengisi "goatcounter".
+const hitung = () => { if (window.goatcounter?.count) window.goatcounter.count({ path: user ? (location.hash || "#/").replace(/^#/, "") : "/login" }); };
+function pasangStatistik() {
+  const kode = META.sekolah.goatcounter;
+  if (!kode) return;
+  window.goatcounter = { no_onload: true };
+  const el = document.createElement("script");
+  el.async = true; el.src = "https://gc.zgo.at/count.js"; el.dataset.goatcounter = `https://${kode}.goatcounter.com/count`;
+  el.onload = hitung;
+  document.head.append(el);
+}
 function route() {
+  hitung();
   if (location.hash !== hashKini) { if (!location.hash.startsWith("#/prodi/")) hashLalu = location.hash; else if (!hashKini.startsWith("#/prodi/")) hashLalu = hashKini; hashKini = location.hash; }
   $$(".scrim").forEach(el => el.remove());
   if (!user) return renderLogin();
@@ -802,6 +814,7 @@ function route() {
 }
 
 loadData().then(() => {
+  pasangStatistik();
   window.addEventListener("hashchange", route);
   route();
 }).catch(() => {

@@ -103,6 +103,7 @@ Skrip mengunduh ulang data publik dari snpmb.id lalu menulis `data/snpmb_ptn.csv
 
 - **Mengubah prodi, kampus, atau skor**: buka file CSV di GitHub, klik ikon pensil (Edit), simpan dengan **Commit changes**. Situs terbit ulang otomatis dalam ±1 menit.
   Untuk perubahan besar: unduh CSV, edit di Excel, simpan sebagai **CSV UTF-8**, lalu unggah ulang lewat **Add file → Upload files** dengan nama file yang sama.
+- **Statistik pengunjung**: isi `"goatcounter"` di `data/sekolah.json` dengan kode situs GoatCounter. Kosongkan untuk mematikannya.
 - **Mengganti kata sandi**: buka Settings → Secrets → Actions → `KATA_SANDI` → Update, lalu jalankan ulang workflow di tab **Actions** (Terbitkan → Run workflow). Setelah situs terbit ulang, semua siswa yang masih masuk dengan kata sandi lama otomatis keluar dan harus memakai kata sandi baru.
 - Cek hasil di tab **Actions**. Bila ada peringatan (misalnya nama prodi salah ketik di kampus_prodi.csv), peringatan itu tampil di log langkah "Bangun situs dari CSV".
 
