@@ -247,6 +247,13 @@ const dist = root + "dist/";
 rmSync(dist, { recursive: true, force: true });
 mkdirSync(dist + "data", { recursive: true });
 cpSync(root + "site", dist, { recursive: true });
+// Penanda versi pada CSS/JS agar browser langsung memakai file baru setelah situs diperbarui.
+{
+  const isi = f => readFileSync(dist + f);
+  const versi = createHash("sha256").update(isi("assets/app.js")).update(isi("assets/style.css")).digest("hex").slice(0, 10);
+  const html = readFileSync(dist + "index.html", "utf8").replace(/(assets\/(?:app\.js|style\.css))"/g, `$1?v=${versi}"`);
+  writeFileSync(dist + "index.html", html);
+}
 const out = (name, obj) => writeFileSync(dist + "data/" + name, JSON.stringify(obj));
 out("prodi.json", prodi);
 out("kampus.json", kampus);
