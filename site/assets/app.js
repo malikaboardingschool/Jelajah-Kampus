@@ -9,7 +9,7 @@ const store = {
   set(k, v) { try { v == null ? localStorage.removeItem(k) : localStorage.setItem(k, JSON.stringify(v)); } catch {} }
 };
 
-let LINIMASA = [], MAPEL = [], AKSES = {};
+let LINIMASA = [], MAPEL = [], AKSES = {}, RIASEC = { tipe: [], soal: [] };
 let META, PRODI, KAMPUS, KAMPUS_DN, ROWS_ALL, ROWS, ROWS_LN, PROVS, NEGARA = [], negaraByName = {}, prodiById, kampusById;
 let user = store.get("mp_user");
 let plan = store.get("mp_rencana") || []; // [{k, p, j}]
@@ -39,6 +39,7 @@ async function loadData() {
   NEGARA = await get("negara.json").catch(() => []);
   LINIMASA = await get("linimasa.json").catch(() => []);
   MAPEL = await get("mapel.json").catch(() => []);
+  RIASEC = await get("riasec.json").catch(() => RIASEC);
   negaraByName = Object.fromEntries(NEGARA.map(n => [n.nama, n]));
   ROWS_ALL = kp.map(([k, p, j, skor, tampung, peminat, sumber, nama, riwayat, kode, biaya, porto]) => {
     const pr = p >= 0 ? prodi[p] : null;
@@ -110,7 +111,7 @@ function renderLogin() {
 
 /* ---------------- Kerangka ---------------- */
 // Menu utama. Halaman detail ikut menyorot menu induknya.
-const MENU = [["#/", "Beranda", "home"], ["#/cari", "Kampus Indonesia", "indonesia"], ["#/luar-negeri", "Kampus Luar Negeri", "luar"],
+const MENU = [["#/", "Beranda", "home"], ["#/asesmen", "Asesmen Minat", "asesmen"], ["#/cari", "Kampus Indonesia", "indonesia"], ["#/luar-negeri", "Kampus Luar Negeri", "luar"],
   ["#/linimasa", "Jadwal Penting", "jadwal"], ["#/panduan", "Panduan", "panduan"], ["#/rencana", "Rencanaku", "rencana"]];
 const rencanaLabel = () => `Rencanaku${plan.length ? `<span class="count">${plan.length}</span>` : ""}`;
 function shell(active) {
@@ -126,7 +127,7 @@ function shell(active) {
   <main class="wrap" id="main"></main>`;
   $(".navbtn[aria-current='page']")?.scrollIntoView({ block: "nearest", inline: "center" });
   $$("[data-href]").forEach(b => b.onclick = () => go(b.dataset.href));
-  $("#logout").onclick = () => { store.set("mp_user", null); user = null; location.hash = ""; route(); };
+  $("#logout").onclick = () => { store.set("mp_user", null); store.set("mp_riasec", null); store.set("mp_riasec_draft", null); user = null; location.hash = ""; route(); };
 }
 // Sub-menu Kampus Indonesia
 const SUBMENU = [["#/cari", "Cari Prodi", "cari"], ["#/kampus", "Daftar Kampus", "kampus"], ["#/kedinasan", "Sekolah Kedinasan", "kedinasan"], ["#/bahas", "Bahas Prodi", "bahas"]];
@@ -136,7 +137,7 @@ const go = h => { if (location.hash === h) route(); else location.hash = h; };
 const backBtn = (label = "← Beranda", h = "#/") => `<button class="back" data-back="${h}">${label}</button>`;
 // Tombol kembali di halaman prodi mengikuti halaman asal siswa.
 let hashLalu = "", hashKini = location.hash;
-const ASAL = [["#/mapel", "← Cek Jurusan"], ["#/cari", "← Cari Prodi"], ["#/rencana", "← Rencanaku"], ["#/kampus/", "← Kembali ke kampus"], ["#/negara/", "← Kembali"], ["#/luar-negeri", "← Kampus Luar Negeri"]];
+const ASAL = [["#/mapel", "← Cek Jurusan"], ["#/asesmen", "← Hasil asesmen"], ["#/cari", "← Cari Prodi"], ["#/rencana", "← Rencanaku"], ["#/kampus/", "← Kembali ke kampus"], ["#/negara/", "← Kembali"], ["#/luar-negeri", "← Kampus Luar Negeri"]];
 const asalProdi = () => { const a = ASAL.find(([h]) => hashLalu.startsWith(h)); return a ? [a[1], hashLalu] : ["← Daftar prodi", "#/bahas"]; };
 const bindBack = () => $$("[data-back]").forEach(b => b.onclick = () => go(b.dataset.back));
 const FOOT = () => `<p class="foot">*Daya tampung dan peminat PTN: data resmi <a href="https://snpmb.id/utbk-snbt/daya-tampung-snbt" target="_blank" rel="noopener">SNPMB</a> (daya tampung SNBT 2026, peminat 2021–2025). Keketatan = daya tampung ÷ peminat tahun terakhir. Skor aman, UKT, dan biaya masuk diisi sekolah dari SK resmi PTN. Gunakan untuk perencanaan, bukan jaminan lolos. Data diperbarui ${new Date(META.diperbarui).toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" })}.</p>`;
@@ -224,6 +225,11 @@ function viewHome() {
     ${quick("#/linimasa", "calendar", "Jadwal Penting", "TKA, SNBP, SNBT, mandiri")}
     ${quick("#/rencana", "list", "Rencanaku", plan.length ? `${plan.length} pilihan tersimpan` : "Susun pilihanmu")}
   </div>
+  <button class="promo-as" data-go="${store.get("mp_riasec") ? "#/asesmen/hasil" : "#/asesmen"}">
+    <span class="ic">${ICON.target}</span>
+    <span class="t"><b>Asesmen Minat & Bakat (RIASEC)</b><small>${store.get("mp_riasec") ? `Kode Holland-mu: ${esc(store.get("mp_riasec").kode)}. Lihat lagi hasil, mapel, dan rekomendasi prodimu.` : "10 menit mengenali tipe minatmu, lalu dapatkan saran mapel pilihan, rekomendasi prodi, dan peta karier."}</small></span>
+    <span class="go" aria-hidden="true">${store.get("mp_riasec") ? "Lihat hasil" : "Mulai"} →</span>
+  </button>
   <a class="beasiswa" href="https://satubeasiswa.kemdiktisaintek.go.id/" target="_blank" rel="noopener">
     <span class="ic">${ICON.gift}</span>
     <span class="t"><b>Info Beasiswa</b><small>Cari beasiswa kuliah dalam dan luar negeri di portal resmi Satu Beasiswa Kemdiktisaintek</small></span>
@@ -360,6 +366,233 @@ function viewKampusDetail(id) {
   bindBack();
   if (!rows.length) $("#kd-out").innerHTML = '<div class="empty">Daftar prodi kampus ini belum diisi.</div>';
   else pagedList($("#kd-out"), rows, (r, i) => rowItem(r, i, "prodi"), openModal, 100);
+}
+
+/* ---------------- Asesmen Minat RIASEC (teori Holland) ---------------- */
+// Urutan heksagon Holland: tipe yang bersebelahan paling mirip, yang berseberangan paling berbeda.
+const HEKS = ["R", "I", "A", "S", "E", "C"];
+const SKALA = { minat: ["Sangat tidak suka", "Tidak suka", "Netral", "Suka", "Sangat suka"], kemampuan: ["Sangat tidak sesuai", "Tidak sesuai", "Ragu-ragu", "Sesuai", "Sangat sesuai"] };
+const PER_HAL = 8;
+const tipeOf = k => RIASEC.tipe.find(t => t.kode === k);
+
+// Soal minat ditampilkan berselang-seling antartipe agar siswa tidak menebak pola; bagian kemampuan di akhir.
+function urutanSoal() {
+  const idx = RIASEC.soal.map((s, i) => ({ ...s, i }));
+  const selang = b => {
+    const per = HEKS.map(k => idx.filter(s => s.k === k && s.b === b));
+    const out = [];
+    for (let n = 0; per.some(a => a[n]); n++) per.forEach(a => a[n] && out.push(a[n]));
+    return out;
+  };
+  const minat = selang("minat"), kemampuan = selang("kemampuan");
+  const hal = [];
+  for (let i = 0; i < minat.length; i += PER_HAL) hal.push(minat.slice(i, i + PER_HAL));
+  if (kemampuan.length) hal.push(kemampuan);
+  return hal;
+}
+
+// Skor 0–100 per tipe: rata-rata jawaban 1–5 diubah ke persen. Total = 70% minat + 30% kemampuan.
+function hitungRiasec(jawab) {
+  const skor = {};
+  HEKS.forEach(k => {
+    const rata = b => {
+      const v = RIASEC.soal.map((s, i) => s.k === k && s.b === b ? jawab[i] : null).filter(x => x != null);
+      return v.length ? (v.reduce((a, b) => a + b, 0) / v.length - 1) / 4 * 100 : null;
+    };
+    const m = rata("minat"), a = rata("kemampuan");
+    skor[k] = { minat: m ?? 0, kemampuan: a ?? m ?? 0, total: a == null ? m ?? 0 : m * 0.7 + a * 0.3 };
+  });
+  const urut = [...HEKS].sort((a, b) => skor[b].total - skor[a].total || skor[b].minat - skor[a].minat);
+  const kode = urut.slice(0, 3).join("");
+  const jarak = (a, b) => { const d = Math.abs(HEKS.indexOf(a) - HEKS.indexOf(b)); return Math.min(d, 6 - d); };
+  const konsistensi = ["", "tinggi", "sedang", "rendah"][jarak(urut[0], urut[1])];
+  const beda = skor[urut[0]].total - skor[urut[5]].total;
+  const diferensiasi = beda >= 40 ? "tinggi" : beda >= 20 ? "sedang" : "rendah";
+  // Rekomendasi prodi: jatah 6-4-2 untuk tiga tipe teratas agar setiap tipe terwakili.
+  // Prodi yang masuk daftar dua tipe atau lebih ("paduan") didahulukan; sisanya mengikuti urutan di riasec.csv.
+  const top3 = urut.slice(0, 3).map(tipeOf);
+  const tipeProdi = id => top3.filter(t => t.prodi.includes(id)).map(t => t.kode);
+  const dipilih = new Map();
+  [6, 4, 2].forEach((jatah, i) => {
+    const calon = top3[i].prodi.filter(id => prodiById[id] && !dipilih.has(id));
+    calon.sort((a, b) => tipeProdi(b).length - tipeProdi(a).length);
+    calon.slice(0, jatah).forEach(id => dipilih.set(id, tipeProdi(id)));
+  });
+  const prodi = [...dipilih].map(([id, kode]) => ({ p: prodiById[id], kode }));
+  // Mapel pilihan: gabungan saran tipe dan mapel pendukung dari prodi rekomendasi.
+  const mp = {};
+  urut.slice(0, 3).forEach((k, i) => tipeOf(k).mapel.forEach(m => (mp[m] ||= { m, s: 0, n: 0 }).s += 3 - i));
+  prodi.forEach(({ p }) => p.mapel.forEach(m => { (mp[m] ||= { m, s: 0, n: 0 }).s += 1; mp[m].n++; }));
+  const mapel = Object.values(mp).sort((a, b) => b.s - a.s).slice(0, 5);
+  return { skor, urut, kode, konsistensi, diferensiasi, beda, prodi, mapel };
+}
+
+function heksagonSVG(skor) {
+  const c = 160, R = 108;
+  const titik = (i, r) => { const a = (-90 + i * 60) * Math.PI / 180; return [c + r * Math.cos(a), c + r * Math.sin(a)]; };
+  const poli = f => HEKS.map((k, i) => titik(i, R * f(k) / 100).map(v => v.toFixed(1)).join(",")).join(" ");
+  const grid = [25, 50, 75, 100].map(p => `<polygon points="${HEKS.map((_, i) => titik(i, R * p / 100).join(",")).join(" ")}" class="hx-grid"/>`).join("");
+  const sumbu = HEKS.map((_, i) => { const [x, y] = titik(i, R); return `<line x1="${c}" y1="${c}" x2="${x}" y2="${y}" class="hx-grid"/>`; }).join("");
+  const label = HEKS.map((k, i) => {
+    const t = tipeOf(k); const [x, y] = titik(i, R + 30);
+    return `<text x="${x}" y="${y - 4}" text-anchor="middle" class="hx-k" fill="${t.warna}">${k} · ${Math.round(skor[k].total)}</text><text x="${x}" y="${y + 11}" text-anchor="middle" class="hx-n">${esc(t.julukan)}</text>`;
+  }).join("");
+  return `<svg viewBox="0 0 320 320" class="hx" role="img" aria-label="Heksagon RIASEC: ${HEKS.map(k => `${k} ${Math.round(skor[k].total)}`).join(", ")}">
+    ${grid}${sumbu}
+    <polygon points="${poli(k => skor[k].minat)}" class="hx-minat"/>
+    <polygon points="${poli(k => skor[k].kemampuan)}" class="hx-mampu"/>
+    ${label}</svg>`;
+}
+
+const RIASEC_KEY = "mp_riasec", RIASEC_DRAFT = "mp_riasec_draft";
+function viewAsesmen(bagian) {
+  shell("asesmen");
+  if (!RIASEC.soal.length) { $("#main").innerHTML = '<section class="panel"><div class="empty">Soal asesmen belum tersedia.</div></section>'; return; }
+  const hasil = store.get(RIASEC_KEY);
+  if (bagian === "hasil" && hasil) return viewHasilRiasec(hasil);
+  if (bagian === "tes") return viewTesRiasec();
+  const d = store.get(RIASEC_DRAFT);
+  const kirim = !!META.sekolah.asesmen_url;
+  $("#main").innerHTML = `<section class="panel asesmen">
+    <div class="as-intro">
+      <div><div class="label">Teori Holland · RIASEC</div><h2>Asesmen Minat & Bakat</h2>
+      <p class="hint">Kenali tipe minatmu dari enam tipe kepribadian kerja Holland: <b>R</b>ealistic, <b>I</b>nvestigative, <b>A</b>rtistic, <b>S</b>ocial, <b>E</b>nterprising, dan <b>C</b>onventional. Hasilnya berupa kode Holland, saran mapel pilihan, rekomendasi prodi, dan peta karier.</p></div>
+      <div class="as-chips">${HEKS.map(k => { const t = tipeOf(k); return `<span style="--c:${t.warna}"><b>${k}</b>${esc(t.julukan)}</span>`; }).join("")}</div>
+    </div>
+    <div class="cols">
+      <div class="box"><div class="label">Cara mengerjakan</div><ul><li>${RIASEC.soal.length} pernyataan, sekitar 10 menit.</li><li>Tidak ada jawaban benar atau salah.</li><li>Jawab sesuai dirimu sekarang, bukan harapan orang lain.</li></ul></div>
+      <div class="box"><div class="label">Yang kamu dapatkan</div><ul><li>Kode Holland dan grafik heksagon</li><li>Saran mapel pilihan Kelas XI–XII</li><li>Rekomendasi prodi dan karier</li><li>Peta rencana dari kelas X sampai kuliah</li></ul></div>
+    </div>
+    ${hasil ? `<div class="as-last"><span>Hasil terakhirmu: <b class="mono">${esc(hasil.kode)}</b> · ${new Date(hasil.waktu).toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" })}</span><button class="btn ghost" data-go="#/asesmen/hasil">Lihat hasil</button></div>` : ""}
+    <form id="as-f" class="as-form">
+      <label>Nama lengkap<input class="search" id="as-nama" required maxlength="80" autocomplete="name" value="${esc(d?.nama || hasil?.nama || "")}"></label>
+      <label>Kelas<input class="search" id="as-kelas" required maxlength="30" placeholder="Contoh: X-2 atau XI IPA 1" value="${esc(d?.kelas || hasil?.kelas || "")}"></label>
+      ${kirim ? '<label class="as-cek"><input type="checkbox" id="as-izin" required> Saya setuju nama, kelas, jawaban, dan hasil asesmen ini disimpan oleh sekolah untuk keperluan bimbingan.</label>' : ""}
+      <button class="btn" type="submit">${d && Object.keys(d.jawab || {}).length ? "Lanjutkan asesmen" : hasil ? "Ulangi asesmen" : "Mulai asesmen"}</button>
+    </form>
+    <p class="foot">Asesmen ini disusun berdasarkan teori minat karier John L. Holland (RIASEC) dengan butir pernyataan orisinal. Hasilnya adalah gambaran minat untuk bahan diskusi dengan orang tua dan sekolah, bukan diagnosis psikologis dan bukan satu-satunya dasar memilih jurusan.</p>
+  </section>`;
+  $$("[data-go]").forEach(b => b.onclick = () => go(b.dataset.go));
+  $("#as-f").onsubmit = e => {
+    e.preventDefault();
+    const nama = $("#as-nama").value.trim().replace(/\s+/g, " "), kelas = $("#as-kelas").value.trim().replace(/\s+/g, " ");
+    if (!nama || !kelas) return;
+    const lama = store.get(RIASEC_DRAFT);
+    store.set(RIASEC_DRAFT, { nama, kelas, izin: !!$("#as-izin")?.checked, jawab: lama?.jawab || {}, hal: lama?.hal || 0 });
+    go("#/asesmen/tes");
+  };
+}
+
+function viewTesRiasec() {
+  const d = store.get(RIASEC_DRAFT);
+  if (!d) return go("#/asesmen");
+  const hal = urutanSoal();
+  d.hal = Math.min(d.hal || 0, hal.length - 1);
+  const s = hal[d.hal];
+  const b = s[0].b;
+  const total = RIASEC.soal.length, terjawab = Object.keys(d.jawab).length;
+  $("#main").innerHTML = `<section class="panel asesmen">
+    <div class="as-prog"><div class="label">Bagian ${d.hal + 1} dari ${hal.length} · ${b === "minat" ? "Seberapa suka kamu melakukan kegiatan ini?" : "Seberapa sesuai pernyataan ini dengan dirimu?"}</div>
+      <div class="as-bar"><i style="width:${terjawab / total * 100}%"></i></div></div>
+    <div class="as-list">${s.map((q, n) => `<fieldset class="as-q"><legend><span class="mono">${d.hal * PER_HAL + n + 1}.</span> ${esc(q.t)}</legend>
+      <div class="as-opt">${SKALA[b].map((l, v) => `<label title="${l}"><input type="radio" name="q${q.i}" value="${v + 1}" ${d.jawab[q.i] === v + 1 ? "checked" : ""}><span>${v + 1}</span><small>${l}</small></label>`).join("")}</div></fieldset>`).join("")}</div>
+    <div class="row as-nav">
+      <button class="btn ghost" id="as-prev">${d.hal ? "← Sebelumnya" : "← Ubah data diri"}</button>
+      <span class="hint" id="as-sisa"></span>
+      <button class="btn" id="as-next">${d.hal === hal.length - 1 ? "Lihat hasil" : "Lanjut →"}</button>
+    </div>
+  </section>`;
+  const cek = () => {
+    const kurang = s.filter(q => !d.jawab[q.i]).length;
+    $("#as-next").disabled = kurang > 0;
+    $("#as-sisa").textContent = kurang ? `${kurang} pernyataan belum dijawab` : "";
+  };
+  $$(".as-q input").forEach(el => el.onchange = () => {
+    d.jawab[el.name.slice(1)] = +el.value; store.set(RIASEC_DRAFT, d); cek();
+    $(".as-bar i").style.width = `${Object.keys(d.jawab).length / total * 100}%`;
+  });
+  $("#as-prev").onclick = () => { if (!d.hal) return go("#/asesmen"); d.hal--; store.set(RIASEC_DRAFT, d); viewTesRiasec(); window.scrollTo(0, 0); };
+  $("#as-next").onclick = () => {
+    if (d.hal < hal.length - 1) { d.hal++; store.set(RIASEC_DRAFT, d); viewTesRiasec(); window.scrollTo(0, 0); return; }
+    const jawab = RIASEC.soal.map((_, i) => d.jawab[i] ?? null);
+    const h = hitungRiasec(jawab);
+    const rekam = { nama: d.nama, kelas: d.kelas, izin: d.izin, waktu: new Date().toISOString(), jawab, kode: h.kode, terkirim: false };
+    store.set(RIASEC_KEY, rekam); store.set(RIASEC_DRAFT, null);
+    go("#/asesmen/hasil");
+  };
+  cek();
+}
+
+// Kirim ke Google Apps Script milik sekolah. Mode no-cors: browser tidak bisa membaca balasan, jadi status "terkirim" berarti permintaan sudah berangkat.
+async function kirimRiasec(rekam, h) {
+  const url = META.sekolah.asesmen_url;
+  if (!url || !rekam.izin) return null;
+  const pct = f => Object.fromEntries(HEKS.map(k => [k, Math.round(f(h.skor[k]))]));
+  const jawaban = b => Object.fromEntries(HEKS.map(k => [k, RIASEC.soal.map((s, i) => s.k === k && s.b === b ? rekam.jawab[i] ?? 0 : null).filter(v => v != null).join("")]));
+  const body = {
+    versi: 1, waktu: rekam.waktu, nama: rekam.nama, kelas: rekam.kelas, kode: h.kode,
+    minat: pct(s => s.minat), kemampuan: pct(s => s.kemampuan), total: pct(s => s.total),
+    konsistensi: h.konsistensi, diferensiasi: h.diferensiasi,
+    prodi: h.prodi.slice(0, 5).map(x => x.p.nama), mapel: h.mapel.map(x => x.m),
+    jawaban: { minat: jawaban("minat"), kemampuan: jawaban("kemampuan") }
+  };
+  await fetch(url, { method: "POST", mode: "no-cors", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(body) });
+  return true;
+}
+
+function viewHasilRiasec(rekam) {
+  const h = hitungRiasec(rekam.jawab);
+  const [t1, t2, t3] = h.urut.slice(0, 3).map(tipeOf);
+  const KONS = { tinggi: "Dua tipe teratasmu bersebelahan di heksagon Holland. Minatmu searah, sehingga pilihan jurusan biasanya lebih mudah ditentukan.", sedang: "Dua tipe teratasmu berjarak satu tipe. Minatmu cukup searah dan tetap bisa dipadukan dalam banyak jurusan.", rendah: "Dua tipe teratasmu berseberangan di heksagon. Kamu punya minat yang beragam. Cari prodi atau karier yang memadukan keduanya, dan diskusikan dengan sekolah." };
+  const DIF = { tinggi: "Profil minatmu jelas: ada tipe yang menonjol dan ada yang rendah.", sedang: "Profil minatmu cukup jelas.", rendah: "Skormu hampir rata di semua tipe. Ini wajar di usia SMA. Perbanyak pengalaman lewat ekskul dan kegiatan, lalu ulangi asesmen beberapa bulan lagi." };
+  const karier = [...new Set([t1, t2, t3].flatMap(t => t.karier.slice(0, 3)))];
+  $("#main").innerHTML = `<section class="panel asesmen as-hasil">
+    <div class="as-head">
+      <div><div class="label">Hasil asesmen · ${esc(rekam.nama)} · ${esc(rekam.kelas)}</div>
+        <h2>Kode Holland-mu</h2>
+        <div class="as-kode">${[t1, t2, t3].map((t, i) => `<span style="--c:${t.warna}" class="${i ? "" : "utama"}"><b>${t.kode}</b><small>${esc(t.julukan)}</small></span>`).join("")}</div>
+        <p>${esc(t1.deskripsi)}</p>
+        <div class="pills">${t1.ciri.map(c => `<span class="pill">${esc(c)}</span>`).join("")}</div>
+      </div>
+      <figure class="as-hx">${heksagonSVG(h.skor)}<figcaption><span class="lg minat"></span>Minat <span class="lg mampu"></span>Kemampuan yang dirasakan · angka = skor total</figcaption></figure>
+    </div>
+    <div class="as-skor">${h.urut.map(k => { const t = tipeOf(k); const s = h.skor[k]; return `<div style="--c:${t.warna}"><span><b>${k}</b> ${esc(t.nama)} <small>${esc(t.julukan)}</small></span><span class="mono">${Math.round(s.total)}</span><i><em style="width:${s.total}%"></em></i></div>`; }).join("")}</div>
+    <div class="cols">
+      <div class="box"><div class="label">Konsistensi minat: ${h.konsistensi}</div><p>${KONS[h.konsistensi]}</p></div>
+      <div class="box"><div class="label">Kejelasan profil: ${h.diferensiasi}</div><p>${DIF[h.diferensiasi]}</p></div>
+    </div>
+    <div class="box"><div class="label">Saran mapel pilihan Kelas XI–XII</div>
+      <div class="as-mapel">${h.mapel.map((m, i) => `<div><b>${i + 1}. ${esc(m.m)}</b><small>${m.n ? `Mendukung ${m.n} dari ${h.prodi.length} prodi rekomendasimu` : "Sesuai tipe minatmu"}</small></div>`).join("")}</div>
+      <p class="hint">Sesuaikan dengan mapel pilihan yang dibuka di sekolah dan nilai rapormu. Cek juga <a href="#/mapel">Cek Jurusan Sesuai Mapel</a>.</p></div>
+    <div class="box"><div class="label">Rekomendasi prodi</div>
+      <div class="list" id="as-prodi">${h.prodi.map(({ p, kode }, i) => `<button class="item" data-i="${i}"><div class="t"><b>${esc(p.nama)}</b><span>${esc(p.rumpun)} · ${p._kampus} kampus · Mapel: ${esc(p.mapel.join(", "))}</span></div><span class="tag">${kode.length > 1 ? `Paduan ${kode.join("+")}` : `Tipe ${kode[0]}`}</span></button>`).join("")}</div>
+      <p class="hint">Label <b>Paduan</b> berarti prodi ini cocok untuk lebih dari satu tipe minatmu. Klik prodi untuk melihat kampus dan keketatannya.</p></div>
+    <div class="box"><div class="label">Peta karier dan rencana</div>
+      <ol class="as-peta">
+        <li><b>Kelas X · Eksplorasi</b><span>${esc([...t1.kegiatan.slice(0, 2), ...t2.kegiatan.slice(0, 1)].join("; "))}</span></li>
+        <li><b>Kelas XI · Mapel pilihan</b><span>${esc(h.mapel.slice(0, 4).map(m => m.m).join(", "))}</span></li>
+        <li><b>Kelas XII · Seleksi</b><span>Pilih 3–4 prodi dari rekomendasi, cek keketatannya di Cari Prodi, dan ikuti <a href="#/linimasa">Jadwal Penting</a> SNBP dan SNBT.</span></li>
+        <li><b>Kuliah</b><span>${esc(h.prodi.slice(0, 3).map(x => x.p.nama).join(", "))}</span></li>
+        <li><b>Karier</b><span>${esc(karier.join(", "))}</span></li>
+      </ol></div>
+    <p class="hint" id="as-kirim"></p>
+    <div class="row no-print">
+      <button class="btn" id="as-print">Cetak / simpan PDF</button>
+      <button class="btn ghost" data-go="#/asesmen">Ulangi asesmen</button>
+    </div>
+    <p class="foot">Kode Holland disusun dari tiga tipe dengan skor total tertinggi (70% minat, 30% kemampuan yang dirasakan). Hasil ini gambaran minat, bukan diagnosis. Diskusikan dengan orang tua dan sekolah sebelum memutuskan.</p>
+  </section>`;
+  $$("[data-go]").forEach(b => b.onclick = () => go(b.dataset.go));
+  $$("#as-prodi .item").forEach(b => b.onclick = () => go(`#/prodi/${h.prodi[+b.dataset.i].p.id}`));
+  $("#as-print").onclick = () => window.print();
+  const status = $("#as-kirim");
+  const kirim = async () => {
+    status.textContent = "Mengirim hasil ke spreadsheet sekolah…";
+    try { if (await kirimRiasec(rekam, h)) { rekam.terkirim = true; store.set(RIASEC_KEY, rekam); status.textContent = "✓ Hasil sudah dikirim ke spreadsheet sekolah."; } else status.textContent = ""; }
+    catch { status.innerHTML = 'Hasil belum terkirim karena koneksi bermasalah. <button class="linkbtn" id="as-ulang">Coba kirim lagi</button>'; $("#as-ulang").onclick = kirim; }
+  };
+  if (rekam.terkirim) status.textContent = "✓ Hasil sudah dikirim ke spreadsheet sekolah.";
+  else if (META.sekolah.asesmen_url && rekam.izin) kirim();
 }
 
 /* ---------------- Cek Jurusan (mapel favorit) ---------------- */
@@ -806,6 +1039,7 @@ function route() {
   if (a === "negara") return viewNegara(decodeURIComponent(b || ""));
   if (a === "kedinasan") { q.kampus = { text: "", prov: "", jenis: "PTKN", ikatan: "" }; return viewKampus("kedinasan"); }
   if (a === "mapel") return viewMapel();
+  if (a === "asesmen") return viewAsesmen(b);
   if (a === "bahas") return viewBahas();
   if (a === "prodi") return viewProdi(decodeURIComponent(b || ""));
   if (a === "rencana") return viewRencana();

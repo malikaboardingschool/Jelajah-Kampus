@@ -75,6 +75,24 @@ const linimasa = existsSync(root + "data/linimasa.csv") ? parseCSV(read("data/li
 // ---------- Jurusan yang linear dengan mapel rapor favorit ----------
 const mapel = existsSync(root + "data/mapel_jurusan.csv") ? parseCSV(read("data/mapel_jurusan.csv")).map(r => ({ mapel: r.mapel, jurusan: list(r.jurusan) })) : [];
 
+// ---------- Asesmen minat RIASEC (teori Holland) ----------
+const riasec = { tipe: [], soal: [] };
+if (existsSync(root + "data/riasec.csv")) {
+  const namaProdi = new Map(prodi.map(p => [p.nama.toLowerCase(), p.id]));
+  riasec.tipe = parseCSV(read("data/riasec.csv")).map(r => ({
+    kode: r.kode, nama: r.nama, julukan: r.julukan, warna: r.warna, deskripsi: r.deskripsi,
+    ciri: list(r.ciri), kegiatan: list(r.kegiatan), mapel: list(r.mapel), karier: list(r.karier),
+    prodi: list(r.prodi).map(n => namaProdi.get(n.toLowerCase()) || (warn(`riasec.csv ${r.kode}: prodi "${n}" tidak ada di prodi.csv`), null)).filter(Boolean)
+  }));
+  const kode = new Set(riasec.tipe.map(t => t.kode));
+  riasec.soal = existsSync(root + "data/riasec_soal.csv") ? parseCSV(read("data/riasec_soal.csv")).filter((r, i) => {
+      const ok = kode.has(r.kode) && /^(minat|kemampuan)$/.test(r.bagian);
+      if (!ok) warn(`riasec_soal.csv baris ${i + 2}: kode atau bagian tidak dikenal`);
+      return ok;
+    })
+    .map(r => ({ k: r.kode, b: r.bagian, t: r.pernyataan })) : [];
+}
+
 // ---------- Info sekolah kedinasan ----------
 if (existsSync(root + "data/kedinasan.csv")) {
   parseCSV(read("data/kedinasan.csv")).forEach((r, i) => {
@@ -235,6 +253,7 @@ out("kampus.json", kampus);
 out("negara.json", negara);
 out("linimasa.json", linimasa);
 out("mapel.json", mapel);
+out("riasec.json", riasec);
 out("kp.json", kp);
 out("akses.json", akses);
 out("meta.json", {

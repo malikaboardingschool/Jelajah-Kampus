@@ -1,0 +1,61 @@
+kode,bagian,pernyataan
+R,minat,Merakit atau memperbaiki barang elektronik sederhana
+R,minat,"Bekerja dengan alat seperti obeng, gergaji, atau bor"
+R,minat,"Merawat tanaman, kebun, kolam, atau hewan ternak"
+R,minat,"Membuat prakarya atau model dari kayu, logam, atau plastik"
+R,minat,"Mengikuti kegiatan alam seperti berkemah, mendaki, atau pramuka"
+R,minat,Mengoperasikan mesin atau kendaraan
+R,minat,Mengolah bahan makanan dengan langkah dan takaran yang jelas
+R,minat,"Membangun sesuatu yang bisa langsung dipakai, misalnya rak atau saluran air"
+I,minat,Melakukan percobaan di laboratorium
+I,minat,Memecahkan soal matematika atau teka-teki logika yang sulit
+I,minat,"Membaca artikel tentang sains, teknologi, atau kesehatan"
+I,minat,Mencari tahu penyebab suatu fenomena alam
+I,minat,Menganalisis data atau grafik untuk menarik kesimpulan
+I,minat,Mempelajari cara kerja tubuh manusia
+I,minat,Menulis program komputer atau mempelajari cara kerja aplikasi
+I,minat,Ikut olimpiade sains atau lomba karya tulis ilmiah
+A,minat,"Menggambar, melukis, atau membuat desain"
+A,minat,"Menulis cerita, puisi, atau naskah"
+A,minat,"Bermain musik, bernasyid, atau bernyanyi"
+A,minat,"Membuat video, foto, atau konten kreatif"
+A,minat,Berakting atau tampil di panggung
+A,minat,Mendekorasi ruangan atau menata tampilan sebuah acara
+A,minat,Membuat kaligrafi atau karya seni Islami
+A,minat,Mengungkapkan ide dengan cara yang tidak biasa
+S,minat,Mengajari teman yang kesulitan memahami pelajaran
+S,minat,Mendengarkan dan membantu teman yang sedang punya masalah
+S,minat,Ikut kegiatan sosial atau bakti masyarakat
+S,minat,Merawat orang sakit atau membantu orang lanjut usia
+S,minat,Membimbing adik kelas atau santri baru
+S,minat,Mengajar mengaji atau menjadi mentor kelompok belajar
+S,minat,Bekerja dalam tim untuk membantu banyak orang
+S,minat,Mempelajari cara mendidik atau memahami perilaku orang
+E,minat,"Memimpin organisasi, kelas, atau kepanitiaan"
+E,minat,Berjualan atau menjalankan usaha kecil
+E,minat,Meyakinkan orang lain agar setuju dengan pendapatmu
+E,minat,"Berpidato, berdebat, atau menjadi pembawa acara"
+E,minat,Merencanakan dan menggerakkan orang untuk sebuah acara
+E,minat,Bernegosiasi untuk mendapatkan kesepakatan terbaik
+E,minat,"Mengikuti perkembangan bisnis, ekonomi, atau politik"
+E,minat,Mengambil keputusan penting dan bertanggung jawab atas hasilnya
+C,minat,Menyusun jadwal atau daftar tugas yang rapi
+C,minat,"Mencatat keuangan, misalnya kas kelas atau organisasi"
+C,minat,"Mengetik, merapikan, dan mengarsipkan dokumen"
+C,minat,Mengolah data di spreadsheet seperti Excel atau Google Sheets
+C,minat,Memeriksa ulang pekerjaan agar tidak ada yang salah
+C,minat,Bekerja dengan prosedur dan aturan yang jelas
+C,minat,"Mengelola inventaris barang, misalnya di gudang atau perpustakaan"
+C,minat,Menjadi sekretaris atau bendahara organisasi
+R,kemampuan,Saya terampil menggunakan alat atau memperbaiki barang
+R,kemampuan,Saya cepat menguasai pekerjaan teknis yang memakai tangan
+I,kemampuan,Saya cepat memahami konsep sains atau matematika
+I,kemampuan,Saya mampu menganalisis masalah secara logis dan runtut
+A,kemampuan,"Saya mampu menghasilkan karya kreatif seperti gambar, tulisan, atau musik"
+A,kemampuan,Saya sering punya ide orisinal yang berbeda dari orang lain
+S,kemampuan,Saya mampu menjelaskan sesuatu sehingga orang lain mudah paham
+S,kemampuan,Orang lain merasa nyaman bercerita kepada saya
+E,kemampuan,Saya mampu memimpin dan menggerakkan orang lain
+E,kemampuan,Saya percaya diri berbicara di depan banyak orang
+C,kemampuan,"Saya bekerja dengan teliti, rapi, dan tepat waktu"
+C,kemampuan,"Saya akurat dalam mengelola angka, data, atau catatan"
