@@ -431,20 +431,25 @@ function heksagonSVG(skor) {
   const c = 160, R = 108;
   const titik = (i, r) => { const a = (-90 + i * 60) * Math.PI / 180; return [c + r * Math.cos(a), c + r * Math.sin(a)]; };
   const poli = f => HEKS.map((k, i) => titik(i, R * f(k) / 100).map(v => v.toFixed(1)).join(",")).join(" ");
-  const grid = [25, 50, 75, 100].map(p => `<polygon points="${HEKS.map((_, i) => titik(i, R * p / 100).join(",")).join(" ")}" class="hx-grid"/>`).join("");
-  const sumbu = HEKS.map((_, i) => { const [x, y] = titik(i, R); return `<line x1="${c}" y1="${c}" x2="${x}" y2="${y}" class="hx-grid"/>`; }).join("");
+  const grid = [25, 50, 75, 100].map(p => `<polygon points="${HEKS.map((_, i) => titik(i, R * p / 100).join(",")).join(" ")}" class="hx-grid" fill="none" stroke="#e2e8f0" stroke-width="1"/>`).join("");
+  const sumbu = HEKS.map((_, i) => { const [x, y] = titik(i, R); return `<line x1="${c}" y1="${c}" x2="${x}" y2="${y}" class="hx-grid" fill="none" stroke="#e2e8f0" stroke-width="1"/>`; }).join("");
   const label = HEKS.map((k, i) => {
     const t = tipeOf(k); const [x, y] = titik(i, R + 30);
-    return `<text x="${x}" y="${y - 4}" text-anchor="middle" class="hx-k" fill="${t.warna}">${k} · ${Math.round(skor[k].total)}</text><text x="${x}" y="${y + 11}" text-anchor="middle" class="hx-n">${esc(t.julukan)}</text>`;
+    return `<text x="${x}" y="${y - 4}" text-anchor="middle" class="hx-k" fill="${t.warna}" font-size="13" font-weight="800" font-family="Plus Jakarta Sans, Arial, sans-serif">${k} · ${Math.round(skor[k].total)}</text><text x="${x}" y="${y + 11}" text-anchor="middle" class="hx-n" fill="#64748b" font-size="10.5" font-weight="600" font-family="Plus Jakarta Sans, Arial, sans-serif">${esc(t.julukan)}</text>`;
   }).join("");
-  return `<svg viewBox="0 0 320 320" class="hx" role="img" aria-label="Heksagon RIASEC: ${HEKS.map(k => `${k} ${Math.round(skor[k].total)}`).join(", ")}">
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320" class="hx" role="img" aria-label="Heksagon RIASEC: ${HEKS.map(k => `${k} ${Math.round(skor[k].total)}`).join(", ")}">
     ${grid}${sumbu}
-    <polygon points="${poli(k => skor[k].minat)}" class="hx-minat"/>
-    <polygon points="${poli(k => skor[k].kemampuan)}" class="hx-mampu"/>
+    <polygon points="${poli(k => skor[k].minat)}" class="hx-minat" fill="rgba(37,99,235,0.22)" stroke="#2563eb" stroke-width="2.5" stroke-linejoin="round"/>
+    <polygon points="${poli(k => skor[k].kemampuan)}" class="hx-mampu" fill="none" stroke="#06b6d4" stroke-width="2" stroke-dasharray="5 4" stroke-linejoin="round"/>
     ${label}</svg>`;
 }
 
 const RIASEC_KEY = "mp_riasec", RIASEC_DRAFT = "mp_riasec_draft";
+// Warna tipe versi lembut sebagai rgba (bukan color-mix) agar ikut tergambar di PDF.
+const rgba = (hex, a) => { const n = parseInt(hex.slice(1), 16); return `rgba(${n >> 16},${(n >> 8) & 255},${n & 255},${a})`; };
+const warnaTipe = t => `--c:${t.warna};--cs:${rgba(t.warna, 0.1)};--cb:${rgba(t.warna, 0.32)}`;
+const kombinasi = kode => kode.split("").map(k => tipeOf(k)?.julukan || k).join(" – ");
+
 function viewAsesmen(bagian) {
   shell("asesmen");
   if (!RIASEC.soal.length) { $("#main").innerHTML = '<section class="panel"><div class="empty">Soal asesmen belum tersedia.</div></section>'; return; }
@@ -453,24 +458,32 @@ function viewAsesmen(bagian) {
   if (bagian === "tes") return viewTesRiasec();
   const d = store.get(RIASEC_DRAFT);
   const kirim = !!META.sekolah.asesmen_url;
+  const nMinat = RIASEC.soal.filter(s => s.b === "minat").length, nMampu = RIASEC.soal.length - nMinat;
+  const lanjut = d && Object.keys(d.jawab || {}).length;
   $("#main").innerHTML = `<section class="panel asesmen">
-    <div class="as-intro">
-      <div><div class="label">Teori Holland · RIASEC</div><h2>Asesmen Minat & Bakat</h2>
-      <p class="hint">Kenali tipe minatmu dari enam tipe kepribadian kerja Holland: <b>R</b>ealistic, <b>I</b>nvestigative, <b>A</b>rtistic, <b>S</b>ocial, <b>E</b>nterprising, dan <b>C</b>onventional. Hasilnya berupa kode Holland, saran mapel pilihan, rekomendasi prodi, dan peta karier.</p></div>
-      <div class="as-chips">${HEKS.map(k => { const t = tipeOf(k); return `<span style="--c:${t.warna}"><b>${k}</b>${esc(t.julukan)}</span>`; }).join("")}</div>
+    <div><div class="label">Teori Holland · RIASEC</div><h2>Asesmen Minat & Bakat</h2>
+      <p class="hint">Dikembangkan dari teori kepribadian karier psikolog John L. Holland. Setiap orang adalah perpaduan unik dari enam tipe minat. Asesmen ini menemukan tiga tipe yang paling menonjol pada dirimu, lalu menghubungkannya dengan mapel pilihan, prodi, dan karier.</p></div>
+    <div class="as-stat">
+      <div><b>${RIASEC.soal.length}</b><span>pernyataan: ${nMinat} minat, ${nMampu} kemampuan</span></div>
+      <div><b>1–5</b><span>skala dari sangat tidak suka sampai sangat suka</span></div>
+      <div><b>±10 menit</b><span>tanpa batas waktu, bisa dilanjutkan nanti</span></div>
+      <div><b>3 tipe</b><span>kombinasi minat teratasmu</span></div>
     </div>
-    <div class="cols">
-      <div class="box"><div class="label">Cara mengerjakan</div><ul><li>${RIASEC.soal.length} pernyataan, sekitar 10 menit.</li><li>Tidak ada jawaban benar atau salah.</li><li>Jawab sesuai dirimu sekarang, bukan harapan orang lain.</li></ul></div>
-      <div class="box"><div class="label">Yang kamu dapatkan</div><ul><li>Kode Holland dan grafik heksagon</li><li>Saran mapel pilihan Kelas XI–XII</li><li>Rekomendasi prodi dan karier</li><li>Peta rencana dari kelas X sampai kuliah</li></ul></div>
-    </div>
-    ${hasil ? `<div class="as-last"><span>Hasil terakhirmu: <b class="mono">${esc(hasil.kode)}</b> · ${new Date(hasil.waktu).toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" })}</span><button class="btn ghost" data-go="#/asesmen/hasil">Lihat hasil</button></div>` : ""}
+    <div><div class="label" style="margin-bottom:8px">6 tipe minat Holland</div>
+      <div class="as-tipe">${HEKS.map(k => { const t = tipeOf(k); return `<div style="${warnaTipe(t)}"><div class="as-tipe-h"><b>${k}</b><span><strong>${esc(t.julukan)}</strong><small>${esc(t.nama)}</small></span></div><p>${esc(t.deskripsi)}</p><div class="pills">${t.karier.slice(0, 4).map(c => `<span class="pill">${esc(c)}</span>`).join("")}</div></div>`; }).join("")}</div></div>
+    <div class="box"><div class="label">Bagaimana hasilnya dibaca?</div>
+      <p>Hasilmu berupa <b>kode Holland</b> tiga huruf, yaitu kombinasi tiga tipe tertinggimu, misalnya <b>ISA</b> (${esc(kombinasi("ISA"))}). Huruf pertama paling dominan. Dari kode ini kamu mendapat saran mapel pilihan Kelas XI–XII, rekomendasi prodi, dan peta karier.</p></div>
+    <div class="box"><div class="label">Skala penilaian</div>
+      <div class="as-legend">${SKALA.minat.map((l, i) => `<div><span>${i + 1}</span><small>${l}</small></div>`).join("")}</div>
+      <p class="hint">Jawab sesuai yang benar-benar kamu sukai, bukan yang menurutmu seharusnya. Tidak ada jawaban benar atau salah. Setelah memilih, pernyataan berikutnya muncul otomatis. Di laptop kamu juga bisa menekan tombol angka 1–5.</p></div>
+    ${hasil ? `<div class="as-last"><span>Hasil terakhirmu: <b class="mono">${esc(hasil.kode)}</b> · ${esc(kombinasi(hasil.kode))} · ${new Date(hasil.waktu).toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" })}</span><button class="btn ghost" data-go="#/asesmen/hasil">Lihat hasil</button></div>` : ""}
     <form id="as-f" class="as-form">
       <label>Nama lengkap<input class="search" id="as-nama" required maxlength="80" autocomplete="name" value="${esc(d?.nama || hasil?.nama || "")}"></label>
       <label>Kelas<input class="search" id="as-kelas" required maxlength="30" placeholder="Contoh: X-2 atau XI IPA 1" value="${esc(d?.kelas || hasil?.kelas || "")}"></label>
       ${kirim ? '<label class="as-cek"><input type="checkbox" id="as-izin" required> Saya setuju nama, kelas, jawaban, dan hasil asesmen ini disimpan oleh sekolah untuk keperluan bimbingan.</label>' : ""}
-      <button class="btn" type="submit">${d && Object.keys(d.jawab || {}).length ? "Lanjutkan asesmen" : hasil ? "Ulangi asesmen" : "Mulai asesmen"}</button>
+      <button class="btn" type="submit">${lanjut ? `Lanjutkan asesmen (${lanjut}/${RIASEC.soal.length})` : hasil ? "Ulangi asesmen" : "Mulai asesmen"}</button>
     </form>
-    <p class="foot">Asesmen ini disusun berdasarkan teori minat karier John L. Holland (RIASEC) dengan butir pernyataan orisinal. Hasilnya adalah gambaran minat untuk bahan diskusi dengan orang tua dan sekolah, bukan diagnosis psikologis dan bukan satu-satunya dasar memilih jurusan.</p>
+    <p class="foot">Butir pernyataan disusun orisinal oleh sekolah berdasarkan teori Holland. Hasilnya gambaran minat untuk bahan diskusi dengan orang tua dan sekolah, bukan diagnosis psikologis dan bukan satu-satunya dasar memilih jurusan.</p>
   </section>`;
   $$("[data-go]").forEach(b => b.onclick = () => go(b.dataset.go));
   $("#as-f").onsubmit = e => {
@@ -478,49 +491,120 @@ function viewAsesmen(bagian) {
     const nama = $("#as-nama").value.trim().replace(/\s+/g, " "), kelas = $("#as-kelas").value.trim().replace(/\s+/g, " ");
     if (!nama || !kelas) return;
     const lama = store.get(RIASEC_DRAFT);
-    store.set(RIASEC_DRAFT, { nama, kelas, izin: !!$("#as-izin")?.checked, jawab: lama?.jawab || {}, hal: lama?.hal || 0 });
+    store.set(RIASEC_DRAFT, { nama, kelas, izin: !!$("#as-izin")?.checked, jawab: lama?.jawab || {}, pos: lama?.pos || 0 });
     go("#/asesmen/tes");
   };
 }
 
+// Satu pernyataan per layar. Memilih jawaban langsung membuka pernyataan berikutnya.
+let tombolAngka = null;
 function viewTesRiasec() {
   const d = store.get(RIASEC_DRAFT);
   if (!d) return go("#/asesmen");
-  const hal = urutanSoal();
-  d.hal = Math.min(d.hal || 0, hal.length - 1);
-  const s = hal[d.hal];
-  const b = s[0].b;
-  const total = RIASEC.soal.length, terjawab = Object.keys(d.jawab).length;
-  $("#main").innerHTML = `<section class="panel asesmen">
-    <div class="as-prog"><div class="label">Bagian ${d.hal + 1} dari ${hal.length} · ${b === "minat" ? "Seberapa suka kamu melakukan kegiatan ini?" : "Seberapa sesuai pernyataan ini dengan dirimu?"}</div>
-      <div class="as-bar"><i style="width:${terjawab / total * 100}%"></i></div></div>
-    <div class="as-list">${s.map((q, n) => `<fieldset class="as-q"><legend><span class="mono">${d.hal * PER_HAL + n + 1}.</span> ${esc(q.t)}</legend>
-      <div class="as-opt">${SKALA[b].map((l, v) => `<label title="${l}"><input type="radio" name="q${q.i}" value="${v + 1}" ${d.jawab[q.i] === v + 1 ? "checked" : ""}><span>${v + 1}</span><small>${l}</small></label>`).join("")}</div></fieldset>`).join("")}</div>
-    <div class="row as-nav">
-      <button class="btn ghost" id="as-prev">${d.hal ? "← Sebelumnya" : "← Ubah data diri"}</button>
-      <span class="hint" id="as-sisa"></span>
-      <button class="btn" id="as-next">${d.hal === hal.length - 1 ? "Lihat hasil" : "Lanjut →"}</button>
-    </div>
-  </section>`;
-  const cek = () => {
-    const kurang = s.filter(q => !d.jawab[q.i]).length;
-    $("#as-next").disabled = kurang > 0;
-    $("#as-sisa").textContent = kurang ? `${kurang} pernyataan belum dijawab` : "";
+  const urut = urutanSoal().flat();
+  const total = urut.length;
+  d.pos = Math.max(0, Math.min(d.pos ?? 0, total - 1));
+  const tampil = () => {
+    const q = urut[d.pos];
+    const terjawab = Object.keys(d.jawab).length;
+    const awalMampu = urut.findIndex(s => s.b === "kemampuan");
+    const selesai = terjawab >= total;
+    $("#main").innerHTML = `<section class="panel asesmen as-tes">
+      <div class="as-prog"><div class="as-prog-h"><span class="label">${q.b === "minat" ? "Bagian 1 · Minat" : "Bagian 2 · Kemampuan yang kamu rasakan"}</span><span class="mono">${d.pos + 1} / ${total}</span></div>
+        <div class="as-bar"><i style="width:${terjawab / total * 100}%"></i></div></div>
+      ${d.pos === awalMampu ? '<div class="as-info">Bagian minat selesai. Sekarang nilai seberapa sesuai pernyataan berikut dengan kemampuanmu.</div>' : ""}
+      <div class="as-kartu">
+        <p class="as-tanya">${q.b === "minat" ? "Seberapa suka kamu" : "Seberapa sesuai dengan dirimu"}</p>
+        <h3>${esc(q.t)}${q.b === "minat" ? "?" : ""}</h3>
+        <div class="as-pilih" role="radiogroup" aria-label="Jawaban">${SKALA[q.b].map((l, v) => `<button type="button" role="radio" aria-checked="${d.jawab[q.i] === v + 1}" data-v="${v + 1}"><span>${v + 1}</span><small>${l}</small></button>`).join("")}</div>
+      </div>
+      <div class="row as-nav">
+        <button class="btn ghost" id="as-prev">${d.pos ? "← Sebelumnya" : "← Data diri"}</button>
+        ${selesai ? '<button class="btn" id="as-done">Lihat hasil →</button>' : d.jawab[q.i] && d.pos < total - 1 ? '<button class="btn ghost" id="as-next">Berikutnya →</button>' : ""}
+      </div>
+    </section>`;
+    const pilih = v => {
+      d.jawab[q.i] = v; store.set(RIASEC_DRAFT, d);
+      $$(".as-pilih button").forEach(b => b.setAttribute("aria-checked", +b.dataset.v === v));
+      // Lompat ke pernyataan berikutnya yang belum dijawab, atau tetap di sini bila semua sudah terjawab.
+      const nxt = urut.findIndex((s, i) => i > d.pos && !d.jawab[s.i]);
+      const sisa = nxt >= 0 ? nxt : urut.findIndex(s => !d.jawab[s.i]);
+      setTimeout(() => { if (sisa >= 0) d.pos = sisa; store.set(RIASEC_DRAFT, d); tampil(); }, 220);
+    };
+    $$(".as-pilih button").forEach(b => b.onclick = () => pilih(+b.dataset.v));
+    $("#as-prev").onclick = () => { if (!d.pos) return go("#/asesmen"); d.pos--; store.set(RIASEC_DRAFT, d); tampil(); };
+    if ($("#as-next")) $("#as-next").onclick = () => { d.pos++; store.set(RIASEC_DRAFT, d); tampil(); };
+    if ($("#as-done")) $("#as-done").onclick = selesaiTes;
+    document.removeEventListener("keydown", tombolAngka);
+    tombolAngka = e => {
+      if (!location.hash.startsWith("#/asesmen/tes")) return document.removeEventListener("keydown", tombolAngka);
+      if (/^[1-5]$/.test(e.key) && !e.metaKey && !e.ctrlKey) pilih(+e.key);
+    };
+    document.addEventListener("keydown", tombolAngka);
   };
-  $$(".as-q input").forEach(el => el.onchange = () => {
-    d.jawab[el.name.slice(1)] = +el.value; store.set(RIASEC_DRAFT, d); cek();
-    $(".as-bar i").style.width = `${Object.keys(d.jawab).length / total * 100}%`;
-  });
-  $("#as-prev").onclick = () => { if (!d.hal) return go("#/asesmen"); d.hal--; store.set(RIASEC_DRAFT, d); viewTesRiasec(); window.scrollTo(0, 0); };
-  $("#as-next").onclick = () => {
-    if (d.hal < hal.length - 1) { d.hal++; store.set(RIASEC_DRAFT, d); viewTesRiasec(); window.scrollTo(0, 0); return; }
+  const selesaiTes = () => {
+    document.removeEventListener("keydown", tombolAngka);
     const jawab = RIASEC.soal.map((_, i) => d.jawab[i] ?? null);
     const h = hitungRiasec(jawab);
-    const rekam = { nama: d.nama, kelas: d.kelas, izin: d.izin, waktu: new Date().toISOString(), jawab, kode: h.kode, terkirim: false };
-    store.set(RIASEC_KEY, rekam); store.set(RIASEC_DRAFT, null);
+    store.set(RIASEC_KEY, { nama: d.nama, kelas: d.kelas, izin: d.izin, waktu: new Date().toISOString(), jawab, kode: h.kode, terkirim: false });
+    store.set(RIASEC_DRAFT, null);
     go("#/asesmen/hasil");
   };
-  cek();
+  tampil();
+}
+
+// Salinan hasil khusus PDF: html2canvas tidak menggambar SVG sebaris dan bayangan dengan baik.
+// SVG diubah menjadi PNG lewat canvas, karena html2canvas tidak menggambar SVG.
+const svgKePng = svg => new Promise((ok, gagal) => {
+  const img = new Image();
+  img.onload = () => {
+    const c = document.createElement("canvas"); c.width = 960; c.height = 960;
+    c.getContext("2d").drawImage(img, 0, 0, 960, 960);
+    ok(c.toDataURL("image/png"));
+  };
+  img.onerror = gagal;
+  img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(new XMLSerializer().serializeToString(svg));
+});
+async function salinanPdf(rekam) {
+  const el = $(".as-hasil").cloneNode(true);
+  el.querySelectorAll("[data-html2canvas-ignore]").forEach(n => n.remove());
+  for (const svg of el.querySelectorAll("svg.hx")) {
+    const img = document.createElement("img");
+    img.src = await svgKePng(svg).catch(() => "");
+    img.style.cssText = "width:100%;max-width:340px;height:auto;display:block";
+    svg.replaceWith(img);
+  }
+  el.querySelectorAll("*").forEach(n => { n.style.boxShadow = "none"; });
+  el.querySelectorAll(".item").forEach(n => { n.style.background = "#fff"; });
+  el.style.cssText += ";border:0;box-shadow:none;padding:0";
+  const s = META.sekolah;
+  el.insertAdjacentHTML("afterbegin", `<div style="display:flex;align-items:center;gap:12px;padding-bottom:12px;margin-bottom:4px;border-bottom:2px solid #2563eb">
+    <img src="${esc(s.logo || "assets/logo.png")}" width="44" height="44" style="border-radius:50%">
+    <div style="flex:1"><b style="font-size:16px;color:#0f172a">${esc(s.app)} · ${esc(s.nama)}</b><div style="font-size:12px;color:#475569">Laporan Asesmen Minat & Bakat (RIASEC) · ${esc(rekam.nama)} · ${esc(rekam.kelas)} · ${new Date(rekam.waktu).toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" })}</div></div></div>`);
+  return el;
+}
+
+// PDF dibuat di browser dengan html2pdf.js (dimuat hanya saat tombol diklik).
+let html2pdfSiap = null;
+async function unduhPdfRiasec(rekam) {
+  const btn = $("#as-pdf"); btn.disabled = true; btn.textContent = "Menyiapkan PDF…";
+  try {
+    html2pdfSiap ||= new Promise((ok, gagal) => {
+      const el = document.createElement("script");
+      el.src = "https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js";
+      el.onload = ok; el.onerror = () => { html2pdfSiap = null; gagal(); };
+      document.head.append(el);
+    });
+    await html2pdfSiap;
+    const nama = rekam.nama.replace(/[^\p{L}\p{N} ]/gu, "").trim().replace(/\s+/g, "-") || "siswa";
+    await window.html2pdf().set({
+      margin: [10, 10, 12, 10], filename: `Asesmen-RIASEC-${nama}.pdf`,
+      image: { type: "jpeg", quality: 0.95 },
+      html2canvas: { scale: 2, useCORS: true, backgroundColor: "#ffffff" },
+      jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }, pagebreak: { mode: ["css", "legacy"], avoid: [".as-head", ".as-skor", ".cols", ".label", ".as-mapel > div", ".item", ".as-peta li", ".box > p"] }
+    }).from(await salinanPdf(rekam)).save();
+  } catch { alert("PDF gagal dibuat. Periksa koneksi internet lalu coba lagi."); }
+  btn.disabled = false; btn.textContent = "Unduh PDF";
 }
 
 // Kirim ke Google Apps Script milik sekolah. Mode no-cors: browser tidak bisa membaca balasan, jadi status "terkirim" berarti permintaan sudah berangkat.
@@ -550,7 +634,8 @@ function viewHasilRiasec(rekam) {
     <div class="as-head">
       <div><div class="label">Hasil asesmen · ${esc(rekam.nama)} · ${esc(rekam.kelas)}</div>
         <h2>Kode Holland-mu</h2>
-        <div class="as-kode">${[t1, t2, t3].map((t, i) => `<span style="--c:${t.warna}" class="${i ? "" : "utama"}"><b>${t.kode}</b><small>${esc(t.julukan)}</small></span>`).join("")}</div>
+        <div class="as-kode">${[t1, t2, t3].map((t, i) => `<span style="${warnaTipe(t)}" class="${i ? "" : "utama"}"><b>${t.kode}</b><small>${esc(t.julukan)}</small></span>`).join("")}</div>
+        <p class="as-komb">Kombinasi minat: <b>${esc(kombinasi(h.kode))}</b></p>
         <p>${esc(t1.deskripsi)}</p>
         <div class="pills">${t1.ciri.map(c => `<span class="pill">${esc(c)}</span>`).join("")}</div>
       </div>
@@ -575,16 +660,16 @@ function viewHasilRiasec(rekam) {
         <li><b>Kuliah</b><span>${esc(h.prodi.slice(0, 3).map(x => x.p.nama).join(", "))}</span></li>
         <li><b>Karier</b><span>${esc(karier.join(", "))}</span></li>
       </ol></div>
-    <p class="hint" id="as-kirim"></p>
-    <div class="row no-print">
-      <button class="btn" id="as-print">Cetak / simpan PDF</button>
+    <p class="hint" id="as-kirim" data-html2canvas-ignore></p>
+    <div class="row no-print" data-html2canvas-ignore>
+      <button class="btn" id="as-pdf">Unduh PDF</button>
       <button class="btn ghost" data-go="#/asesmen">Ulangi asesmen</button>
     </div>
     <p class="foot">Kode Holland disusun dari tiga tipe dengan skor total tertinggi (70% minat, 30% kemampuan yang dirasakan). Hasil ini gambaran minat, bukan diagnosis. Diskusikan dengan orang tua dan sekolah sebelum memutuskan.</p>
   </section>`;
   $$("[data-go]").forEach(b => b.onclick = () => go(b.dataset.go));
   $$("#as-prodi .item").forEach(b => b.onclick = () => go(`#/prodi/${h.prodi[+b.dataset.i].p.id}`));
-  $("#as-print").onclick = () => window.print();
+  $("#as-pdf").onclick = () => unduhPdfRiasec(rekam);
   const status = $("#as-kirim");
   const kirim = async () => {
     status.textContent = "Mengirim hasil ke spreadsheet sekolah…";
