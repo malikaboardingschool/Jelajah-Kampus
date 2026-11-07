@@ -10,7 +10,9 @@
  *
  * Memperbarui skrip yang sudah terpasang (URL tetap sama):
  *   Tempel kode baru, simpan, lalu Terapkan → Kelola deployment → ikon pensil →
- *   Versi: "Versi baru" → Terapkan. Izinkan akses Google Drive bila diminta.
+ *   Versi: "Versi baru" → Terapkan.
+ *   Lalu pilih fungsi "izinkanDrive" di bilah atas editor dan klik Jalankan satu kali,
+ *   supaya Google meminta izin Google Drive. Tanpa izin ini laporan PDF tidak bisa disimpan.
  *
  * Laporan PDF tiap siswa disimpan di folder Google Drive "Laporan Tes Minat Bakat"
  * milik akun ini, dan tautannya ditulis di kolom "Laporan PDF".
@@ -60,16 +62,25 @@ function doPost(e) {
 }
 
 // Simpan laporan PDF ke Google Drive dan kembalikan tautannya. Hanya file yang benar-benar PDF dan tidak terlalu besar.
+// Bila gagal, alasannya ditulis di kolom Laporan PDF agar mudah diperiksa.
 function simpanPdf_(d) {
-  if (!d.pdf || typeof d.pdf !== "string" || d.pdf.length > MAKS_PDF * 1.4) return "";
+  if (!d.pdf || typeof d.pdf !== "string") return "PDF tidak dikirim dari aplikasi";
+  if (d.pdf.length > MAKS_PDF * 1.4) return "PDF ditolak: terlalu besar";
   try {
     const isi = Utilities.base64Decode(d.pdf);
-    if (isi.length > MAKS_PDF || String.fromCharCode.apply(null, isi.slice(0, 5)) !== "%PDF-") return "";
+    if (isi.length > MAKS_PDF || String.fromCharCode.apply(null, isi.slice(0, 5)) !== "%PDF-") return "PDF ditolak: bukan file PDF";
     const nama = (teks_(d.kelas, 30) + " - " + teks_(d.nama, 80)).replace(/[\\/:*?"<>|']/g, "") + " - " + Utilities.formatDate(new Date(), "Asia/Jakarta", "yyyy-MM-dd HHmm") + ".pdf";
     return folder_().createFile(Utilities.newBlob(isi, "application/pdf", nama)).getUrl();
   } catch (err) {
-    return "";
+    return "Gagal menyimpan PDF: " + String(err && err.message || err).slice(0, 150);
   }
+}
+
+// Jalankan sekali dari editor (pilih "izinkanDrive" lalu klik Jalankan) untuk memberi izin Google Drive
+// dan membuat folder laporan.
+function izinkanDrive() {
+  const f = folder_();
+  Logger.log("Izin Google Drive aktif. Folder laporan: " + f.getUrl());
 }
 
 function folder_() {
