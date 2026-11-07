@@ -596,13 +596,16 @@ async function unduhPdfRiasec(rekam) {
       document.head.append(el);
     });
     await html2pdfSiap;
+    const gulir = window.scrollY;
+    window.scrollTo(0, 0);
     const nama = rekam.nama.replace(/[^\p{L}\p{N} ]/gu, "").trim().replace(/\s+/g, "-") || "siswa";
     await window.html2pdf().set({
       margin: [10, 10, 12, 10], filename: `Asesmen-RIASEC-${nama}.pdf`,
       image: { type: "jpeg", quality: 0.95 },
-      html2canvas: { scale: 2, useCORS: true, backgroundColor: "#ffffff" },
+      // scrollX/scrollY 0: tanpa ini isi PDF ikut bergeser sejauh halaman sedang digulir.
+      html2canvas: { scale: 2, useCORS: true, backgroundColor: "#ffffff", scrollX: 0, scrollY: 0 },
       jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }, pagebreak: { mode: ["css", "legacy"], avoid: [".as-head", ".as-skor", ".cols", ".label", ".as-mapel > div", ".item", ".as-peta li", ".box > p"] }
-    }).from(await salinanPdf(rekam)).save();
+    }).from(await salinanPdf(rekam)).save().finally(() => window.scrollTo(0, gulir));
   } catch { alert("PDF gagal dibuat. Periksa koneksi internet lalu coba lagi."); }
   btn.disabled = false; btn.textContent = "Unduh PDF";
 }
