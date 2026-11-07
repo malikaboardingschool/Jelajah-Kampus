@@ -444,9 +444,8 @@ function heksagonSVG(skor) {
     ${label}</svg>`;
 }
 
-// Zona kerja (diadaptasi dari konsep Job Zone O*NET) disesuaikan dengan jenjang pendidikan di Indonesia.
-const ZONA = [["Persiapan minimal", "Lulus SMA atau pelatihan singkat"], ["Persiapan dasar", "Kursus atau sertifikasi hingga 1 tahun"],
-  ["Persiapan menengah", "Diploma (D3) atau pendidikan vokasi"], ["Persiapan tinggi", "Sarjana (S1 atau D4)"], ["Persiapan sangat tinggi", "Pendidikan profesi, S2, atau spesialis"]];
+// Zona kerja 1–5 di riasec_karier.csv (konsep Job Zone O*NET) ditampilkan sebagai jenjang pendidikan di Indonesia.
+const JENJANG_ZONA = ["Lulus SMA", "Kursus", "D3/vokasi", "S1/D4", "Profesi/S2"];
 const RIASEC_KEY = "mp_riasec", RIASEC_DRAFT = "mp_riasec_draft";
 // Warna tipe versi lembut sebagai rgba (bukan color-mix) agar ikut tergambar di PDF.
 const rgba = (hex, a) => { const n = parseInt(hex.slice(1), 16); return `rgba(${n >> 16},${(n >> 8) & 255},${n & 255},${a})`; };
@@ -676,17 +675,8 @@ function viewHasilRiasec(rekam) {
       <div class="list" id="as-prodi">${h.prodi.map(({ p, kode }, i) => `<button class="item" data-i="${i}"><div class="t"><b>${esc(p.nama)}</b><span>${esc(p.rumpun)} · ${p._kampus} kampus · Mapel: ${esc(p.mapel.join(", "))}</span></div><span class="tag">${kode.length > 1 ? `Paduan ${kode.join("+")}` : `Tipe ${kode[0]}`}</span></button>`).join("")}</div>
       <p class="hint">Label <b>Paduan</b> berarti prodi ini cocok untuk lebih dari satu tipe minatmu. Klik prodi untuk melihat kampus dan keketatannya.</p></div>
     <div class="box as-blok"><div class="label">Rekomendasi karier untuk dieksplorasi</div>
-      <div class="list" id="as-karier">${karier.map((c, i) => `<button class="item" data-i="${i}" ${c.prodi ? "" : "disabled"}><div class="t"><b>${esc(c.nama)}</b><span>${esc(c.catatan)}${c.prodi && prodiById[c.prodi] ? ` · Prodi: ${esc(prodiById[c.prodi].nama)}` : ""}</span></div><span class="as-kr-tag"><span class="tag">${c.kode.split("").join("-")}</span><span class="pill">Zona ${c.zona}</span></span></button>`).join("")}</div>
-      <details class="as-zona" open><summary>Panduan zona kerja</summary>
-        <div class="as-zona-g">${ZONA.map(([l, d], i) => `<div><b>Zona ${i + 1}</b><span>${l}</span><small>${d}</small></div>`).join("")}</div></details>
-      <p class="hint">Kode karier menunjukkan tipe minat yang paling dibutuhkan pekerjaan itu. Zona kerja menunjukkan seberapa panjang persiapan pendidikannya.</p></div>
-    <div class="box as-blok"><div class="label">Peta karier dan rencana</div>
-      <ol class="as-peta">
-        <li><b>Kelas X · Eksplorasi</b><span>${esc([...t1.kegiatan.slice(0, 2), ...t2.kegiatan.slice(0, 1)].join("; "))}</span></li>
-        <li><b>Kelas XI · Mapel pilihan</b><span>${esc(h.mapel.slice(0, 4).map(m => m.m).join(", "))}</span></li>
-        <li><b>Kelas XII · Seleksi</b><span>Pilih 3–4 prodi dari rekomendasi, cek keketatannya di Cari Prodi, dan ikuti <a href="#/linimasa">Jadwal Penting</a> SNBP dan SNBT.</span></li>
-        <li><b>Karier</b><span>${esc(karier.slice(0, 5).map(c => c.nama).join(", "))}</span></li>
-      </ol></div>
+      <div class="list" id="as-karier">${karier.map((c, i) => `<button class="item" data-i="${i}" ${c.prodi ? "" : "disabled"}><div class="t"><b>${esc(c.nama)}</b><span>${esc(c.catatan)}${c.prodi && prodiById[c.prodi] ? ` · Prodi: ${esc(prodiById[c.prodi].nama)}` : ""}</span></div><span class="as-kr-tag"><span class="tag">${c.kode.split("").join("-")}</span><span class="pill">${JENJANG_ZONA[c.zona - 1]}</span></span></button>`).join("")}</div>
+      <p class="hint">Kode karier menunjukkan tipe minat yang paling dibutuhkan pekerjaan itu. Label di kanan menunjukkan pendidikan minimal yang biasanya diperlukan.</p></div>
     <p class="hint" id="as-kirim" data-html2canvas-ignore></p>
     <div class="row no-print" data-html2canvas-ignore>
       <button class="btn" id="as-pdf">Unduh PDF</button>
