@@ -430,6 +430,34 @@ code{font-family:var(--mono);font-size:.9em;background:var(--surface-2);padding:
 .as-peta li:not(:last-child)::after{content:"";position:absolute;left:11px;top:26px;bottom:2px;width:2px;background:var(--primary-100)}
 .as-peta b{color:var(--heading)}
 .as-peta span{color:#475569;font-size:13.5px}
+.as-interp{display:grid;gap:10px}
+.as-interp article{display:grid;gap:8px;padding:14px 16px;border-radius:14px;border:1px solid var(--cb);border-left:5px solid var(--c);background:linear-gradient(135deg,var(--cs),#fff 70%)}
+.as-interp h3{margin:0;font-size:15.5px;color:var(--heading);display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.as-interp h3 b{color:var(--c);font-size:18px}
+.as-interp h3 small{margin-left:auto;font-size:11px;font-weight:800;color:var(--c);background:#fff;border:1px solid var(--cb);border-radius:999px;padding:2px 9px}
+.as-interp p{margin:0;font-size:13.5px;color:#334155;line-height:1.5}
+.as-interp-g{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.as-interp-g ul{margin:4px 0 0;padding-left:18px;font-size:13px;color:#334155;display:grid;gap:2px}
+.as-interp-g .label{color:var(--c)}
+.as-interp-g p{font-size:13px;margin-top:4px}
+#as-karier .item .t span{text-transform:none;letter-spacing:0;font-size:13px;color:#475569}
+.as-kr-tag{display:flex;gap:6px;align-items:center;flex:none}
+#as-karier .item:disabled{cursor:default;opacity:1;color:inherit}
+#as-karier .item:disabled:hover{background:var(--surface)}
+.as-zona summary{cursor:pointer;font-weight:700;font-size:13px;color:var(--primary)}
+.as-zona-g{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:8px}
+.as-zona-g div{display:grid;gap:2px;padding:10px;border-radius:12px;background:var(--surface-2)}
+.as-zona-g b{color:var(--heading);font-size:13px}
+.as-zona-g span{font-size:12px;font-weight:700;color:var(--primary)}
+.as-zona-g small{font-size:11.5px;color:#475569;line-height:1.35}
+@media (max-width:760px){.as-interp-g,.as-zona-g{grid-template-columns:1fr}.as-kr-tag{flex-direction:column;align-items:flex-end}}
+/* Versi PDF: daftar dua kolom agar laporan lebih ringkas */
+.pdf .list{grid-template-columns:1fr 1fr;border:0;gap:6px;overflow:visible;box-shadow:none}
+.pdf .item{padding:8px 10px;border:1px solid var(--line-soft);border-radius:10px}
+.pdf .item .t b{font-size:13px}
+.pdf .item .t span{font-size:10.5px}
+.pdf .as-kr-tag{flex-direction:column;align-items:flex-end;gap:3px}
+.pdf .as-interp-g{grid-template-columns:repeat(3,1fr)}
 .linkbtn{border:0;background:none;color:var(--primary);font-weight:700;cursor:pointer;padding:0;text-decoration:underline}
 @media (max-width:760px){
   .as-head,.as-form{grid-template-columns:1fr}

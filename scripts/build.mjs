@@ -76,12 +76,12 @@ const linimasa = existsSync(root + "data/linimasa.csv") ? parseCSV(read("data/li
 const mapel = existsSync(root + "data/mapel_jurusan.csv") ? parseCSV(read("data/mapel_jurusan.csv")).map(r => ({ mapel: r.mapel, jurusan: list(r.jurusan) })) : [];
 
 // ---------- Asesmen minat RIASEC (teori Holland) ----------
-const riasec = { tipe: [], soal: [] };
+const riasec = { tipe: [], soal: [], karier: [] };
 if (existsSync(root + "data/riasec.csv")) {
   const namaProdi = new Map(prodi.map(p => [p.nama.toLowerCase(), p.id]));
   riasec.tipe = parseCSV(read("data/riasec.csv")).map(r => ({
     kode: r.kode, nama: r.nama, julukan: r.julukan, warna: r.warna, deskripsi: r.deskripsi,
-    ciri: list(r.ciri), kegiatan: list(r.kegiatan), mapel: list(r.mapel), karier: list(r.karier),
+    ciri: list(r.ciri), kekuatan: list(r.kekuatan), lingkungan: r.lingkungan || "", kegiatan: list(r.kegiatan), mapel: list(r.mapel), karier: list(r.karier),
     prodi: list(r.prodi).map(n => namaProdi.get(n.toLowerCase()) || (warn(`riasec.csv ${r.kode}: prodi "${n}" tidak ada di prodi.csv`), null)).filter(Boolean)
   }));
   const kode = new Set(riasec.tipe.map(t => t.kode));
@@ -91,6 +91,14 @@ if (existsSync(root + "data/riasec.csv")) {
       return ok;
     })
     .map(r => ({ k: r.kode, b: r.bagian, t: r.pernyataan })) : [];
+  // Karier eksplorasi: kode Holland dua huruf dan zona kerja 1–5 (tingkat persiapan pendidikan).
+  riasec.karier = existsSync(root + "data/riasec_karier.csv") ? parseCSV(read("data/riasec_karier.csv")).flatMap((r, i) => {
+    const kd = (r.kode || "").toUpperCase(), z = +r.zona;
+    if (!/^[RIASEC]{1,3}$/.test(kd) || !(z >= 1 && z <= 5)) { warn(`riasec_karier.csv baris ${i + 2}: kode atau zona tidak valid`); return []; }
+    const pid = r.prodi ? namaProdi.get(r.prodi.toLowerCase()) : null;
+    if (r.prodi && !pid) warn(`riasec_karier.csv baris ${i + 2}: prodi "${r.prodi}" tidak ada di prodi.csv`);
+    return [{ nama: r.karier, kode: kd, zona: z, prodi: pid || null, catatan: r.catatan || "" }];
+  }) : [];
 }
 
 // ---------- Info sekolah kedinasan ----------

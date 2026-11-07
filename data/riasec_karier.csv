@@ -1,0 +1,54 @@
+karier,kode,zona,prodi,catatan
+Dokter,IS,5,Kedokteran,Mendiagnosis dan mengobati pasien; perlu pendidikan profesi dan internsip.
+Dokter Gigi,IR,5,Kedokteran Gigi,Merawat kesehatan gigi dan mulut dengan keterampilan tangan yang presisi.
+Apoteker,IC,5,Farmasi,Meracik dan mengawasi penggunaan obat secara aman dan teliti.
+Peneliti Sains,IR,5,Biologi,Merancang percobaan dan menerbitkan temuan ilmiah.
+Ilmuwan Data,IC,4,Sains Data,Mengolah data besar menjadi wawasan untuk pengambilan keputusan.
+Pengembang Perangkat Lunak,IC,4,Teknik Informatika,Membuat aplikasi dan sistem yang dipakai banyak orang.
+Analis Keamanan Siber,IC,4,Keamanan Siber,Melindungi sistem dan data dari serangan digital.
+Ahli Gizi,IS,4,Gizi,Menyusun pola makan sehat untuk pasien dan masyarakat.
+Ahli Statistik,IC,4,Statistika,Menganalisis angka untuk survei pemerintah dan riset.
+Psikolog,SI,5,Psikologi,Membantu orang memahami dan mengatasi masalah psikologis; perlu S2 profesi.
+Perawat,SI,4,Keperawatan,Merawat pasien langsung dan mendampingi pemulihan mereka.
+Bidan,SI,3,Kebidanan,Mendampingi ibu hamil dan proses persalinan.
+Fisioterapis,SR,4,Fisioterapi,Memulihkan gerak tubuh pasien setelah cedera atau sakit.
+Guru,SA,4,Pendidikan Guru Sekolah Dasar,Mengajar dan membentuk karakter murid di kelas.
+Guru Agama Islam / Ustaz,SE,4,Pendidikan Agama Islam,Mengajarkan ilmu agama dan membimbing akhlak santri.
+Konselor Sekolah,SE,4,Bimbingan dan Konseling,Membantu siswa merencanakan studi dan menyelesaikan masalah pribadi.
+Dai dan Penyuluh Agama,SE,4,Ilmu Dakwah,Menyampaikan dakwah dan membina masyarakat.
+Pekerja Sosial,SE,4,Kesejahteraan Sosial,Mendampingi keluarga dan kelompok rentan.
+Insinyur Sipil,RI,4,Teknik Sipil,Merancang dan mengawasi pembangunan jalan, jembatan, dan gedung.
+Insinyur Mesin,RI,4,Teknik Mesin,Merancang mesin dan sistem produksi.
+Insinyur Elektro,RI,4,Teknik Elektro,Merancang sistem listrik dan elektronik.
+Arsitek,AI,4,Arsitektur,Merancang bangunan yang indah sekaligus aman dan fungsional.
+Pilot,RI,4,,Menerbangkan pesawat; ditempuh lewat sekolah penerbangan.
+Teknisi Listrik,RC,3,Teknik Elektro,Memasang dan merawat instalasi listrik.
+Teknisi Laboratorium Medis,RI,3,,Memeriksa sampel darah dan jaringan di laboratorium klinik.
+Surveyor dan Ahli Pemetaan,RC,3,Teknik Geomatika,Mengukur lahan dan membuat peta di lapangan.
+Ahli Agribisnis dan Pertanian,RE,4,Agroteknologi,Mengelola produksi pangan dengan teknologi modern.
+Ahli Teknologi Pangan,RI,4,Teknologi Pangan,Mengembangkan produk makanan yang aman dan halal.
+Desainer Grafis,AR,3,Desain Komunikasi Visual,Membuat identitas visual dan materi promosi.
+Desainer UI/UX,AI,4,Desain Komunikasi Visual,Merancang tampilan aplikasi yang mudah dan nyaman dipakai.
+Animator,AR,3,Animasi,Menghidupkan karakter dan cerita lewat gambar bergerak.
+Penulis dan Editor,AI,4,Sastra Indonesia,Menulis dan menyunting buku, artikel, atau naskah.
+Jurnalis,AE,4,Ilmu Komunikasi,Meliput peristiwa dan menyajikan berita yang akurat.
+Kreator Konten,AE,2,,Membuat konten edukatif atau hiburan di media digital.
+Fotografer dan Videografer,AR,2,Film dan Televisi,Mengabadikan momen dan membuat karya visual.
+Seniman Kaligrafi,AR,2,Kaligrafi dan Seni Islam,Berkarya seni tulis Arab untuk dekorasi dan pameran.
+Wirausahawan,EC,3,Kewirausahaan,Membangun dan mengelola usaha sendiri.
+Manajer Pemasaran,EA,4,Manajemen,Menyusun strategi agar produk dikenal dan dibeli.
+Pengacara,EI,5,Ilmu Hukum,Mendampingi klien dalam perkara hukum; perlu pendidikan advokat.
+Diplomat,ES,4,Hubungan Internasional,Mewakili Indonesia dalam hubungan antarnegara.
+Bankir Syariah,EC,4,Perbankan Syariah,Mengelola layanan keuangan berbasis prinsip syariah.
+Manajer SDM (HRD),ES,4,Psikologi,Merekrut dan mengembangkan karyawan.
+Penyelenggara Acara,EA,3,Manajemen,Merencanakan dan menjalankan acara dari awal sampai akhir.
+Aparatur Sipil Negara,EC,4,Administrasi Publik,Menjalankan pelayanan publik di instansi pemerintah.
+Akuntan,CE,4,Akuntansi,Menyusun dan memeriksa laporan keuangan secara teliti.
+Auditor,CE,4,Akuntansi,Memeriksa kepatuhan dan kebenaran laporan keuangan.
+Aktuaris,CI,5,Aktuaria,Menghitung risiko untuk asuransi dan dana pensiun.
+Analis Keuangan,CI,4,Keuangan dan Perbankan Syariah,Menganalisis investasi dan kesehatan keuangan perusahaan.
+Pegawai Pajak,CE,4,Akuntansi Perpajakan,Mengelola dan memeriksa kewajiban pajak.
+Pustakawan,CS,4,Ilmu Perpustakaan,Mengelola koleksi dan layanan informasi perpustakaan.
+Staf Administrasi,CE,2,Administrasi Perkantoran,Mengelola surat menyurat dan dokumen kantor.
+Perekam Medis,CI,3,Rekam Medis dan Informasi Kesehatan,Mengelola data kesehatan pasien secara akurat.
+Pengelola Zakat dan Wakaf,CS,4,Zakat dan Wakaf,Menghimpun dan menyalurkan dana umat secara amanah.

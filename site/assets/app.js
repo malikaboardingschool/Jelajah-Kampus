@@ -444,6 +444,9 @@ function heksagonSVG(skor) {
     ${label}</svg>`;
 }
 
+// Zona kerja (diadaptasi dari konsep Job Zone O*NET) disesuaikan dengan jenjang pendidikan di Indonesia.
+const ZONA = [["Persiapan minimal", "Lulus SMA atau pelatihan singkat"], ["Persiapan dasar", "Kursus atau sertifikasi hingga 1 tahun"],
+  ["Persiapan menengah", "Diploma (D3) atau pendidikan vokasi"], ["Persiapan tinggi", "Sarjana (S1 atau D4)"], ["Persiapan sangat tinggi", "Pendidikan profesi, S2, atau spesialis"]];
 const RIASEC_KEY = "mp_riasec", RIASEC_DRAFT = "mp_riasec_draft";
 // Warna tipe versi lembut sebagai rgba (bukan color-mix) agar ikut tergambar di PDF.
 const rgba = (hex, a) => { const n = parseInt(hex.slice(1), 16); return `rgba(${n >> 16},${(n >> 8) & 255},${n & 255},${a})`; };
@@ -567,6 +570,7 @@ const svgKePng = svg => new Promise((ok, gagal) => {
 });
 async function salinanPdf(rekam) {
   const el = $(".as-hasil").cloneNode(true);
+  el.classList.add("pdf");
   el.querySelectorAll("[data-html2canvas-ignore]").forEach(n => n.remove());
   for (const svg of el.querySelectorAll("svg.hx")) {
     const img = document.createElement("img");
@@ -577,6 +581,11 @@ async function salinanPdf(rekam) {
   el.querySelectorAll("*").forEach(n => { n.style.boxShadow = "none"; });
   el.querySelectorAll(".item").forEach(n => { n.style.background = "#fff"; });
   el.style.cssText += ";border:0;box-shadow:none;padding:0";
+  // Interpretasi profil selalu mulai di halaman 2 agar judulnya tidak tertinggal di bawah halaman 1.
+  el.querySelector(".as-interp")?.closest(".box")?.insertAdjacentHTML("beforebegin", '<div class="html2pdf__page-break"></div>');
+  // Catatan kaki dipindah ke bawah kop agar tidak menyisakan halaman terakhir yang hampir kosong.
+  const kaki = el.querySelector(".foot");
+  if (kaki) { kaki.remove(); el.insertAdjacentHTML("afterbegin", `<p style="margin:0;font-size:10.5px;color:#64748b;line-height:1.45">${kaki.innerHTML}</p>`); }
   const s = META.sekolah;
   el.insertAdjacentHTML("afterbegin", `<div style="display:flex;align-items:center;gap:12px;padding-bottom:12px;margin-bottom:4px;border-bottom:2px solid #2563eb">
     <img src="${esc(s.logo || "assets/logo.png")}" width="44" height="44" style="border-radius:50%">
@@ -604,7 +613,7 @@ async function unduhPdfRiasec(rekam) {
       image: { type: "jpeg", quality: 0.95 },
       // scrollX/scrollY 0: tanpa ini isi PDF ikut bergeser sejauh halaman sedang digulir.
       html2canvas: { scale: 2, useCORS: true, backgroundColor: "#ffffff", scrollX: 0, scrollY: 0 },
-      jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }, pagebreak: { mode: ["css", "legacy"], avoid: [".as-head", ".as-skor", ".cols", ".label", ".as-mapel > div", ".item", ".as-peta li", ".box > p"] }
+      jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }, pagebreak: { mode: ["css", "legacy"], avoid: [".as-head", ".as-skor", ".cols", ".as-blok", ".as-interp article"] }
     }).from(await salinanPdf(rekam)).save().finally(() => window.scrollTo(0, gulir));
   } catch { alert("PDF gagal dibuat. Periksa koneksi internet lalu coba lagi."); }
   btn.disabled = false; btn.textContent = "Unduh PDF";
@@ -632,15 +641,17 @@ function viewHasilRiasec(rekam) {
   const [t1, t2, t3] = h.urut.slice(0, 3).map(tipeOf);
   const KONS = { tinggi: "Dua tipe teratasmu bersebelahan di heksagon Holland. Minatmu searah, sehingga pilihan jurusan biasanya lebih mudah ditentukan.", sedang: "Dua tipe teratasmu berjarak satu tipe. Minatmu cukup searah dan tetap bisa dipadukan dalam banyak jurusan.", rendah: "Dua tipe teratasmu berseberangan di heksagon. Kamu punya minat yang beragam. Cari prodi atau karier yang memadukan keduanya, dan diskusikan dengan sekolah." };
   const DIF = { tinggi: "Profil minatmu jelas: ada tipe yang menonjol dan ada yang rendah.", sedang: "Profil minatmu cukup jelas.", rendah: "Skormu hampir rata di semua tipe. Ini wajar di usia SMA. Perbanyak pengalaman lewat ekskul dan kegiatan, lalu ulangi asesmen beberapa bulan lagi." };
-  const karier = [...new Set([t1, t2, t3].flatMap(t => t.karier.slice(0, 3)))];
+  // Karier eksplorasi: huruf pertama kode karier berbobot ganda. Bobot tipe: pertama 3, kedua 2, ketiga 1.
+  const bobot = Object.fromEntries(h.urut.slice(0, 3).map((k, i) => [k, 3 - i]));
+  const karier = (RIASEC.karier || []).map(c => ({ ...c, skor: 2 * (bobot[c.kode[0]] || 0) + (bobot[c.kode[1]] || 0) }))
+    .filter(c => bobot[c.kode[0]]).sort((a, b) => b.skor - a.skor).slice(0, 8);
   $("#main").innerHTML = `<section class="panel asesmen as-hasil">
     <div class="as-head">
       <div><div class="label">Hasil asesmen · ${esc(rekam.nama)} · ${esc(rekam.kelas)}</div>
         <h2>Kode Holland-mu</h2>
         <div class="as-kode">${[t1, t2, t3].map((t, i) => `<span style="${warnaTipe(t)}" class="${i ? "" : "utama"}"><b>${t.kode}</b><small>${esc(t.julukan)}</small></span>`).join("")}</div>
         <p class="as-komb">Kombinasi minat: <b>${esc(kombinasi(h.kode))}</b></p>
-        <p>${esc(t1.deskripsi)}</p>
-        <div class="pills">${t1.ciri.map(c => `<span class="pill">${esc(c)}</span>`).join("")}</div>
+        <p class="hint">Huruf pertama adalah minatmu yang paling dominan, diikuti huruf kedua dan ketiga. Penjelasan tiap tipe ada di bagian Interpretasi profil.</p>
       </div>
       <figure class="as-hx">${heksagonSVG(h.skor)}<figcaption><span class="lg minat"></span>Minat <span class="lg mampu"></span>Kemampuan yang dirasakan · angka = skor total</figcaption></figure>
     </div>
@@ -649,19 +660,32 @@ function viewHasilRiasec(rekam) {
       <div class="box"><div class="label">Konsistensi minat: ${h.konsistensi}</div><p>${KONS[h.konsistensi]}</p></div>
       <div class="box"><div class="label">Kejelasan profil: ${h.diferensiasi}</div><p>${DIF[h.diferensiasi]}</p></div>
     </div>
-    <div class="box"><div class="label">Saran mapel pilihan Kelas XI–XII</div>
+    <div class="box"><div class="label">Interpretasi profil</div>
+      <div class="as-interp">${[t1, t2, t3].map((t, i) => `<article style="${warnaTipe(t)}">
+        <h3><b>${t.kode}</b> ${esc(t.nama)} · ${esc(t.julukan)} <small>${["Paling dominan", "Kedua", "Ketiga"][i]}</small></h3>
+        <p>${esc(t.deskripsi)}</p>
+        <div class="as-interp-g">
+          <div><div class="label">Kekuatan</div><ul>${t.kekuatan.map(x => `<li>${esc(x)}</li>`).join("")}</ul></div>
+          <div><div class="label">Lingkungan kerja favorit</div><p>${esc(t.lingkungan)}</p></div>
+          <div><div class="label">Contoh karier</div><p>${esc(t.karier.join(", "))}</p></div>
+        </div></article>`).join("")}</div></div>
+    <div class="box as-blok"><div class="label">Saran mapel pilihan Kelas XI–XII</div>
       <div class="as-mapel">${h.mapel.map((m, i) => `<div><b>${i + 1}. ${esc(m.m)}</b><small>${m.n ? `Mendukung ${m.n} dari ${h.prodi.length} prodi rekomendasimu` : "Sesuai tipe minatmu"}</small></div>`).join("")}</div>
       <p class="hint">Sesuaikan dengan mapel pilihan yang dibuka di sekolah dan nilai rapormu. Cek juga <a href="#/mapel">Cek Jurusan Sesuai Mapel</a>.</p></div>
-    <div class="box"><div class="label">Rekomendasi prodi</div>
+    <div class="box as-blok"><div class="label">Rekomendasi prodi</div>
       <div class="list" id="as-prodi">${h.prodi.map(({ p, kode }, i) => `<button class="item" data-i="${i}"><div class="t"><b>${esc(p.nama)}</b><span>${esc(p.rumpun)} · ${p._kampus} kampus · Mapel: ${esc(p.mapel.join(", "))}</span></div><span class="tag">${kode.length > 1 ? `Paduan ${kode.join("+")}` : `Tipe ${kode[0]}`}</span></button>`).join("")}</div>
       <p class="hint">Label <b>Paduan</b> berarti prodi ini cocok untuk lebih dari satu tipe minatmu. Klik prodi untuk melihat kampus dan keketatannya.</p></div>
-    <div class="box"><div class="label">Peta karier dan rencana</div>
+    <div class="box as-blok"><div class="label">Rekomendasi karier untuk dieksplorasi</div>
+      <div class="list" id="as-karier">${karier.map((c, i) => `<button class="item" data-i="${i}" ${c.prodi ? "" : "disabled"}><div class="t"><b>${esc(c.nama)}</b><span>${esc(c.catatan)}${c.prodi && prodiById[c.prodi] ? ` · Prodi: ${esc(prodiById[c.prodi].nama)}` : ""}</span></div><span class="as-kr-tag"><span class="tag">${c.kode.split("").join("-")}</span><span class="pill">Zona ${c.zona}</span></span></button>`).join("")}</div>
+      <details class="as-zona" open><summary>Panduan zona kerja</summary>
+        <div class="as-zona-g">${ZONA.map(([l, d], i) => `<div><b>Zona ${i + 1}</b><span>${l}</span><small>${d}</small></div>`).join("")}</div></details>
+      <p class="hint">Kode karier menunjukkan tipe minat yang paling dibutuhkan pekerjaan itu. Zona kerja menunjukkan seberapa panjang persiapan pendidikannya.</p></div>
+    <div class="box as-blok"><div class="label">Peta karier dan rencana</div>
       <ol class="as-peta">
         <li><b>Kelas X · Eksplorasi</b><span>${esc([...t1.kegiatan.slice(0, 2), ...t2.kegiatan.slice(0, 1)].join("; "))}</span></li>
         <li><b>Kelas XI · Mapel pilihan</b><span>${esc(h.mapel.slice(0, 4).map(m => m.m).join(", "))}</span></li>
         <li><b>Kelas XII · Seleksi</b><span>Pilih 3–4 prodi dari rekomendasi, cek keketatannya di Cari Prodi, dan ikuti <a href="#/linimasa">Jadwal Penting</a> SNBP dan SNBT.</span></li>
-        <li><b>Kuliah</b><span>${esc(h.prodi.slice(0, 3).map(x => x.p.nama).join(", "))}</span></li>
-        <li><b>Karier</b><span>${esc(karier.join(", "))}</span></li>
+        <li><b>Karier</b><span>${esc(karier.slice(0, 5).map(c => c.nama).join(", "))}</span></li>
       </ol></div>
     <p class="hint" id="as-kirim" data-html2canvas-ignore></p>
     <div class="row no-print" data-html2canvas-ignore>
@@ -672,6 +696,7 @@ function viewHasilRiasec(rekam) {
   </section>`;
   $$("[data-go]").forEach(b => b.onclick = () => go(b.dataset.go));
   $$("#as-prodi .item").forEach(b => b.onclick = () => go(`#/prodi/${h.prodi[+b.dataset.i].p.id}`));
+  $$("#as-karier .item").forEach(b => b.onclick = () => karier[+b.dataset.i].prodi && go(`#/prodi/${karier[+b.dataset.i].prodi}`));
   $("#as-pdf").onclick = () => unduhPdfRiasec(rekam);
   const status = $("#as-kirim");
   const kirim = async () => {
