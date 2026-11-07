@@ -111,7 +111,7 @@ function renderLogin() {
 
 /* ---------------- Kerangka ---------------- */
 // Menu utama. Halaman detail ikut menyorot menu induknya.
-const MENU = [["#/", "Beranda", "home"], ["#/asesmen", "Asesmen Minat", "asesmen"], ["#/cari", "Kampus Indonesia", "indonesia"], ["#/luar-negeri", "Kampus Luar Negeri", "luar"],
+const MENU = [["#/", "Beranda", "home"], ["#/asesmen", "Tes Minat", "asesmen"], ["#/cari", "Kampus Indonesia", "indonesia"], ["#/luar-negeri", "Kampus Luar Negeri", "luar"],
   ["#/linimasa", "Jadwal Penting", "jadwal"], ["#/panduan", "Panduan", "panduan"], ["#/rencana", "Rencanaku", "rencana"]];
 const rencanaLabel = () => `Rencanaku${plan.length ? `<span class="count">${plan.length}</span>` : ""}`;
 function shell(active) {
@@ -137,7 +137,7 @@ const go = h => { if (location.hash === h) route(); else location.hash = h; };
 const backBtn = (label = "← Beranda", h = "#/") => `<button class="back" data-back="${h}">${label}</button>`;
 // Tombol kembali di halaman prodi mengikuti halaman asal siswa.
 let hashLalu = "", hashKini = location.hash;
-const ASAL = [["#/mapel", "← Cek Jurusan"], ["#/asesmen", "← Hasil asesmen"], ["#/cari", "← Cari Prodi"], ["#/rencana", "← Rencanaku"], ["#/kampus/", "← Kembali ke kampus"], ["#/negara/", "← Kembali"], ["#/luar-negeri", "← Kampus Luar Negeri"]];
+const ASAL = [["#/mapel", "← Cek Jurusan"], ["#/asesmen", "← Hasil tes"], ["#/cari", "← Cari Prodi"], ["#/rencana", "← Rencanaku"], ["#/kampus/", "← Kembali ke kampus"], ["#/negara/", "← Kembali"], ["#/luar-negeri", "← Kampus Luar Negeri"]];
 const asalProdi = () => { const a = ASAL.find(([h]) => hashLalu.startsWith(h)); return a ? [a[1], hashLalu] : ["← Daftar prodi", "#/bahas"]; };
 const bindBack = () => $$("[data-back]").forEach(b => b.onclick = () => go(b.dataset.back));
 const FOOT = () => `<p class="foot">*Daya tampung dan peminat PTN: data resmi <a href="https://snpmb.id/utbk-snbt/daya-tampung-snbt" target="_blank" rel="noopener">SNPMB</a> (daya tampung SNBT 2026, peminat 2021–2025). Keketatan = daya tampung ÷ peminat tahun terakhir. Skor aman, UKT, dan biaya masuk diisi sekolah dari SK resmi PTN. Gunakan untuk perencanaan, bukan jaminan lolos. Data diperbarui ${new Date(META.diperbarui).toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" })}.</p>`;
@@ -227,7 +227,7 @@ function viewHome() {
   </div>
   <button class="promo-as" data-go="${store.get("mp_riasec") ? "#/asesmen/hasil" : "#/asesmen"}">
     <span class="ic">${ICON.target}</span>
-    <span class="t"><b>Asesmen Minat & Bakat (RIASEC)</b><small>${store.get("mp_riasec") ? `Kode Holland-mu: ${esc(store.get("mp_riasec").kode)}. Lihat lagi hasil, mapel, dan rekomendasi prodimu.` : "10 menit mengenali tipe minatmu, lalu dapatkan saran mapel pilihan, rekomendasi prodi, dan peta karier."}</small></span>
+    <span class="t"><b>Tes Minat & Bakat (RIASEC)</b><small>${store.get("mp_riasec") ? `Kode Holland-mu: ${esc(store.get("mp_riasec").kode)}. Lihat lagi hasil, mapel, dan rekomendasi prodimu.` : "10 menit mengenali tipe minatmu, lalu dapatkan saran mapel pilihan, rekomendasi prodi, dan peta karier."}</small></span>
     <span class="go" aria-hidden="true">${store.get("mp_riasec") ? "Lihat hasil" : "Mulai"} →</span>
   </button>
   <a class="beasiswa" href="https://satubeasiswa.kemdiktisaintek.go.id/" target="_blank" rel="noopener">
@@ -427,23 +427,6 @@ function hitungRiasec(jawab) {
   return { skor, urut, kode, konsistensi, diferensiasi, beda, prodi, mapel };
 }
 
-function heksagonSVG(skor) {
-  const c = 160, R = 108;
-  const titik = (i, r) => { const a = (-90 + i * 60) * Math.PI / 180; return [c + r * Math.cos(a), c + r * Math.sin(a)]; };
-  const poli = f => HEKS.map((k, i) => titik(i, R * f(k) / 100).map(v => v.toFixed(1)).join(",")).join(" ");
-  const grid = [25, 50, 75, 100].map(p => `<polygon points="${HEKS.map((_, i) => titik(i, R * p / 100).join(",")).join(" ")}" class="hx-grid" fill="none" stroke="#e2e8f0" stroke-width="1"/>`).join("");
-  const sumbu = HEKS.map((_, i) => { const [x, y] = titik(i, R); return `<line x1="${c}" y1="${c}" x2="${x}" y2="${y}" class="hx-grid" fill="none" stroke="#e2e8f0" stroke-width="1"/>`; }).join("");
-  const label = HEKS.map((k, i) => {
-    const t = tipeOf(k); const [x, y] = titik(i, R + 30);
-    return `<text x="${x}" y="${y - 4}" text-anchor="middle" class="hx-k" fill="${t.warna}" font-size="13" font-weight="800" font-family="Plus Jakarta Sans, Arial, sans-serif">${k} · ${Math.round(skor[k].total)}</text><text x="${x}" y="${y + 11}" text-anchor="middle" class="hx-n" fill="#64748b" font-size="10.5" font-weight="600" font-family="Plus Jakarta Sans, Arial, sans-serif">${esc(t.julukan)}</text>`;
-  }).join("");
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320" class="hx" role="img" aria-label="Heksagon RIASEC: ${HEKS.map(k => `${k} ${Math.round(skor[k].total)}`).join(", ")}">
-    ${grid}${sumbu}
-    <polygon points="${poli(k => skor[k].minat)}" class="hx-minat" fill="rgba(37,99,235,0.22)" stroke="#2563eb" stroke-width="2.5" stroke-linejoin="round"/>
-    <polygon points="${poli(k => skor[k].kemampuan)}" class="hx-mampu" fill="none" stroke="#06b6d4" stroke-width="2" stroke-dasharray="5 4" stroke-linejoin="round"/>
-    ${label}</svg>`;
-}
-
 // Zona kerja 1–5 di riasec_karier.csv (konsep Job Zone O*NET) ditampilkan sebagai jenjang pendidikan di Indonesia.
 const JENJANG_ZONA = ["Lulus SMA", "Kursus", "D3/vokasi", "S1/D4", "Profesi/S2"];
 const RIASEC_KEY = "mp_riasec", RIASEC_DRAFT = "mp_riasec_draft";
@@ -454,46 +437,38 @@ const kombinasi = kode => kode.split("").map(k => tipeOf(k)?.julukan || k).join(
 
 function viewAsesmen(bagian) {
   shell("asesmen");
-  if (!RIASEC.soal.length) { $("#main").innerHTML = '<section class="panel"><div class="empty">Soal asesmen belum tersedia.</div></section>'; return; }
+  if (!RIASEC.soal.length) { $("#main").innerHTML = '<section class="panel"><div class="empty">Soal tes belum tersedia.</div></section>'; return; }
   const hasil = store.get(RIASEC_KEY);
   if (bagian === "hasil" && hasil) return viewHasilRiasec(hasil);
   if (bagian === "tes") return viewTesRiasec();
   const d = store.get(RIASEC_DRAFT);
   const kirim = !!META.sekolah.asesmen_url;
-  const nMinat = RIASEC.soal.filter(s => s.b === "minat").length, nMampu = RIASEC.soal.length - nMinat;
   const lanjut = d && Object.keys(d.jawab || {}).length;
   $("#main").innerHTML = `<section class="panel asesmen">
-    <div><div class="label">Teori Holland · RIASEC</div><h2>Asesmen Minat & Bakat</h2>
-      <p class="hint">Dikembangkan dari teori kepribadian karier psikolog John L. Holland. Setiap orang adalah perpaduan unik dari enam tipe minat. Asesmen ini menemukan tiga tipe yang paling menonjol pada dirimu, lalu menghubungkannya dengan mapel pilihan, prodi, dan karier.</p></div>
-    <div class="as-stat">
-      <div><b>${RIASEC.soal.length}</b><span>pernyataan: ${nMinat} minat, ${nMampu} kemampuan</span></div>
-      <div><b>1–5</b><span>skala dari sangat tidak suka sampai sangat suka</span></div>
-      <div><b>±10 menit</b><span>tanpa batas waktu, bisa dilanjutkan nanti</span></div>
-      <div><b>3 tipe</b><span>kombinasi minat teratasmu</span></div>
-    </div>
+    <div class="as-judul"><div><div class="label">Teori Holland · RIASEC</div><h2>Tes Minat & Bakat</h2>
+      <p class="hint">Dikembangkan dari teori kepribadian karier psikolog John L. Holland. Setiap orang adalah perpaduan unik dari enam tipe minat. Tes ini menemukan tiga tipe yang paling menonjol pada dirimu, lalu menghubungkannya dengan mapel pilihan, prodi, dan karier.</p></div>
+      <button class="btn" id="as-mulai">Mulai tes</button></div>
     <div><div class="label" style="margin-bottom:8px">6 tipe minat Holland</div>
       <div class="as-tipe">${HEKS.map(k => { const t = tipeOf(k); return `<div style="${warnaTipe(t)}"><div class="as-tipe-h"><b>${k}</b><span><strong>${esc(t.julukan)}</strong><small>${esc(t.nama)}</small></span></div><p>${esc(t.deskripsi)}</p><div class="pills">${t.karier.slice(0, 4).map(c => `<span class="pill">${esc(c)}</span>`).join("")}</div></div>`; }).join("")}</div></div>
-    <div class="box"><div class="label">Bagaimana hasilnya dibaca?</div>
-      <p>Hasilmu berupa <b>kode Holland</b> tiga huruf, yaitu kombinasi tiga tipe tertinggimu, misalnya <b>ISA</b> (${esc(kombinasi("ISA"))}). Huruf pertama paling dominan. Dari kode ini kamu mendapat saran mapel pilihan Kelas XI–XII, rekomendasi prodi, dan peta karier.</p></div>
-    <div class="box"><div class="label">Skala penilaian</div>
-      <div class="as-legend">${SKALA.minat.map((l, i) => `<div><span>${i + 1}</span><small>${l}</small></div>`).join("")}</div>
-      <p class="hint">Jawab sesuai yang benar-benar kamu sukai, bukan yang menurutmu seharusnya. Tidak ada jawaban benar atau salah. Setelah memilih, pernyataan berikutnya muncul otomatis. Di laptop kamu juga bisa menekan tombol angka 1–5.</p></div>
     ${hasil ? `<div class="as-last"><span>Hasil terakhirmu: <b class="mono">${esc(hasil.kode)}</b> · ${esc(kombinasi(hasil.kode))} · ${new Date(hasil.waktu).toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" })}</span><button class="btn ghost" data-go="#/asesmen/hasil">Lihat hasil</button></div>` : ""}
     <form id="as-f" class="as-form">
+      <div class="label as-form-h">Data diri</div>
       <label>Nama lengkap<input class="search" id="as-nama" required maxlength="80" autocomplete="name" value="${esc(d?.nama || hasil?.nama || "")}"></label>
       <label>Kelas<input class="search" id="as-kelas" required maxlength="30" placeholder="Contoh: X-2 atau XI IPA 1" value="${esc(d?.kelas || hasil?.kelas || "")}"></label>
-      ${kirim ? '<label class="as-cek"><input type="checkbox" id="as-izin" required> Saya setuju nama, kelas, jawaban, dan hasil asesmen ini disimpan oleh sekolah untuk keperluan bimbingan.</label>' : ""}
-      <button class="btn" type="submit">${lanjut ? `Lanjutkan asesmen (${lanjut}/${RIASEC.soal.length})` : hasil ? "Ulangi asesmen" : "Mulai asesmen"}</button>
+      <label>Tanggal lahir<input class="search" id="as-lahir" type="date" required min="1995-01-01" max="${new Date().getFullYear() - 10}-12-31" value="${esc(d?.lahir || hasil?.lahir || "")}"></label>
+      ${kirim ? '<label class="as-cek"><input type="checkbox" id="as-izin" required> Saya setuju nama, kelas, tanggal lahir, jawaban, dan hasil tes ini (termasuk laporan PDF) disimpan oleh sekolah untuk keperluan bimbingan.</label>' : ""}
+      <button class="btn" type="submit">${lanjut ? `Lanjutkan tes (${lanjut}/${RIASEC.soal.length})` : hasil ? "Ulangi tes" : "Mulai tes"}</button>
     </form>
     <p class="foot">Butir pernyataan disusun orisinal oleh sekolah berdasarkan teori Holland. Hasilnya gambaran minat untuk bahan diskusi dengan orang tua dan sekolah, bukan diagnosis psikologis dan bukan satu-satunya dasar memilih jurusan.</p>
   </section>`;
   $$("[data-go]").forEach(b => b.onclick = () => go(b.dataset.go));
+  $("#as-mulai").onclick = () => { $("#as-f").scrollIntoView({ behavior: "smooth", block: "center" }); setTimeout(() => $("#as-nama").focus({ preventScroll: true }), 400); };
   $("#as-f").onsubmit = e => {
     e.preventDefault();
-    const nama = $("#as-nama").value.trim().replace(/\s+/g, " "), kelas = $("#as-kelas").value.trim().replace(/\s+/g, " ");
-    if (!nama || !kelas) return;
+    const nama = $("#as-nama").value.trim().replace(/\s+/g, " "), kelas = $("#as-kelas").value.trim().replace(/\s+/g, " "), lahir = $("#as-lahir").value;
+    if (!nama || !kelas || !/^\d{4}-\d{2}-\d{2}$/.test(lahir)) return;
     const lama = store.get(RIASEC_DRAFT);
-    store.set(RIASEC_DRAFT, { nama, kelas, izin: !!$("#as-izin")?.checked, jawab: lama?.jawab || {}, pos: lama?.pos || 0 });
+    store.set(RIASEC_DRAFT, { nama, kelas, lahir, izin: !!$("#as-izin")?.checked, jawab: lama?.jawab || {}, pos: lama?.pos || 0 });
     go("#/asesmen/tes");
   };
 }
@@ -548,7 +523,7 @@ function viewTesRiasec() {
     document.removeEventListener("keydown", tombolAngka);
     const jawab = RIASEC.soal.map((_, i) => d.jawab[i] ?? null);
     const h = hitungRiasec(jawab);
-    store.set(RIASEC_KEY, { nama: d.nama, kelas: d.kelas, izin: d.izin, waktu: new Date().toISOString(), jawab, kode: h.kode, terkirim: false });
+    store.set(RIASEC_KEY, { id: crypto.randomUUID?.() || String(Date.now()) + Math.random().toString(16).slice(2), nama: d.nama, kelas: d.kelas, lahir: d.lahir || "", izin: d.izin, waktu: new Date().toISOString(), jawab, kode: h.kode, terkirim: false });
     store.set(RIASEC_DRAFT, null);
     go("#/asesmen/hasil");
   };
@@ -556,80 +531,69 @@ function viewTesRiasec() {
 }
 
 // Salinan hasil khusus PDF: html2canvas tidak menggambar SVG sebaris dan bayangan dengan baik.
-// SVG diubah menjadi PNG lewat canvas, karena html2canvas tidak menggambar SVG.
-const svgKePng = svg => new Promise((ok, gagal) => {
-  const img = new Image();
-  img.onload = () => {
-    const c = document.createElement("canvas"); c.width = 960; c.height = 960;
-    c.getContext("2d").drawImage(img, 0, 0, 960, 960);
-    ok(c.toDataURL("image/png"));
-  };
-  img.onerror = gagal;
-  img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(new XMLSerializer().serializeToString(svg));
-});
 async function salinanPdf(rekam) {
   const el = $(".as-hasil").cloneNode(true);
   el.classList.add("pdf");
   el.querySelectorAll("[data-html2canvas-ignore]").forEach(n => n.remove());
-  for (const svg of el.querySelectorAll("svg.hx")) {
-    const img = document.createElement("img");
-    img.src = await svgKePng(svg).catch(() => "");
-    img.style.cssText = "width:100%;max-width:340px;height:auto;display:block";
-    svg.replaceWith(img);
-  }
   el.querySelectorAll("*").forEach(n => { n.style.boxShadow = "none"; });
   el.querySelectorAll(".item").forEach(n => { n.style.background = "#fff"; });
   el.style.cssText += ";border:0;box-shadow:none;padding:0";
-  // Interpretasi profil selalu mulai di halaman 2 agar judulnya tidak tertinggal di bawah halaman 1.
-  el.querySelector(".as-interp")?.closest(".box")?.insertAdjacentHTML("beforebegin", '<div class="html2pdf__page-break"></div>');
   // Catatan kaki dipindah ke bawah kop agar tidak menyisakan halaman terakhir yang hampir kosong.
   const kaki = el.querySelector(".foot");
   if (kaki) { kaki.remove(); el.insertAdjacentHTML("afterbegin", `<p style="margin:0;font-size:10.5px;color:#64748b;line-height:1.45">${kaki.innerHTML}</p>`); }
   const s = META.sekolah;
   el.insertAdjacentHTML("afterbegin", `<div style="display:flex;align-items:center;gap:12px;padding-bottom:12px;margin-bottom:4px;border-bottom:2px solid #2563eb">
     <img src="${esc(s.logo || "assets/logo.png")}" width="44" height="44" style="border-radius:50%">
-    <div style="flex:1"><b style="font-size:16px;color:#0f172a">${esc(s.app)} · ${esc(s.nama)}</b><div style="font-size:12px;color:#475569">Laporan Asesmen Minat & Bakat (RIASEC) · ${esc(rekam.nama)} · ${esc(rekam.kelas)} · ${new Date(rekam.waktu).toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" })}</div></div></div>`);
+    <div style="flex:1"><b style="font-size:16px;color:#0f172a">${esc(s.app)} · ${esc(s.nama)}</b><div style="font-size:12px;color:#475569">Laporan Tes Minat & Bakat (RIASEC) · ${esc(rekam.nama)} · ${esc(rekam.kelas)}${rekam.lahir ? ` · lahir ${tglLahir(rekam.lahir)}` : ""} · tes ${new Date(rekam.waktu).toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" })}</div></div></div>`);
   return el;
 }
 
-// PDF dibuat di browser dengan html2pdf.js (dimuat hanya saat tombol diklik).
+// PDF dibuat di browser dengan html2pdf.js (dimuat saat pertama kali dibutuhkan).
 let html2pdfSiap = null;
+const muatHtml2pdf = () => html2pdfSiap ||= new Promise((ok, gagal) => {
+  const el = document.createElement("script");
+  el.src = "https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js";
+  el.onload = ok; el.onerror = () => { html2pdfSiap = null; gagal(); };
+  document.head.append(el);
+});
+const namaFilePdf = rekam => `Tes-Minat-Bakat-${rekam.nama.replace(/[^\p{L}\p{N} ]/gu, "").trim().replace(/\s+/g, "-") || "siswa"}.pdf`;
+// unduh = true: simpan ke perangkat siswa. false: kembalikan Blob (resolusi lebih kecil) untuk dikirim ke spreadsheet.
+async function pdfRiasec(rekam, unduh) {
+  await muatHtml2pdf();
+  const gulir = window.scrollY;
+  window.scrollTo(0, 0);
+  try {
+    const w = window.html2pdf().set({
+      margin: [10, 10, 12, 10], filename: namaFilePdf(rekam),
+      image: { type: "jpeg", quality: unduh ? 0.95 : 0.82 },
+      // scrollX/scrollY 0: tanpa ini isi PDF ikut bergeser sejauh halaman sedang digulir.
+      html2canvas: { scale: unduh ? 2 : 1.5, useCORS: true, backgroundColor: "#ffffff", scrollX: 0, scrollY: 0 },
+      jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }, pagebreak: { mode: ["css", "legacy"], avoid: [".as-head", ".as-skor", ".cols", ".as-blok", ".as-interp article"] }
+    }).from(await salinanPdf(rekam));
+    return unduh ? await w.save() : await w.outputPdf("blob");
+  } finally { window.scrollTo(0, gulir); }
+}
 async function unduhPdfRiasec(rekam) {
   const btn = $("#as-pdf"); btn.disabled = true; btn.textContent = "Menyiapkan PDF…";
-  try {
-    html2pdfSiap ||= new Promise((ok, gagal) => {
-      const el = document.createElement("script");
-      el.src = "https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js";
-      el.onload = ok; el.onerror = () => { html2pdfSiap = null; gagal(); };
-      document.head.append(el);
-    });
-    await html2pdfSiap;
-    const gulir = window.scrollY;
-    window.scrollTo(0, 0);
-    const nama = rekam.nama.replace(/[^\p{L}\p{N} ]/gu, "").trim().replace(/\s+/g, "-") || "siswa";
-    await window.html2pdf().set({
-      margin: [10, 10, 12, 10], filename: `Asesmen-RIASEC-${nama}.pdf`,
-      image: { type: "jpeg", quality: 0.95 },
-      // scrollX/scrollY 0: tanpa ini isi PDF ikut bergeser sejauh halaman sedang digulir.
-      html2canvas: { scale: 2, useCORS: true, backgroundColor: "#ffffff", scrollX: 0, scrollY: 0 },
-      jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }, pagebreak: { mode: ["css", "legacy"], avoid: [".as-head", ".as-skor", ".cols", ".as-blok", ".as-interp article"] }
-    }).from(await salinanPdf(rekam)).save().finally(() => window.scrollTo(0, gulir));
-  } catch { alert("PDF gagal dibuat. Periksa koneksi internet lalu coba lagi."); }
+  try { await pdfRiasec(rekam, true); } catch { alert("PDF gagal dibuat. Periksa koneksi internet lalu coba lagi."); }
   btn.disabled = false; btn.textContent = "Unduh PDF";
 }
+const keBase64 = blob => new Promise((ok, gagal) => { const r = new FileReader(); r.onload = () => ok(String(r.result).split(",")[1]); r.onerror = gagal; r.readAsDataURL(blob); });
+const tglLahir = t => new Date(`${t}T00:00:00`).toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" });
 
 // Kirim ke Google Apps Script milik sekolah. Mode no-cors: browser tidak bisa membaca balasan, jadi status "terkirim" berarti permintaan sudah berangkat.
-async function kirimRiasec(rekam, h) {
+async function kirimRiasec(rekam, h, pdf) {
   const url = META.sekolah.asesmen_url;
   if (!url || !rekam.izin) return null;
   const pct = f => Object.fromEntries(HEKS.map(k => [k, Math.round(f(h.skor[k]))]));
   const jawaban = b => Object.fromEntries(HEKS.map(k => [k, RIASEC.soal.map((s, i) => s.k === k && s.b === b ? rekam.jawab[i] ?? 0 : null).filter(v => v != null).join("")]));
   const body = {
-    versi: 1, waktu: rekam.waktu, nama: rekam.nama, kelas: rekam.kelas, kode: h.kode,
+    versi: 2, id: rekam.id || "", waktu: rekam.waktu, nama: rekam.nama, kelas: rekam.kelas, lahir: rekam.lahir || "", kode: h.kode,
     minat: pct(s => s.minat), kemampuan: pct(s => s.kemampuan), total: pct(s => s.total),
     konsistensi: h.konsistensi, diferensiasi: h.diferensiasi,
     prodi: h.prodi.slice(0, 5).map(x => x.p.nama), mapel: h.mapel.map(x => x.m),
-    jawaban: { minat: jawaban("minat"), kemampuan: jawaban("kemampuan") }
+    jawaban: { minat: jawaban("minat"), kemampuan: jawaban("kemampuan") },
+    pdf: pdf || "", pdf_nama: pdf ? namaFilePdf(rekam) : ""
   };
   await fetch(url, { method: "POST", mode: "no-cors", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(body) });
   return true;
@@ -639,28 +603,26 @@ function viewHasilRiasec(rekam) {
   const h = hitungRiasec(rekam.jawab);
   const [t1, t2, t3] = h.urut.slice(0, 3).map(tipeOf);
   const KONS = { tinggi: "Dua tipe teratasmu bersebelahan di heksagon Holland. Minatmu searah, sehingga pilihan jurusan biasanya lebih mudah ditentukan.", sedang: "Dua tipe teratasmu berjarak satu tipe. Minatmu cukup searah dan tetap bisa dipadukan dalam banyak jurusan.", rendah: "Dua tipe teratasmu berseberangan di heksagon. Kamu punya minat yang beragam. Cari prodi atau karier yang memadukan keduanya, dan diskusikan dengan sekolah." };
-  const DIF = { tinggi: "Profil minatmu jelas: ada tipe yang menonjol dan ada yang rendah.", sedang: "Profil minatmu cukup jelas.", rendah: "Skormu hampir rata di semua tipe. Ini wajar di usia SMA. Perbanyak pengalaman lewat ekskul dan kegiatan, lalu ulangi asesmen beberapa bulan lagi." };
+  const DIF = { tinggi: "Profil minatmu jelas: ada tipe yang menonjol dan ada yang rendah.", sedang: "Profil minatmu cukup jelas.", rendah: "Skormu hampir rata di semua tipe. Ini wajar di usia SMA. Perbanyak pengalaman lewat ekskul dan kegiatan, lalu ulangi tes beberapa bulan lagi." };
   // Karier eksplorasi: huruf pertama kode karier berbobot ganda. Bobot tipe: pertama 3, kedua 2, ketiga 1.
   const bobot = Object.fromEntries(h.urut.slice(0, 3).map((k, i) => [k, 3 - i]));
   const karier = (RIASEC.karier || []).map(c => ({ ...c, skor: 2 * (bobot[c.kode[0]] || 0) + (bobot[c.kode[1]] || 0) }))
     .filter(c => bobot[c.kode[0]]).sort((a, b) => b.skor - a.skor).slice(0, 8);
   $("#main").innerHTML = `<section class="panel asesmen as-hasil">
     <div class="as-head">
-      <div><div class="label">Hasil asesmen · ${esc(rekam.nama)} · ${esc(rekam.kelas)}</div>
+      <div><div class="label">Hasil tes · ${esc(rekam.nama)} · ${esc(rekam.kelas)}${rekam.lahir ? ` · lahir ${tglLahir(rekam.lahir)}` : ""}</div>
         <h2>Kode Holland-mu</h2>
         <div class="as-kode">${[t1, t2, t3].map((t, i) => `<span style="${warnaTipe(t)}" class="${i ? "" : "utama"}"><b>${t.kode}</b><small>${esc(t.julukan)}</small></span>`).join("")}</div>
         <p class="as-komb">Kombinasi minat: <b>${esc(kombinasi(h.kode))}</b></p>
         <p class="hint">Huruf pertama adalah minatmu yang paling dominan, diikuti huruf kedua dan ketiga. Penjelasan tiap tipe ada di bagian Interpretasi profil.</p>
       </div>
-      <figure class="as-hx">${heksagonSVG(h.skor)}<figcaption><span class="lg minat"></span>Minat <span class="lg mampu"></span>Kemampuan yang dirasakan · angka = skor total</figcaption></figure>
     </div>
     <div class="as-skor">${h.urut.map(k => { const t = tipeOf(k); const s = h.skor[k]; return `<div style="--c:${t.warna}"><span><b>${k}</b> ${esc(t.nama)} <small>${esc(t.julukan)}</small></span><span class="mono">${Math.round(s.total)}</span><i><em style="width:${s.total}%"></em></i></div>`; }).join("")}</div>
     <div class="cols">
       <div class="box"><div class="label">Konsistensi minat: ${h.konsistensi}</div><p>${KONS[h.konsistensi]}</p></div>
       <div class="box"><div class="label">Kejelasan profil: ${h.diferensiasi}</div><p>${DIF[h.diferensiasi]}</p></div>
     </div>
-    <div class="box"><div class="label">Interpretasi profil</div>
-      <div class="as-interp">${[t1, t2, t3].map((t, i) => `<article style="${warnaTipe(t)}">
+    <div class="box"><div class="as-interp">${[t1, t2, t3].map((t, i) => `<article style="${warnaTipe(t)}">${i ? "" : '<div class="label" style="color:var(--muted)">Interpretasi profil</div>'}
         <h3><b>${t.kode}</b> ${esc(t.nama)} · ${esc(t.julukan)} <small>${["Paling dominan", "Kedua", "Ketiga"][i]}</small></h3>
         <p>${esc(t.deskripsi)}</p>
         <div class="as-interp-g">
@@ -680,7 +642,7 @@ function viewHasilRiasec(rekam) {
     <p class="hint" id="as-kirim" data-html2canvas-ignore></p>
     <div class="row no-print" data-html2canvas-ignore>
       <button class="btn" id="as-pdf">Unduh PDF</button>
-      <button class="btn ghost" data-go="#/asesmen">Ulangi asesmen</button>
+      <button class="btn ghost" data-go="#/asesmen">Ulangi tes</button>
     </div>
     <p class="foot">Kode Holland disusun dari tiga tipe dengan skor total tertinggi (70% minat, 30% kemampuan yang dirasakan). Hasil ini gambaran minat, bukan diagnosis. Diskusikan dengan orang tua dan sekolah sebelum memutuskan.</p>
   </section>`;
@@ -689,9 +651,12 @@ function viewHasilRiasec(rekam) {
   $$("#as-karier .item").forEach(b => b.onclick = () => karier[+b.dataset.i].prodi && go(`#/prodi/${karier[+b.dataset.i].prodi}`));
   $("#as-pdf").onclick = () => unduhPdfRiasec(rekam);
   const status = $("#as-kirim");
+  // Laporan PDF dibuat otomatis dan ikut dikirim. Bila PDF gagal dibuat, data tetap dikirim tanpa PDF.
   const kirim = async () => {
-    status.textContent = "Mengirim hasil ke spreadsheet sekolah…";
-    try { if (await kirimRiasec(rekam, h)) { rekam.terkirim = true; store.set(RIASEC_KEY, rekam); status.textContent = "✓ Hasil sudah dikirim ke spreadsheet sekolah."; } else status.textContent = ""; }
+    status.textContent = "Menyimpan hasil dan laporan PDF ke spreadsheet sekolah…";
+    let pdf = null;
+    try { pdf = await keBase64(await pdfRiasec(rekam, false)); } catch { pdf = null; }
+    try { if (await kirimRiasec(rekam, h, pdf)) { rekam.terkirim = true; store.set(RIASEC_KEY, rekam); status.textContent = pdf ? "✓ Hasil dan laporan PDF sudah dikirim ke spreadsheet sekolah." : "✓ Hasil sudah dikirim ke spreadsheet sekolah (laporan PDF gagal dibuat)."; } else status.textContent = ""; }
     catch { status.innerHTML = 'Hasil belum terkirim karena koneksi bermasalah. <button class="linkbtn" id="as-ulang">Coba kirim lagi</button>'; $("#as-ulang").onclick = kirim; }
   };
   if (rekam.terkirim) status.textContent = "✓ Hasil sudah dikirim ke spreadsheet sekolah.";

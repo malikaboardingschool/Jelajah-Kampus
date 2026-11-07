@@ -8,15 +8,26 @@
  *      Jalankan sebagai: Saya. Yang memiliki akses: Siapa saja.
  *   4. Salin URL aplikasi web (berakhiran /exec) ke "asesmen_url" di data/sekolah.json.
  *
+ * Memperbarui skrip yang sudah terpasang (URL tetap sama):
+ *   Tempel kode baru, simpan, lalu Terapkan → Kelola deployment → ikon pensil →
+ *   Versi: "Versi baru" → Terapkan. Izinkan akses Google Drive bila diminta.
+ *
+ * Laporan PDF tiap siswa disimpan di folder Google Drive "Laporan Tes Minat Bakat"
+ * milik akun ini, dan tautannya ditulis di kolom "Laporan PDF".
+ *
  * Menu "Asesmen RIASEC" di spreadsheet menghitung reliabilitas (Cronbach's alpha) tiap skala.
  */
 const LEMBAR_HASIL = "Hasil";
 const LEMBAR_RELIABILITAS = "Reliabilitas";
+const FOLDER_PDF = "Laporan Tes Minat Bakat";
+const MAKS_PDF = 4 * 1024 * 1024; // batas ukuran satu laporan PDF
 const TIPE = ["R", "I", "A", "S", "E", "C"];
 const KOLOM = ["Waktu kirim", "Waktu tes", "Nama", "Kelas", "Kode Holland",
   ...TIPE.map(k => `Total ${k}`), ...TIPE.map(k => `Minat ${k}`), ...TIPE.map(k => `Kemampuan ${k}`),
   "Konsistensi", "Kejelasan profil", "Prodi rekomendasi", "Mapel pilihan",
-  ...TIPE.map(k => `Jawaban minat ${k}`), ...TIPE.map(k => `Jawaban kemampuan ${k}`), "Versi"];
+  ...TIPE.map(k => `Jawaban minat ${k}`), ...TIPE.map(k => `Jawaban kemampuan ${k}`), "Versi",
+  // Kolom tambahan versi 2 ditaruh di akhir agar data lama tidak bergeser.
+  "Tanggal lahir", "ID", "Laporan PDF"];
 
 function doPost(e) {
   const lock = LockService.getScriptLock();
@@ -24,7 +35,10 @@ function doPost(e) {
   try {
     const d = JSON.parse(e.postData.contents);
     const sh = lembar_(LEMBAR_HASIL);
-    if (sh.getLastRow() === 0) { sh.appendRow(KOLOM); sh.setFrozenRows(1); sh.getRange(1, 1, 1, KOLOM.length).setFontWeight("bold"); }
+    if (sh.getLastRow() === 0) { sh.appendRow(KOLOM); sh.setFrozenRows(1); }
+    // Lembar dari versi lama: lengkapi judul kolom yang baru.
+    if (sh.getLastColumn() < KOLOM.length) sh.getRange(1, 1, 1, KOLOM.length).setValues([KOLOM]);
+    sh.getRange(1, 1, 1, KOLOM.length).setFontWeight("bold");
     const angka = (o, k) => Math.max(0, Math.min(100, Number((o || {})[k]) || 0));
     const digit = (o, k) => String((o || {})[k] || "").replace(/[^1-5]/g, "").slice(0, 20);
     sh.appendRow([
@@ -34,7 +48,8 @@ function doPost(e) {
       teks_((d.prodi || []).join("; "), 400), teks_((d.mapel || []).join("; "), 300),
       // Jawaban disimpan sebagai teks (diawali ') agar angka seperti "54321" tidak diubah format.
       ...TIPE.map(k => "'" + digit((d.jawaban || {}).minat, k)), ...TIPE.map(k => "'" + digit((d.jawaban || {}).kemampuan, k)),
-      Number(d.versi) || 1
+      Number(d.versi) || 1,
+      /^\d{4}-\d{2}-\d{2}$/.test(d.lahir || "") ? "'" + d.lahir : "", teks_(d.id, 40), simpanPdf_(d)
     ]);
     return ContentService.createTextOutput('{"ok":true}').setMimeType(ContentService.MimeType.JSON);
   } catch (err) {
@@ -42,6 +57,28 @@ function doPost(e) {
   } finally {
     lock.releaseLock();
   }
+}
+
+// Simpan laporan PDF ke Google Drive dan kembalikan tautannya. Hanya file yang benar-benar PDF dan tidak terlalu besar.
+function simpanPdf_(d) {
+  if (!d.pdf || typeof d.pdf !== "string" || d.pdf.length > MAKS_PDF * 1.4) return "";
+  try {
+    const isi = Utilities.base64Decode(d.pdf);
+    if (isi.length > MAKS_PDF || String.fromCharCode.apply(null, isi.slice(0, 5)) !== "%PDF-") return "";
+    const nama = (teks_(d.kelas, 30) + " - " + teks_(d.nama, 80)).replace(/[\\/:*?"<>|']/g, "") + " - " + Utilities.formatDate(new Date(), "Asia/Jakarta", "yyyy-MM-dd HHmm") + ".pdf";
+    return folder_().createFile(Utilities.newBlob(isi, "application/pdf", nama)).getUrl();
+  } catch (err) {
+    return "";
+  }
+}
+
+function folder_() {
+  const props = PropertiesService.getScriptProperties();
+  const id = props.getProperty("FOLDER_PDF_ID");
+  if (id) { try { return DriveApp.getFolderById(id); } catch (err) { /* folder dihapus, buat ulang */ } }
+  const f = DriveApp.createFolder(FOLDER_PDF);
+  props.setProperty("FOLDER_PDF_ID", f.getId());
+  return f;
 }
 
 // Teks dari siswa dipotong panjangnya dan dicegah terbaca sebagai rumus spreadsheet.
